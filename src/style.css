@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: "YouSheBiaoTiHei";
+  src: url("./assets/fonts/YouSheBiaoTiHei.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SourceHanSansSC-Normal";
+  src: url("./assets/fonts/SourceHanSansSC-Normal.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "SourceHanSansSC-Medium";
+  src: url("./assets/fonts/SourceHanSansSC-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "DIN";
+  src: url("./assets/fonts/DIN.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "DINPro-Medium";
+  src: url("./assets/fonts/DINPro-Medium.otf") format("opentype");
+}
