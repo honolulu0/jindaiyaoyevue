@@ -34,6 +34,8 @@
 <script setup lang="ts">
   import TopTab from "@/components/topTab.vue";
   import { reactive, ref } from "vue";
+  import { useRouter } from "vue-router";
+  const router = useRouter();
   const tabsName = reactive([
     {
       name: "综合态势",
@@ -45,6 +47,7 @@
       isClick: false,
       onClick: () => {
         setClick(0);
+        router.push("/comprehensiveSituation");
       },
     },
     {
@@ -57,6 +60,7 @@
       isClick: false,
       onClick: () => {
         setClick(1);
+        router.push("/parkInvestmentPromotion");
       },
     },
     {
@@ -69,6 +73,7 @@
       isClick: false,
       onClick: () => {
         setClick(2);
+        router.push("/securitySituation");
       },
     },
     {
@@ -81,6 +86,7 @@
       isClick: false,
       onClick: () => {
         setClick(3);
+        router.push("/parkFacilities");
       },
     },
     {
@@ -117,6 +123,7 @@
       isClick: false,
       onClick: () => {
         setClick(6);
+        router.push("/enterprises");
       },
     },
     {

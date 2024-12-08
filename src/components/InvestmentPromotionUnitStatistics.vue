@@ -29,7 +29,12 @@
         <div class="data_unit data_unit2">{{ item.unit2 }}</div>
       </div>
       <div class="circle-progress_bg"></div>
-      <CircleProgress :percentage="45" startColor="#a5d8fc" endColor="#a5d8fc" style="position: absolute; top: 3px; right: 19px;" />
+      <CircleProgress
+        :percentage="45"
+        startColor="#a5d8fc"
+        endColor="#a5d8fc"
+        style="position: absolute; top: 3px; right: 19px"
+      />
     </div>
     <div class="content sell">
       <div
@@ -58,14 +63,19 @@
         <div class="data_unit data_unit2">{{ item.unit2 }}</div>
       </div>
       <div class="circle-progress_bg"></div>
-      <CircleProgress :percentage="45" startColor="#fee186" endColor="#fee186" style="position: absolute; top: 3px; right: 19px;" />
+      <CircleProgress
+        :percentage="45"
+        startColor="#fee186"
+        endColor="#fee186"
+        style="position: absolute; top: 3px; right: 19px"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { reactive } from "vue";
-  import CircleProgress from "./CircleProgress.vue";
+  import CircleProgress from "@/components/circleProgress.vue";
 
   const statisticsBoxPositionRent = reactive([
     {

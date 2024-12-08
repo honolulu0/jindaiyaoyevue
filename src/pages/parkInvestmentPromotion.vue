@@ -5,13 +5,17 @@
     <ParkProfile />
     <ParkSupporting />
     <InvestmentPromotionUnitStatistics />
+    <Park365 />
+    <StarEnterprise />
   </div>
 </template>
 
 <script setup lang="ts">
   import ParkProfile from "@/components/parkProfile.vue";
-  import ParkSupporting from "@/components/ParkSupporting.vue";
+  import ParkSupporting from "@/components/parkSupporting.vue";
   import InvestmentPromotionUnitStatistics from "@/components/InvestmentPromotionUnitStatistics.vue";
+  import Park365 from "@/components/park365.vue";
+  import StarEnterprise from "@/components/starEnterprise.vue";
 </script>
 
 <style scoped></style>
