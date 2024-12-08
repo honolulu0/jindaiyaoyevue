@@ -115,7 +115,7 @@
   .item_button {
     width: 65px;
     height: 65px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 9px;
     color: #77d5cd;

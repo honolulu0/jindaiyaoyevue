@@ -84,7 +84,7 @@
     right: 44px;
     width: 48px;
     height: 14px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 9px;
     color: #ffffff;
@@ -146,7 +146,7 @@
     right: 44px;
     width: 48px;
     height: 14px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 9px;
     color: #ffffff;

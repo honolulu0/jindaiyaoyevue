@@ -579,7 +579,7 @@
   .tab_1_three_advantage_text_area {
     width: 183px;
     height: 26px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 6px;
     color: #e4f3ff;

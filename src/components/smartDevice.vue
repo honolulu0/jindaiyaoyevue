@@ -210,7 +210,7 @@
   .content_item_number {
     width: max-content;
     height: 16px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 12px;
     color: #00f8f4;
