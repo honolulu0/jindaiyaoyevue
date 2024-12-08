@@ -28,46 +28,27 @@
   const textList = [
     {
       key: 1,
-      label: "园区名称：",
-      content: "建中·金岱生物医药产业园",
+      label: "物业公司：",
+      content: "郑州金岱圆方物业管理有限公司",
       position: { top: 0, left: 0 },
     },
     {
       key: 2,
-      label: "建成年份：",
-      content: "2024年",
+      label: "成立年份：",
+      content: "2018年",
       position: { top: "13px", left: "0px" },
     },
     {
       key: 3,
-      label: "园区位置：",
-      content: "河南省郑州市金水区",
+      label: "员工人数：",
+      content: "220人",
       position: { top: "13px", left: "105px" },
     },
     {
       key: 4,
-      label: "总建筑面积：",
-      content: "6.97万平方米",
+      label: "管理费用：",
+      content: "2,666元/m² ~ 3,220元/m",
       position: { top: "27px", left: "0px" },
-    },
-    {
-      key: 5,
-      label: "楼栋数量：",
-      content: "20栋",
-      position: { top: "27px", left: "105px" },
-    },
-    {
-      key: 6,
-      label: "租金区间：",
-      content: "12元/m²/天 ~ 20元/m²/天",
-      position: { top: "40px", left: "0px" },
-      width: "105px",
-    },
-    {
-      key: 7,
-      label: "售价区间：",
-      content: "36,666元/m² ~ 63,220元/m²",
-      position: { top: "54px", left: "0px" },
       width: "105px",
     },
   ];
@@ -149,7 +130,7 @@
 
   .text_area {
     position: absolute;
-    top: 77px;
+    top: 50px;
     left: 0;
     width: 205px;
     height: 26px;

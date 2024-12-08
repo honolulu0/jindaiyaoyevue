@@ -9,6 +9,9 @@
             :key="key"
             class="col title_col"
           >
+            <div
+              class="list_body_icon"
+            ></div>
             {{ item }}
           </div>
         </div>

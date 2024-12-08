@@ -2,47 +2,36 @@
   <AspectRatioContainer>
     <Top />
     <Transition name="fade">
-      <div v-if="isShow" class="bg_left"></div>
-    </Transition>
-    <Transition name="fade">
-      <div v-if="isShow" class="bg_right"></div>
-    </Transition>
-    <Transition name="fade">
       <div v-if="isShow">
+        <div class="bg_left"></div>
+        <div class="bg_right"></div>
         <slot></slot>
+        <div
+          class="close_word_btn"
+          @click="close"
+        >
+          <span>关闭</span>
+        </div>
+        <div
+          class="close_btn"
+          @click="close"
+        ></div>
       </div>
     </Transition>
+
     <Transition name="fade">
-      <div
-        v-if="!isShow"
-        class="open_btn"
-        @click="open"
-      >
-        <span>开启</span>
+      <div v-if="!isShow">
+        <div
+          class="open_btn"
+          @click="open"
+        >
+          <span>开启</span>
+        </div>
+        <div
+          class="close_btn_open"
+          @click="open"
+        ></div>
       </div>
-    </Transition>
-    <Transition name="fade">
-      <div
-        v-if="isShow"
-        class="close_word_btn"
-        @click="close"
-      >
-        <span>关闭</span>
-      </div>
-    </Transition>
-    <Transition name="fade">
-      <div
-        v-if="isShow"
-        class="close_btn"
-        @click="close"
-      ></div>
-    </Transition>
-    <Transition name="fade">
-      <div
-        v-if="!isShow"
-        class="close_btn_open"
-        @click="open"
-      ></div>
     </Transition>
   </AspectRatioContainer>
 </template>
@@ -50,7 +39,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import Top from "./top.vue";
-  import AspectRatioContainer from "@/components/AspectRatioContainer.vue";
+  import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
 
   const isShow = ref(true);
 
