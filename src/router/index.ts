@@ -6,10 +6,10 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../App.vue')
+      redirect: "/parkInvestmentPromotion"
     },
     {
-      path: '/parkInvestmentPromotion',
+      path: "/parkInvestmentPromotion",
       name: 'parkInvestmentPromotion',
       component: () => import('../pages/parkInvestmentPromotion.vue')
     },
@@ -27,6 +27,16 @@ const router = createRouter({
       path: '/enterprises',
       name: 'enterprises',
       component: () => import('../pages/enterprises.vue')
+    },
+    {
+      path: '/powerEnvironment',
+      name: 'powerEnvironment',
+      component: () => import('../pages/powerEnvironment.vue')
+    },
+    {
+      path: '/energyConsumptionSituation',
+      name: 'energyConsumptionSituation',
+      component: () => import('../pages/energyConsumptionSituation.vue')
     }
   ]
 })

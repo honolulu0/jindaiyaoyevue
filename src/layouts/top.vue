@@ -1,5 +1,8 @@
 <template>
-  <div class="absolute top-0 left-0" style="z-index: 100">
+  <div
+    class="absolute top-0 left-0"
+    style="z-index: 100"
+  >
     <div class="bg_top"></div>
     <span class="title">建中·金岱生物医药产业园</span>
     <span class="sub_title">Jindai Digital Innovation Park</span>
@@ -99,6 +102,7 @@
       isClick: false,
       onClick: () => {
         setClick(4);
+        router.push("/powerEnvironment");
       },
     },
     {
@@ -111,6 +115,7 @@
       isClick: false,
       onClick: () => {
         setClick(5);
+        router.push("/energyConsumptionSituation");
       },
     },
     {

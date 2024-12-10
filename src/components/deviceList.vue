@@ -1,5 +1,8 @@
 <template>
-  <div class="device_list">
+  <div
+    class="device_list"
+    :style="{ top: top + 'px', left: left + 'px', height: height + 'px' }"
+  >
     <div class="title_bg"></div>
     <div class="title">设备列表</div>
     <div class="search_box"></div>
@@ -44,6 +47,21 @@
 <script setup lang="ts">
   import { ref } from "vue";
   const searchValue = ref("");
+  defineProps({
+    top: {
+      type: Number,
+      default: 305,
+    },
+    left: {
+      type: Number,
+      default: 20,
+    },
+    height: {
+      type: Number,
+      default: 250,
+    },
+  });
+
   const listTitleMap = ref({
     row1: "序号",
     row2: "设备位置",
