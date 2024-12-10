@@ -4,6 +4,24 @@
     <Transition name="fade">
       <div v-if="isShow">
         <div class="bg_left"></div>
+        <div class="parking" v-if="parkingShow">
+          <div class="parking_title">
+            <span>{{ paringTitle }}</span>
+          </div>
+          <div class="parking_content">
+            <div
+              class="parking_content_item"
+              v-for="item in parkingData"
+              :key="item"
+            >
+              <div class="parking_content_item_bg">
+                <div class="parking_content_item_value">
+                  <span>{{ item }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="bg_right"></div>
         <slot></slot>
         <div
@@ -54,10 +72,19 @@
   import Top from "./top.vue";
   import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
   import { modelSubject } from "@/event";
+  import { parkingSubject } from "@/event";
+
+  parkingSubject.subscribe((res) => {
+    parkingShow.value = res;
+  });
 
   const isShow = ref(true);
   const modelOpen = ref(false);
   const modelContent = ref("");
+  const parkingShow = ref(false);
+
+  const paringTitle = ref("1号车间A座");
+  const parkingData = ref(["5F", "4F", "3F", "2F", "1F", "B1", "B2"]);
 
   modelSubject.subscribe((res) => {
     modelOpen.value = res.isShow;
@@ -216,6 +243,105 @@
     line-height: 18px;
     letter-spacing: 3px;
     text-align: left;
+    font-style: normal;
+  }
+
+  .parking {
+    position: absolute;
+    top: 77px;
+    right: 244px;
+    width: 51px;
+    height: max-content;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .parking_title {
+    background-image: url("@/assets/园区_背景.png");
+    background-size: 100%;
+    width: 51px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: SourceHanSansSC-Normal;
+    font-weight: 600;
+    font-size: 6px;
+    color: #ffffff;
+    line-height: 8px;
+    text-align: center;
+    font-style: normal;
+    margin-bottom: 9px;
+  }
+
+  .parking_content {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5px;
+    position: relative;
+  }
+
+  .parking_content::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    opacity: 0.3;
+    background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  .parking_content::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 0;
+    width: 3px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+  }
+
+  .parking_content_item {
+    width: 100%;
+    height: 22px;
+    border-left: 18px solid transparent;
+    border-right: 9px solid transparent;
+  }
+
+  .parking_content_item_bg {
+    background-image: url("@/assets/未选中.png");
+    background-size: 53px 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 23px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .parking_content_item_bg:hover {
+    background-image: url("@/assets/选中框.png");
+    background-size: 53px 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .parking_content_item_value {
+    display: block;
+    font-family: SourceHanSansSC-Normal;
+    font-weight: 600;
+    font-size: 6px;
+    color: #ffffff;
+    line-height: 8px;
+    text-align: right;
     font-style: normal;
   }
 </style>

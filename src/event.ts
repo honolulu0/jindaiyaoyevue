@@ -17,3 +17,4 @@ export const modelSubject = new BehaviorSubject<ModelSubjectType>({
   content: "",
 });
 
+export const parkingSubject = new BehaviorSubject<boolean>(false);

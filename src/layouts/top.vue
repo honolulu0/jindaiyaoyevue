@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
   import TopTab from "@/components/topTab.vue";
+  import { parkingSubject } from "@/event";
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
   const router = useRouter();
@@ -64,6 +65,7 @@
       onClick: () => {
         setClick(1);
         router.push("/parkInvestmentPromotion");
+        parkingSubject.next(true);
       },
     },
     {
@@ -77,6 +79,7 @@
       onClick: () => {
         setClick(2);
         router.push("/securitySituation");
+        parkingSubject.next(true);
       },
     },
     {
@@ -90,6 +93,7 @@
       onClick: () => {
         setClick(3);
         router.push("/parkFacilities");
+        parkingSubject.next(true);
       },
     },
     {
@@ -103,6 +107,7 @@
       onClick: () => {
         setClick(4);
         router.push("/powerEnvironment");
+        parkingSubject.next(false);
       },
     },
     {
@@ -116,6 +121,7 @@
       onClick: () => {
         setClick(5);
         router.push("/energyConsumptionSituation");
+        parkingSubject.next(false);
       },
     },
     {
@@ -129,6 +135,7 @@
       onClick: () => {
         setClick(6);
         router.push("/enterprises");
+        parkingSubject.next(false);
       },
     },
     {
@@ -141,6 +148,8 @@
       isClick: false,
       onClick: () => {
         setClick(7);
+        router.push("/achievementVisualization");
+        parkingSubject.next(false);
       },
     },
   ]);
