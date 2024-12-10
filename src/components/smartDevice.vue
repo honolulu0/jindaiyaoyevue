@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+
   const baseUrl = import.meta.url.substring(
     0,
     import.meta.url.lastIndexOf("/")

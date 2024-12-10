@@ -37,7 +37,7 @@ const router = createRouter({
       path: '/energyConsumptionSituation',
       name: 'energyConsumptionSituation',
       component: () => import('../pages/energyConsumptionSituation.vue')
-    }
+    },
   ]
 })
 

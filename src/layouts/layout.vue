@@ -33,6 +33,19 @@
         ></div>
       </div>
     </Transition>
+
+    <div
+      class="model"
+      v-if="modelOpen"
+    >
+      <div
+        v-if="modelContent === 'defenseDeploymentSuccess'"
+        class="defense_deployment_success"
+      >
+        <div class="defense_deployment_success_close_btn"></div>
+        <div class="defense_deployment_success_content"></div>
+      </div>
+    </div>
   </AspectRatioContainer>
 </template>
 
@@ -40,8 +53,16 @@
   import { ref } from "vue";
   import Top from "./top.vue";
   import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
+  import { modelSubject } from "@/event";
 
   const isShow = ref(true);
+  const modelOpen = ref(false);
+  const modelContent = ref("");
+
+  modelSubject.subscribe((res) => {
+    modelOpen.value = res.isShow;
+    modelContent.value = res.content;
+  });
 
   function close() {
     isShow.value = false;
@@ -156,5 +177,45 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .model {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .defense_deployment_success {
+    background-image: url("@/assets/弹窗背景.png");
+    background-size: 100%;
+    width: 587px;
+    height: 141px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .defense_deployment_success_close_btn {
+    background-image: url("@/assets/关闭按钮.png");
+    background-size: 100%;
+    width: 14px;
+    height: 14px;
+  }
+
+  .defense_deployment_success_content {
+    font-family: YouSheBiaoTiHei;
+    font-size: 18px;
+    color: #71f3ff;
+    line-height: 18px;
+    letter-spacing: 3px;
+    text-align: left;
+    font-style: normal;
   }
 </style>
