@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
   import TopTab from "@/components/topTab.vue";
-  import { parkingSubject } from "@/event";
+  import { parkingSubject, topTabsSubject } from "@/event";
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
   const router = useRouter();
@@ -148,7 +148,9 @@
       isClick: false,
       onClick: () => {
         setClick(7);
-        router.push("/achievementVisualization");
+        // router.push("/achievementVisualization");
+        // router.push("/parkPolicy");
+        router.push("/partyBuilding");
         parkingSubject.next(false);
       },
     },
@@ -157,12 +159,14 @@
   const time = ref("");
   const date = ref("");
 
-  const setClick = (index: number) => {
+  const setClick = (index: number) => {};
+
+  topTabsSubject.subscribe((res) => {
     tabsName.forEach((tab) => {
       tab.isClick = false;
     });
-    tabsName[index].isClick = true;
-  };
+    tabsName[res].isClick = true;
+  });
 
   const updateDateTime = () => {
     const now = new Date();

@@ -4,7 +4,10 @@
     <Transition name="fade">
       <div v-if="isShow">
         <div class="bg_left"></div>
-        <div class="parking" v-if="parkingShow">
+        <div
+          class="parking"
+          v-if="parkingShow"
+        >
           <div class="parking_title">
             <span>{{ paringTitle }}</span>
           </div>
@@ -73,11 +76,6 @@
   import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
   import { modelSubject } from "@/event";
   import { parkingSubject } from "@/event";
-
-  parkingSubject.subscribe((res) => {
-    parkingShow.value = res;
-  });
-
   const isShow = ref(true);
   const modelOpen = ref(false);
   const modelContent = ref("");
@@ -87,8 +85,12 @@
   const parkingData = ref(["5F", "4F", "3F", "2F", "1F", "B1", "B2"]);
 
   modelSubject.subscribe((res) => {
+
     modelOpen.value = res.isShow;
     modelContent.value = res.content;
+  });
+  parkingSubject.subscribe((res) => {
+    parkingShow.value = res;
   });
 
   function close() {

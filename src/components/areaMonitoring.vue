@@ -1,18 +1,21 @@
 <template>
   <div class="area_monitoring">
-    <TitleComponent titleText="区域监控" />
+    <TitleComponent titleText="重点区域监控" />
     <div class="content">
       <div
         class="content_item"
         v-for="item in contentList"
         :style="{ backgroundImage: item.title }"
-      ></div>
+      >
+        <WebRTCStream :url="item.value" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import TitleComponent from "./titleComponent.vue";
+  import WebRTCStream from "./WebRTCStream.vue";
   import { ref } from "vue";
 
   const baseUrl = import.meta.url.substring(
@@ -25,19 +28,22 @@
       title: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/研发中心.png`
       )})`,
-      value: 100,
+      value:
+        "rtsp://admin:admin12345@47.120.12.122:18386/cam/realmonitor?channel=1&subtype=0",
     },
     {
       title: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/设备中心.png`
       )})`,
-      value: 20,
+      value:
+        "rtsp://admin:admin12345@47.120.12.122:18386/cam/realmonitor?channel=2&subtype=0",
     },
     {
       title: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/实验中心.png`
       )})`,
-      value: 30,
+      value:
+        "rtsp://admin:admin12345@47.120.12.122:18386/cam/realmonitor?channel=56&subtype=0",
     },
   ]);
 </script>

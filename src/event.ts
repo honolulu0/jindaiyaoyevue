@@ -7,7 +7,7 @@ interface ModelSubjectCloseType {
 
 interface ModelSubjectOpenType {
   isShow: true;
-  content: "defenseDeploymentSuccess";
+  content: "defenseDeploymentSuccess" | "partyBuildActivity";
 }
 
 type ModelSubjectType = ModelSubjectCloseType | ModelSubjectOpenType;
@@ -18,3 +18,5 @@ export const modelSubject = new BehaviorSubject<ModelSubjectType>({
 });
 
 export const parkingSubject = new BehaviorSubject<boolean>(false);
+
+export const topTabsSubject = new BehaviorSubject<number>(0);

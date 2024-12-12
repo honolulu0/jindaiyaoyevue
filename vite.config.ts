@@ -10,11 +10,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
-  server: {
-    port: 8080,
-    host: '0.0.0.0',
-    proxy: {
-      '/api': 'http://47.120.12.122:8001/api'
-    }
-  }
+  // server: {
+  //   port: 8080,
+  //   host: '0.0.0.0',
+  //   proxy: {
+  //     '/api': 'http://47.120.12.122:8001/api'
+  //   }
+  // }
 })

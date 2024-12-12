@@ -245,7 +245,7 @@
     position: absolute;
     top: 156px;
     left: 0px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 6px;
     color: #e4f3ff;

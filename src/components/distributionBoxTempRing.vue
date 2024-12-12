@@ -107,7 +107,10 @@
     data: { titleText: string; value: number }[];
   }>();
 
-  const currentPageValue = ref<{ titleText: string; value: number }[]>([]);
+  const currentPageValue = ref<{ titleText: string; value: number }[]>(
+    props.data?.slice(0, 6)
+  );
+
   const handlePaginationChange = (
     data: {
       titleText: string;
