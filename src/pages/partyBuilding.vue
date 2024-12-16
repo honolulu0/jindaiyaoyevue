@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-2">
     <div
-      class="w-full h-full absolute top-0 left-0 z-0 bg-[#0A131C] bg-opacity-50"
+      class="w-full h-full absolute top-0 left-0 z-0 bg-[#0A131C] bg-opacity-80"
     >
       <PartyTabs />
       <div class="absolute top-[227px] left-[357px]">

@@ -25,30 +25,48 @@
 </template>
 
 <script setup lang="ts">
+  import { EmployeeListVO, getEmployeeList } from "@/apis/employeeList";
   import TitleComponent from "@/components/titleComponent.vue";
-  import { ref } from "vue";
+  import { onMounted, ref } from "vue";
 
   const truncateDescription = (text: string) => {
     return text.length > 20 ? text.slice(0, 20) + "..." : text;
   };
 
-  const list = ref([
-    {
-      name: "张三",
-      age: 20,
-      job: "保安",
-      img: "https://picsum.photos/200/300",
-      description:
-        "张三是一名保安，负责小区的安全巡逻。张三是一名保安，负责小区的安全巡逻。张三是一名保安，负责小区的安全巡逻。",
-    },
-    {
-      name: "张三",
-      age: 20,
-      job: "保安",
-      img: "https://picsum.photos/200/300",
-      description: "张三是一名保安，负责小区的安全巡逻。",
-    },
-  ]);
+  // const list = ref([
+  //   {
+  //     name: "张三",
+  //     age: 20,
+  //     job: "保安",
+  //     img: "https://picsum.photos/200/300",
+  //     description:
+  //       "张三是一名保安，负责小区的安全巡逻。张三是一名保安，负责小区的安全巡逻。张三是一名保安，负责小区的安全巡逻。",
+  //   },
+  //   {
+  //     name: "张三",
+  //     age: 20,
+  //     job: "保安",
+  //     img: "https://picsum.photos/200/300",
+  //     description: "张三是一名保安，负责小区的安全巡逻。",
+  //   },
+  // ]);
+
+  const list = ref<EmployeeListVO[]>([]);
+
+  const fetchEmployeeList = async () => {
+    try {
+      const data = await getEmployeeList({
+        limit: 2, // 只获取2条数据
+      });
+      list.value = data;
+    } catch (error) {
+      console.error("获取员工列表失败:", error);
+    }
+  };
+
+  onMounted(() => {
+    fetchEmployeeList();
+  });
 </script>
 
 <style scoped>

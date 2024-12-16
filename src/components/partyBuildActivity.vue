@@ -95,7 +95,7 @@
   .party_build_activity_content_item_text_value {
     height: 18px;
     width: 117px;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 6px;
     color: #ffffff;

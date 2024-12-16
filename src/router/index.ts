@@ -53,6 +53,16 @@ const router = createRouter({
       path: '/parkPolicy',
       name: 'parkPolicy',
       component: () => import('../pages/parkPolicy.vue')
+    },
+    {
+      path: '/parkEnterprise',
+      name: 'parkEnterprise',
+      component: () => import('../pages/parkEnterprise.vue')
+    },
+    {
+      path: '/parkServices',
+      name: 'parkServices',
+      component: () => import('../pages/parkServices.vue')
     }
   ]
 })
@@ -68,7 +78,9 @@ router.afterEach((to, from) => {
     "/energyConsumptionSituation": 5,
     "/enterprises": 6,
     "/partyBuilding": 7,
-    "/parkPolicy": 7
+    "/parkPolicy": 7,
+    "/parkEnterprise": 7,
+    "/parkServices": 7
   };
 
   if (pathToIndex.hasOwnProperty(to.path)) {

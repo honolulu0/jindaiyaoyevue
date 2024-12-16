@@ -15,64 +15,24 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from "vue";
+  import { ref, onMounted } from "vue";
   import titleComponent from "./titleComponent.vue";
+  import { getServiceList, type ServiceListVO } from '@/apis/parkServiceList'
 
-  const baseUrl = import.meta.url.substring(
-    0,
-    import.meta.url.lastIndexOf("/")
-  );
+  const serviceInfoList = ref<ServiceListVO['items']>([])
 
-  const serviceInfoList = reactive([
-    {
-      index: 1,
-      name: "维修服务",
-      url: "https://www.baidu.com",
-      img: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/维修服务图片.png`
-      )})`,
-    },
-    {
-      index: 2,
-      name: "家政服务",
-      url: "https://www.baidu.com",
-      img: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/家政服务图片.png`
-      )})`,
-    },
-    {
-      index: 3,
-      name: "租赁服务",
-      url: "https://www.baidu.com",
-      img: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/租赁服务图片.png`
-      )})`,
-    },
-    {
-      index: 4,
-      name: "会议服务",
-      url: "https://www.baidu.com",
-      img: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/会议服务图片.png`
-      )})`,
-    },
-    {
-      index: 5,
-      name: "代理服务",
-      url: "https://www.baidu.com",
-      img: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/代理服务图片.png`
-      )})`,
-    },
-    {
-      index: 6,
-      name: "家政服务",
-      url: "https://www.baidu.com",
-      img: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/家政服务图片.png`
-      )})`,
-    },
-  ]);
+  const getServices = async () => {
+    try {
+      const res = await getServiceList({})
+      serviceInfoList.value = res.items
+    } catch (error) {
+      console.error('获取服务列表失败:', error)
+    }
+  }
+
+  onMounted(() => {
+    getServices()
+  })
 </script>
 
 <style scoped>

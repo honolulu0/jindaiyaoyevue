@@ -22,111 +22,119 @@
 </template>
 
 <script setup lang="ts">
+  import { getDeviceCount, DeviceCountVO } from "@/apis/deviceCount";
+  import { onMounted, ref } from "vue";
+  const contentItem = ref<DeviceCountVO[]>([]);
 
-  const baseUrl = import.meta.url.substring(
-    0,
-    import.meta.url.lastIndexOf("/")
-  );
+  onMounted(async () => {
+    const { smartDevices } = await getDeviceCount();
+    contentItem.value = smartDevices;
+  });
 
-  const contentItem = [
-    {
-      key: 1,
-      title: "监控",
-      img: `${encodeURI(`${baseUrl}/../assets/parkFacilities/监控icon.png`)}`,
-      number: 248,
-      unit: "台",
-    },
-    {
-      key: 2,
-      title: "入侵报警",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/入侵报警icon.png`
-      )}`,
-      number: 112,
-      unit: "台",
-    },
-    {
-      key: 3,
-      title: "电子围栏",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/电子围栏icon.png`
-      )}`,
-      number: 248,
-      unit: "台",
-    },
-    {
-      key: 4,
-      title: "烟感报警",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/烟感报警icon.png`
-      )}`,
-      number: 648,
-      unit: "台",
-    },
-    {
-      key: 5,
-      title: "车牌识别",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/车牌识别icon.png`
-      )}`,
-      number: 99,
-      unit: "台",
-    },
-    {
-      key: 6,
-      title: "智慧井盖",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/智慧井盖icon.png`
-      )}`,
-      number: 143,
-      unit: "台",
-    },
-    {
-      key: 7,
-      title: "水节点监测",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/水节点监测icon.png`
-      )}`,
-      number: 66,
-      unit: "台",
-    },
-    {
-      key: 8,
-      title: "水表数据",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/水表数据icon.png`
-      )}`,
-      number: 342,
-      unit: "台",
-    },
-    {
-      key: 9,
-      title: "配电房状态",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/配电房状态icon.png`
-      )}`,
-      number: 232,
-      unit: "台",
-    },
-    {
-      key: 10,
-      title: "电表数据",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/电表数据icon.png`
-      )}`,
-      number: 248,
-      unit: "台",
-    },
-    {
-      key: 11,
-      title: "车位识别",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/车位识别icon.png`
-      )}`,
-      number: 543,
-      unit: "台",
-    },
-  ];
+  // const baseUrl = import.meta.url.substring(
+  //   0,
+  //   import.meta.url.lastIndexOf("/")
+  // );
+
+  // const contentItem = [
+  //   {
+  //     key: 1,
+  //     title: "监控",
+  //     img: `${encodeURI(`${baseUrl}/../assets/parkFacilities/监控icon.png`)}`,
+  //     number: 248,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 2,
+  //     title: "入侵报警",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/入侵报警icon.png`
+  //     )}`,
+  //     number: 112,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 3,
+  //     title: "电子围栏",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/电子围栏icon.png`
+  //     )}`,
+  //     number: 248,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 4,
+  //     title: "烟感报警",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/烟感报警icon.png`
+  //     )}`,
+  //     number: 648,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 5,
+  //     title: "车牌识别",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/车牌识别icon.png`
+  //     )}`,
+  //     number: 99,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 6,
+  //     title: "智慧井盖",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/智慧井盖icon.png`
+  //     )}`,
+  //     number: 143,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 7,
+  //     title: "水节点监测",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/水节点监测icon.png`
+  //     )}`,
+  //     number: 66,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 8,
+  //     title: "水表数据",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/水表数据icon.png`
+  //     )}`,
+  //     number: 342,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 9,
+  //     title: "配电房状态",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/配电房状态icon.png`
+  //     )}`,
+  //     number: 232,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 10,
+  //     title: "电表数据",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/电表数据icon.png`
+  //     )}`,
+  //     number: 248,
+  //     unit: "台",
+  //   },
+  //   {
+  //     key: 11,
+  //     title: "车位识别",
+  //     img: `${encodeURI(
+  //       `${baseUrl}/../assets/parkFacilities/车位识别icon.png`
+  //     )}`,
+  //     number: 543,
+  //     unit: "台",
+  //   },
+  // ];
 </script>
 
 <style scoped>

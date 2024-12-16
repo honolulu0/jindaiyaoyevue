@@ -27,6 +27,6 @@ body {
 }
 
 @font-face {
-  font-family: "DINPro-Medium";
+  font-family: "DINPro";
   src: url("./assets/fonts/DINPro-Medium.otf") format("opentype");
 }

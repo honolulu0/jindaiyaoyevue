@@ -149,8 +149,8 @@
       onClick: () => {
         setClick(7);
         // router.push("/achievementVisualization");
-        // router.push("/parkPolicy");
-        router.push("/partyBuilding");
+        router.push("/parkPolicy");
+        // router.push("/partyBuilding");
         parkingSubject.next(false);
       },
     },

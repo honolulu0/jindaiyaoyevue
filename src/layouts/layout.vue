@@ -54,19 +54,6 @@
         ></div>
       </div>
     </Transition>
-
-    <div
-      class="model"
-      v-if="modelOpen"
-    >
-      <div
-        v-if="modelContent === 'defenseDeploymentSuccess'"
-        class="defense_deployment_success"
-      >
-        <div class="defense_deployment_success_close_btn"></div>
-        <div class="defense_deployment_success_content"></div>
-      </div>
-    </div>
   </AspectRatioContainer>
 </template>
 
@@ -74,24 +61,11 @@
   import { ref } from "vue";
   import Top from "./top.vue";
   import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
-  import { modelSubject } from "@/event";
-  import { parkingSubject } from "@/event";
   const isShow = ref(true);
-  const modelOpen = ref(false);
-  const modelContent = ref("");
   const parkingShow = ref(false);
 
   const paringTitle = ref("1号车间A座");
   const parkingData = ref(["5F", "4F", "3F", "2F", "1F", "B1", "B2"]);
-
-  modelSubject.subscribe((res) => {
-
-    modelOpen.value = res.isShow;
-    modelContent.value = res.content;
-  });
-  parkingSubject.subscribe((res) => {
-    parkingShow.value = res;
-  });
 
   function close() {
     isShow.value = false;

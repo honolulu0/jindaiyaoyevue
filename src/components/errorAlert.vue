@@ -21,6 +21,7 @@
           class="list_body_content"
           v-for="(item, index) in list"
           :key="index"
+          @click="handleItemClick(item)"
         >
           <div class="list_content_item data_row">
             <div
@@ -108,6 +109,12 @@
       row5: "查看",
     },
   ]);
+
+  const emit = defineEmits(['itemClick']);
+
+  const handleItemClick = (item: any) => {
+    emit('itemClick', item);
+  };
 </script>
 
 <style scoped>
@@ -121,6 +128,7 @@
   }
 
   .list_content {
+    margin-top: 10px;
     width: 207px;
     height: 126px;
   }

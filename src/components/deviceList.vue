@@ -15,13 +15,17 @@
     <div class="device_list_content">
       <div class="device_list_header">
         <div class="device_list_content_item title_row">
-          <div
+          <template
             v-for="(item, key) in listTitleMap"
             :key="key"
-            class="col title_col"
           >
-            {{ item }}
-          </div>
+            <div
+              v-if="!omit?.includes(key)"
+              class="col title_col"
+            >
+              {{ item }}
+            </div>
+          </template>
         </div>
       </div>
       <div class="device_list_body">
@@ -29,15 +33,19 @@
           v-for="(item, index) in deviceList"
           :key="index"
           class="device_list_content_item data_row"
-          :class="{ error: item.row4 === '异常' }"
+          :class="{ error: hasError(item) }"
         >
-          <div
+          <template
             v-for="(value, key) in item"
             :key="key"
-            class="col"
           >
-            {{ value }}
-          </div>
+            <div
+              v-if="key !== 'row4'"
+              class="col"
+            >
+              {{ value }}
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -45,7 +53,9 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted, watch, computed } from "vue";
+  import { getDeviceList } from "@/apis/getDeviceList";
+
   const searchValue = ref("");
   defineProps({
     top: {
@@ -60,35 +70,66 @@
       type: Number,
       default: 250,
     },
+    deviceType: {
+      type: String,
+      default: "",
+    },
   });
 
-  const listTitleMap = ref({
-    row1: "序号",
-    row2: "设备位置",
-    row3: "设备类型",
-    row4: "设备状态",
+  const hasError = (item: Record<string, string>) => {
+    for (const key in item) {
+      if (item[key] === "不在线") {
+        return true;
+      }
+      if (item[key] === "不可用") {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const listTitleMap = ref<Record<string, string>>({});
+  const deviceList = ref<Record<string, string>[]>([]);
+  const total = ref(0);
+  const currentPage = ref(1);
+  const pageSize = ref(10);
+  const omit = ref(["device_name"]);
+
+  // 获取设备列表数据
+  const fetchDeviceList = async () => {
+    try {
+      const res = await getDeviceList({
+        location: searchValue.value,
+        page: currentPage.value,
+        page_size: pageSize.value,
+      });
+
+      listTitleMap.value = res.headers;
+      deviceList.value = res.items;
+      total.value = res.total;
+    } catch (error) {
+      console.error("获取设备列表失败:", error);
+    }
+  };
+
+  const computedOmitData = (key: string) => {
+    const title = Object.values(listTitleMap.value).find(
+      (item) => item === key
+    );
+    console.log(title, key);
+    return title;
+  };
+
+  // 监听搜索值变化
+  watch(searchValue, () => {
+    currentPage.value = 1; // 重置页码
+    fetchDeviceList();
   });
 
-  const deviceList = ref([
-    { row1: "1", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "2", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "3", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "4", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "5", row2: "12栋6层101室", row3: "新风系统", row4: "异常" },
-    { row1: "6", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "1", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "2", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "3", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "4", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "5", row2: "12栋6层101室", row3: "新风系统", row4: "异常" },
-    { row1: "6", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "1", row2: "12栋6���101室", row3: "新风系统", row4: "正常" },
-    { row1: "2", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "3", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "4", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-    { row1: "5", row2: "12栋6层101室", row3: "新风系统", row4: "异常" },
-    { row1: "6", row2: "12栋6层101室", row3: "新风系统", row4: "正常" },
-  ]);
+  // 初始化加载数据
+  onMounted(() => {
+    fetchDeviceList();
+  });
 </script>
 
 <style scoped>

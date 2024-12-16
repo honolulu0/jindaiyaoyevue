@@ -24,56 +24,72 @@
 </template>
 
 <script setup lang="ts">
+  import { EmployeeCountVO, getEmployeeCount } from "@/apis/employeeCount";
   import TitleComponent from "@/components/titleComponent.vue";
-  import { ref } from "vue";
+  import { onMounted, ref } from "vue";
 
   const baseUrl = import.meta.url.substring(
     0,
     import.meta.url.lastIndexOf("/")
   );
 
-  const list = ref([
-    {
-      title: "保洁",
-      value: "400",
-      unit: "处",
-      icon: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/保洁icon.png`
-      )})`,
-    },
-    {
-      title: "保安",
-      value: "4",
-      unit: "处",
-      icon: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/保安icon.png`
-      )})`,
-    },
-    {
-      title: "保绿",
-      value: "4",
-      unit: "处",
-      icon: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/保绿icon.png`
-      )})`,
-    },
-    {
-      title: "报修",
-      value: "4",
-      unit: "处",
-      icon: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/报修icon.png`
-      )})`,
-    },
-    {
-      title: "客服",
-      value: "4",
-      unit: "处",
-      icon: `url(${encodeURI(
-        `${baseUrl}/../assets/enterprises/客服icon.png`
-      )})`,
-    },
-  ]);
+  // const list = ref([
+  //   {
+  //     title: "保洁",
+  //     value: "400",
+  //     unit: "处",
+  //     icon: `url(${encodeURI(
+  //       `${baseUrl}/../assets/enterprises/保洁icon.png`
+  //     )})`,
+  //   },
+  //   {
+  //     title: "保安",
+  //     value: "4",
+  //     unit: "处",
+  //     icon: `url(${encodeURI(
+  //       `${baseUrl}/../assets/enterprises/保安icon.png`
+  //     )})`,
+  //   },
+  //   {
+  //     title: "保绿",
+  //     value: "4",
+  //     unit: "处",
+  //     icon: `url(${encodeURI(
+  //       `${baseUrl}/../assets/enterprises/保绿icon.png`
+  //     )})`,
+  //   },
+  //   {
+  //     title: "报修",
+  //     value: "4",
+  //     unit: "处",
+  //     icon: `url(${encodeURI(
+  //       `${baseUrl}/../assets/enterprises/报修icon.png`
+  //     )})`,
+  //   },
+  //   {
+  //     title: "客服",
+  //     value: "4",
+  //     unit: "处",
+  //     icon: `url(${encodeURI(
+  //       `${baseUrl}/../assets/enterprises/客服icon.png`
+  //     )})`,
+  //   },
+  // ]);
+
+  const list = ref<EmployeeCountVO[]>([]);
+
+  const fetchEmployeeCount = async () => {
+    try {
+      const data = await getEmployeeCount();
+      list.value = data;
+    } catch (error) {
+      console.error("获取员工数量统计失败:", error);
+    }
+  };
+
+  onMounted(() => {
+    fetchEmployeeCount();
+  });
 </script>
 
 <style scoped>

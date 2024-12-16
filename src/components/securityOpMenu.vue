@@ -41,16 +41,19 @@
   import { ref } from "vue";
   import TitleComponent from "./titleComponent.vue";
 
-  const selectValue = ref("电子围栏");
-  const handleSelect = (value: string) => {
+  const selectValue = ref<"电子围栏" | "入侵报警">("电子围栏");
+  const handleSelect = (value: "电子围栏" | "入侵报警") => {
     selectValue.value = value;
   };
+  // 定义 emit
+  const emit = defineEmits<{
+    (e: "onButtonClick", value: "布防" | "撤防", selectValue: "电子围栏" | "入侵报警"): void;
+  }>();
 
   // 布防、撤防
-  const handleButton = (value: string) => {
-    console.log(value, selectValue.value);
+  const handleButton = (value: "布防" | "撤防") => {
+    emit("onButtonClick", value, selectValue.value);
   };
-
 </script>
 
 <style scoped>

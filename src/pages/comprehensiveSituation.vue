@@ -1,7 +1,27 @@
 <template>
-  <div class="w-full h-full absolute top-0 left-0 z-0"></div>
+  <div
+    class="w-full h-full absolute top-0 left-0 z-0 flex justify-center items-center"
+  >
+    <ParkInfo />
+    <Park365Info />
+    <ParkError />
+    <ParkErrorAlert />
+    <RealtimeElectricityConsumption />
+    <ParkingData />
+    <DistributionBoxTemp />
+    <StarNew />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import ParkInfo from "@/components/parkInfo.vue";
+  import Park365Info from "@/components/park365Info.vue";
+  import ParkError from "@/components/parkError.vue";
+  import ParkErrorAlert from "@/components/parkErrorAlert.vue";
+  import RealtimeElectricityConsumption from "@/components/realtimeElectricityConsumption.vue";
+  import ParkingData from "@/components/parkingData.vue";
+  import DistributionBoxTemp from "@/components/distributionBoxTemp.vue";
+  import StarNew from "@/components/starNew.vue";
+</script>
 
 <style scoped></style>

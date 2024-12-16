@@ -6,6 +6,7 @@
       class="tab_item"
       :class="{ active: tab.isActive }"
       :style="{ left: 77 * index + 'px' }"
+      @click="handleClick(index)"
     >
       <div
         :style="{ backgroundImage: tab.icon }"
@@ -17,7 +18,9 @@
 </template>
 
 <script setup lang="ts">
+  import { useRouter } from "vue-router";
   import { reactive } from "vue";
+  const router = useRouter();
   const baseUrl = import.meta.url.substring(
     0,
     import.meta.url.lastIndexOf("/")
@@ -46,9 +49,18 @@
   ]);
 
   const handleClick = (index: number) => {
-    tabs.forEach((tab, i) => {
-      tab.isActive = i === index;
-    });
+    if (index === 3) {
+      router.push("/partyBuilding");
+    }
+    if (index === 0) {
+      router.push("/parkPolicy");
+    }
+    if (index === 1) {
+      router.push("/parkEnterprise");
+    }
+    if (index === 2) {
+      router.push("/parkService");
+    }
   };
 </script>
 
@@ -85,7 +97,7 @@
 
   .tab_text {
     display: flex;
-    font-family: PingFangSC, PingFang SC;
+    font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 8px;
     color: #d4baa4;
