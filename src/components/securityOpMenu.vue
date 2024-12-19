@@ -53,6 +53,7 @@
   // 布防、撤防
   const handleButton = (value: "布防" | "撤防") => {
     emit("onButtonClick", value, selectValue.value);
+    console.log(value, selectValue.value);
   };
 </script>
 

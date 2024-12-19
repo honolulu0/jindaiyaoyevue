@@ -77,22 +77,14 @@
   });
 
   const hasError = (item: Record<string, string>) => {
-    for (const key in item) {
-      if (item[key] === "不在线") {
-        return true;
-      }
-      if (item[key] === "不可用") {
-        return true;
-      }
-    }
-    return false;
+    return item["row3"] !== "正常";
   };
 
   const listTitleMap = ref<Record<string, string>>({});
   const deviceList = ref<Record<string, string>[]>([]);
   const total = ref(0);
   const currentPage = ref(1);
-  const pageSize = ref(10);
+  const pageSize = ref(10000);
   const omit = ref(["device_name"]);
 
   // 获取设备列表数据
@@ -110,14 +102,6 @@
     } catch (error) {
       console.error("获取设备列表失败:", error);
     }
-  };
-
-  const computedOmitData = (key: string) => {
-    const title = Object.values(listTitleMap.value).find(
-      (item) => item === key
-    );
-    console.log(title, key);
-    return title;
   };
 
   // 监听搜索值变化

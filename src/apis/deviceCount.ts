@@ -43,17 +43,17 @@ const convertToSmartDeviceVO = (dto: DeviceCountDTO): DeviceCountVO[] => {
   const baseUrl = new URL('../assets', import.meta.url).href
   
   const deviceMapping: Record<string, { title: string, img: string }> = {
-    '视频监控': { title: '监控', img: 'parkFacilities/监控icon.png' },
+    '视频监控': { title: '视频监控', img: 'parkFacilities/监控icon.png' },
     '入侵报警': { title: '入侵报警', img: 'parkFacilities/入侵报警icon.png' },
     '电子围栏': { title: '电子围栏', img: 'parkFacilities/电子围栏icon.png' },
     '烟感报警': { title: '烟感报警', img: 'parkFacilities/烟感报警icon.png' },
-    '车辆道闸': { title: '车牌识别', img: 'parkFacilities/车牌识别icon.png' },
-    '智能井盖': { title: '智慧井盖', img: 'parkFacilities/智慧井盖icon.png' },
-    '智能水节点': { title: '水节点监测', img: 'parkFacilities/水节点监测icon.png' },
-    '水表': { title: '水表数据', img: 'parkFacilities/水表数据icon.png' },
-    '智能配电柜': { title: '配电房状态', img: 'parkFacilities/配电房状态icon.png' },
-    '电表': { title: '电表数据', img: 'parkFacilities/电表数据icon.png' },
-    '停车场': { title: '车位识别', img: 'parkFacilities/车位识别icon.png' }
+    '车辆道闸': { title: '车辆道闸', img: 'parkFacilities/车牌识别icon.png' },
+    '智能井盖': { title: '智能井盖', img: 'parkFacilities/智慧井盖icon.png' },
+    '智能水节点': { title: '智能水节点', img: 'parkFacilities/水节点监测icon.png' },
+    '水表': { title: '水表', img: 'parkFacilities/水表数据icon.png' },
+    '智能配电柜': { title: '配电房', img: 'parkFacilities/配电房状态icon.png' },
+    '电表': { title: '电表', img: 'parkFacilities/电表数据icon.png' },
+    '车位': { title: '车位', img: 'parkFacilities/车位识别icon.png' }
   }
 
   return dto.by_type.map((item, index) => ({

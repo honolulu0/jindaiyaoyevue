@@ -4,7 +4,7 @@
     <div class="pmc_employees_info_list">
       <div
         class="pmc_employees_info_item"
-        v-for="item in list"
+        v-for="item in displayedEmployees"
         :key="item.name + item.age + item.job"
       >
         <div
@@ -27,7 +27,7 @@
 <script setup lang="ts">
   import { EmployeeListVO, getEmployeeList } from "@/apis/employeeList";
   import TitleComponent from "@/components/titleComponent.vue";
-  import { onMounted, ref } from "vue";
+  import { onMounted, ref, computed, onUnmounted } from "vue";
 
   const truncateDescription = (text: string) => {
     return text.length > 20 ? text.slice(0, 20) + "..." : text;
@@ -52,11 +52,21 @@
   // ]);
 
   const list = ref<EmployeeListVO[]>([]);
+  const currentIndex = ref(0);
+  const displayedEmployees = computed(() => {
+    return list.value.slice(currentIndex.value, currentIndex.value + 2);
+  });
+
+  const rotateEmployees = () => {
+    currentIndex.value = (currentIndex.value + 2) % Math.max(1, list.value.length);
+  };
+
+  let timer: NodeJS.Timer;
 
   const fetchEmployeeList = async () => {
     try {
       const data = await getEmployeeList({
-        limit: 2, // 只获取2条数据
+        limit: 100,
       });
       list.value = data;
     } catch (error) {
@@ -66,6 +76,15 @@
 
   onMounted(() => {
     fetchEmployeeList();
+    // 设置5秒轮换一次
+    timer = setInterval(rotateEmployees, 5000);
+  });
+
+  onUnmounted(() => {
+    // 清理定时器
+    if (timer) {
+      clearInterval(timer);
+    }
   });
 </script>
 

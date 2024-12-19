@@ -28,6 +28,7 @@
   <ErrorDetail
     v-if="isShowDetail"
     :item="errorDetailData"
+    :title="modelData.title"
   />
 </template>
 
@@ -73,6 +74,7 @@
       content: value,
     };
     isShowModel.value = true;
+    console.log(modelData.value);
   };
 </script>
 

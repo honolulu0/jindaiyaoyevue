@@ -14,7 +14,7 @@
       </div>
       <div class="car_enter_record_info">
         <div class="car_enter_record_info_item">{{ item.carNumber }}</div>
-        <div class="car_enter_record_info_item">{{ item.type }}</div>
+        <div class="car_enter_record_info_item">{{ item.type }}场</div>
         <div class="car_enter_record_info_item">{{ item.time }}</div>
         <div class="car_enter_record_info_item">
           <div class="position_icon" style="margin-right: 3px; margin-top: 3px"></div>
@@ -26,37 +26,33 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted, onUnmounted } from "vue";
   import titleComponent from "./titleComponent.vue";
+  import { getCarInOutRecords, type CarInOutRecordVO } from '@/apis/parking'
 
-  const baseUrl = import.meta.url.substring(
-    0,
-    import.meta.url.lastIndexOf("/")
-  );
+  const list = ref<CarInOutRecordVO[]>([])
+  let timer: ReturnType<typeof setInterval> | null = null
 
-  const list = ref([
-    {
-      carNumber: "车辆1",
-      type: "入场",
-      time: "2024-11-30 13:00",
-      position: "位置1",
-      img: `${encodeURI(`${baseUrl}/../assets/车辆牌照.png`)}`,
-    },
-    {
-      carNumber: "车辆2",
-      type: "入场",
-      time: "2024-11-30 13:00",
-      position: "位置2",
-      img: `${encodeURI(`${baseUrl}/../assets/车辆牌照.png`)}`,
-    },
-    {
-      carNumber: "车辆3",
-      type: "入场",
-      time: "2024-11-30 13:00",
-      position: "位置3",
-      img: `${encodeURI(`${baseUrl}/../assets/车辆牌照.png`)}`,
-    },
-  ]);
+  const fetchCarRecords = async () => {
+    try {
+      const records = await getCarInOutRecords()
+      list.value = records.slice(0, 3)
+    } catch (error) {
+      console.error('获取车辆记录失败:', error)
+    }
+  }
+
+  onMounted(() => {
+    fetchCarRecords()
+    timer = setInterval(fetchCarRecords, 60000)
+  })
+
+  onUnmounted(() => {
+    if (timer) {
+      clearInterval(timer)
+      timer = null
+    }
+  })
 </script>
 
 <style scoped>
