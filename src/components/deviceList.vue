@@ -34,13 +34,14 @@
           :key="index"
           class="device_list_content_item data_row"
           :class="{ error: hasError(item) }"
+          @click="handleItemClick(item.raw)"
         >
           <template
             v-for="(value, key) in item"
             :key="key"
           >
             <div
-              v-if="key !== 'row4'"
+              v-if="key !== 'raw'"
               class="col"
             >
               {{ value }}
@@ -55,6 +56,7 @@
 <script setup lang="ts">
   import { ref, onMounted, watch, computed } from "vue";
   import { getDeviceList } from "@/apis/getDeviceList";
+  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 
   const searchValue = ref("");
   defineProps({
@@ -77,7 +79,7 @@
   });
 
   const hasError = (item: Record<string, string>) => {
-    return item["row3"] !== "正常";
+    return item.row3 !== "正常";
   };
 
   const listTitleMap = ref<Record<string, string>>({});
@@ -97,7 +99,10 @@
       });
 
       listTitleMap.value = res.headers;
-      deviceList.value = res.items;
+      deviceList.value = res.items.map((item, index) => ({
+        ...item,  // 保持原有的所有字段
+        raw: res.rawItems[index]  // 添加原始数据
+      }));
       total.value = res.total;
     } catch (error) {
       console.error("获取设备列表失败:", error);
@@ -114,6 +119,11 @@
   onMounted(() => {
     fetchDeviceList();
   });
+
+  // 修改点击处理函数，改为发出事件
+  const handleItemClick = (item: Record<string, string>) => {
+    deviceSelectSubject.next(item);
+  };
 </script>
 
 <style scoped>
@@ -240,6 +250,11 @@
 
   .data_row {
     border-bottom: 1px solid rgba(97, 119, 138, 0.4);
+    cursor: pointer;
+  }
+
+  .data_row:hover {
+    background-color: rgba(97, 119, 138, 0.4);
   }
 
   .data_row:nth-child(even) {

@@ -20,7 +20,7 @@
           关闭
         </div>
         <div class="model_content">
-          <span>一键{{ modelData.content }}成功！</span>
+          <span>一键{{ modelData.content }}{{ modelData.err ? "失败" : "成功" }}！</span>
         </div>
       </div>
     </div>
@@ -40,15 +40,18 @@
   const modelData = ref({
     title: "",
     content: "",
+    err: false,
   });
 
   const handleButtonClick = (
     value: "布防" | "撤防",
-    selectValue: "电子围栏" | "入侵报警"
+    selectValue: "电子围栏" | "入侵报警",
+    err?: boolean
   ) => {
     isShowModel.value = true;
     modelData.value.title = selectValue;
     modelData.value.content = value;
+    modelData.value.err = err || false;
   };
 </script>
 

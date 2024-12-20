@@ -27,7 +27,7 @@
         >
           <div class="list_content_item data_row">
             <div
-              v-for="(value, key) in item"
+              v-for="(value, key) in getDisplayData(item)"
               :key="key"
               class="col"
               :class="{ error: item.row4 === '未处理' && key === 'row2' }"
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, onUnmounted } from "vue";
   import TitleComponent from "./titleComponent.vue";
   import { getErrorAlert } from "@/apis/errorAlert";
   import type { ErrorAlert } from "@/apis/errorAlert";
@@ -57,15 +57,23 @@
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
 
+  const getDisplayData = (item: any) => {
+    const { raw, ...displayData } = item;
+    return displayData;
+  };
+
+  let timer: number | null = null;
+
   const loadData = async () => {
     try {
       const data = await getErrorAlert();
       list.value = data.map(item => ({
-        row1: item.device_name,
+        raw: item,
+        row1: item.location,
         row2: item.msg_content,
         row3: item.create_time.substring(11, 16),
         row4: item.is_processed ? '已处理' : '未处理',
-        row5: '查看',
+        row5: '查看'
       }));
     } catch (error) {
       console.error('加载异常告警数据失败:', error);
@@ -74,6 +82,14 @@
 
   onMounted(() => {
     loadData();
+    timer = setInterval(loadData, 30000);
+  });
+
+  onUnmounted(() => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
   });
 </script>
 

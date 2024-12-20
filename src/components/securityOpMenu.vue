@@ -40,11 +40,11 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import TitleComponent from "./titleComponent.vue";
-  import { 
-    riqinbaojingBufang, 
+  import {
+    riqinbaojingBufang,
     riqinbaojingChefang,
     dianziweilanBufang,
-    dianziweilanChefang 
+    dianziweilanChefang,
   } from "@/apis/securityOpMenu";
 
   const selectValue = ref<"电子围栏" | "入侵报警">("电子围栏");
@@ -53,29 +53,37 @@
   };
   // 定义 emit
   const emit = defineEmits<{
-    (e: "onButtonClick", value: "布防" | "撤防", selectValue: "电子围栏" | "入侵报警"): void;
+    (
+      e: "onButtonClick",
+      value: "布防" | "撤防",
+      selectValue: "电子围栏" | "入侵报警",
+      err?: boolean
+    ): void;
   }>();
 
   // 布防、撤防
   const handleButton = async (value: "布防" | "撤防") => {
-    emit("onButtonClick", value, selectValue.value);
-    
     try {
       if (selectValue.value === "电子围栏") {
         if (value === "布防") {
           await dianziweilanBufang();
+          emit("onButtonClick", value, selectValue.value);
         } else {
           await dianziweilanChefang();
+          emit("onButtonClick", value, selectValue.value);
         }
       } else {
         if (value === "布防") {
           await riqinbaojingBufang();
+          emit("onButtonClick", value, selectValue.value);
         } else {
           await riqinbaojingChefang();
+          emit("onButtonClick", value, selectValue.value);
         }
       }
     } catch (error) {
       console.error("操作失败:", error);
+      emit("onButtonClick", value, selectValue.value, true);
     }
   };
 </script>

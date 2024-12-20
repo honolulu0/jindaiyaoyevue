@@ -32,6 +32,7 @@ export interface DeviceListDTO {
 export interface DeviceListVO {
   headers: Record<string, string>  // 表头映射
   items: Record<string, string>[]
+  rawItems: DeviceListDTO['items']
   total: number
   page: number
   page_size: number
@@ -58,6 +59,7 @@ const convertToVO = (dto: DeviceListDTO): DeviceListVO => {
   return {
     headers,
     items,
+    rawItems: dto.items,
     total: dto.total,
     page: dto.page,
     page_size: dto.page_size
@@ -84,6 +86,7 @@ export const getDeviceList = async (params: DeviceListParams = {}) => {
     return {
       headers: {},
       items: [],
+      rawItems: [],
       total: 0,
       page: defaultParams.page,
       page_size: defaultParams.page_size

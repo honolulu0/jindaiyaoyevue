@@ -13,7 +13,7 @@
         <div class="tag_item_icon warning"></div>
         <div class="tag_item_bg"></div>
         <div class="tag_item_title">异常事件处置率</div>
-        <div class="tag_item_data">88</div>
+        <div class="tag_item_data">{{ handleData }}</div>
         <div class="tag_item_unit">%</div>
       </div>
     </div>
@@ -28,11 +28,37 @@
 
 <script setup lang="ts">
   import titleComponent from "./titleComponent.vue";
-  import { ref, onMounted, watch, computed } from "vue";
+  import { ref, onMounted, watch, computed, onUnmounted } from "vue";
   import * as echarts from "echarts";
+  import { getAlertSummary } from "@/apis/alertSummary";
+
+  const chartInstance = ref<echarts.ECharts | null>(null);
+
+  onMounted(async () => {
+    const { thisYear, lastYear } = await getAlertSummary();
+    console.log(thisYear, lastYear);
+    currentYearData.value = thisYear.stats.map((item: any) => item.total_count);
+    lastYearData.value = lastYear.stats.map((item: any) => item.total_count);
+    console.log(thisYear.totals.total_processed, lastYear.totals.total_count);
+    handleData.value =
+      ((thisYear.totals.total_processed / thisYear.totals.total_count) * 100).toFixed(0);
+
+    chartInstance.value = echarts.init(chartRef.value);
+    chartInstance.value.setOption(option.value);
+
+    const handleResize = () => chartInstance.value?.resize();
+    window.addEventListener("resize", handleResize);
+
+    onUnmounted(() => {
+      window.removeEventListener("resize", handleResize);
+      chartInstance.value?.dispose();
+    });
+  });
 
   const currentYearData = ref([10, 12, 15, 20, 15, 12, 10, 8, 12, 15, 10, 1]);
   const lastYearData = ref([30, 20, 10, 30, 25, 10, 8, 15, 20, 25, 30, 10]);
+
+  const handleData = ref(0)
 
   const chartRef = ref();
 
@@ -219,19 +245,10 @@
   watch(
     () => [currentYearData.value, lastYearData.value],
     () => {
-      const chart = echarts.init(chartRef.value);
-      chart.setOption(option.value);
-    }
+      chartInstance.value?.setOption(option.value);
+    },
+    { deep: true }
   );
-
-  onMounted(() => {
-    const chart = echarts.init(chartRef.value);
-    chart.setOption(option.value);
-
-    window.addEventListener("resize", () => {
-      chart.resize();
-    });
-  });
 </script>
 
 <style scoped>

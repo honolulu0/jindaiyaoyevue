@@ -10,35 +10,14 @@
         <div class="device-type">{{ getDeviceTypeName(item.device_type) }}</div>
       </div>
       <TitleComponent
-        titleText="异常信息"
-        class="mt-3"
+        titleText="详细信息"
+        style="margin-top: 10px"
       />
-      <div class="device-error-info">
-        <div class="device-error-info-title">异常信息:</div>
-        <div
-          class="device-error-info-content"
-          style="color: red"
-        >
-          {{ item.msg_content }}
-        </div>
-        <div class="device-error-info-time">时间:</div>
-        <div class="device-error-info-time-content">
-          {{ formatDateTime(item.create_time) }}
-        </div>
-      </div>
-      <div class="device-error-info-btn">
-        <div
-          class="device-error-info-btn-processed"
-          v-if="item.is_processed === '1'"
-        >
-          已处理
-        </div>
-        <div
-          class="device-error-info-btn-unprocessed"
-          v-else
-        >
-          未处理
-        </div>
+      <div class="device-info-content">
+        <div>设备名称:</div>
+        <div class="device-name">{{ item.device_name }}</div>
+        <div>设备类型:</div>
+        <div class="device-type">{{ getDeviceTypeName(item.device_type) }}</div>
       </div>
     </div>
     <div class="back-btn">
@@ -53,8 +32,10 @@
 </template>
 
 <script setup lang="ts">
-  import { errorAlertSubject } from "@/utils/errorAlertSubject";
+  import { onMounted } from "vue";
   import TitleComponent from "./titleComponent.vue";
+  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+  import { getDeviceInfo } from "@/apis/getDeviceInfo";
 
   const DEVICE_TYPE_MAP = {
     "1": "水表",
@@ -74,10 +55,6 @@
     item: {
       device_name: string;
       device_type: string;
-      msg_content: string;
-      create_time: string;
-      is_processed: string;
-      rtsp_url: string;
     };
     title: string;
   }
@@ -86,35 +63,22 @@
     item: () => ({
       device_name: "",
       device_type: "",
-      msg_content: "",
-      create_time: "",
-      is_processed: "",
-      rtsp_url: "",
     }),
-    title: "安防",
+    title: "设备详情",
   });
-
-  const handleBackBtnClick = () => {
-    errorAlertSubject.next(null);
-  };
 
   const getDeviceTypeName = (type: string) => {
     return DEVICE_TYPE_MAP[type as keyof typeof DEVICE_TYPE_MAP] || type;
   };
 
-  const formatDateTime = (dateTimeString: string) => {
-    if (!dateTimeString) return "";
-    const date = new Date(dateTimeString);
-    return date.toLocaleString("zh-CN", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
+  const handleBackBtnClick = () => {
+    deviceSelectSubject.next(null);
   };
+
+  onMounted(async () => {
+    const res = await getDeviceInfo(props.item.device_name);
+    console.log(res);
+  });
 </script>
 
 <style scoped>
@@ -174,67 +138,6 @@
     gap: 10px;
     justify-content: center;
     padding-right: 30px;
-  }
-
-  .device-error-info {
-    margin-top: 10px;
-
-    margin-bottom: 10px;
-    margin-right: 10px;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    gap: 10px;
-    justify-content: center;
-    padding-right: 30px;
-    background: radial-gradient(
-      circle at center,
-      rgba(255, 0, 0, 0.2) 0%,
-      rgba(255, 0, 0, 0.1) 50%,
-      rgba(255, 0, 0, 0) 100%
-    );
-    padding: 15px;
-    border-radius: 8px;
-  }
-
-  .device-error-info-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-right: 30px;
-    height: 10px;
-    font-family: SourceHanSansCS-Normal;
-    font-weight: 600;
-    font-size: 9px;
-    color: #ffffff;
-    line-height: 10px;
-    letter-spacing: 0px;
-    text-align: right;
-    font-style: normal;
-  }
-
-  .device-error-info-btn-processed {
-    width: 50px;
-    height: 20px;
-    background-image: url("@/assets/已处理.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .device-error-info-btn-unprocessed {
-    width: 50px;
-    height: 20px;
-    background-image: url("@/assets/未处理.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .back-btn {

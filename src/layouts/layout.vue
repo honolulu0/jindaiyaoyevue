@@ -40,6 +40,18 @@
       </div>
     </Transition>
 
+    <ErrorDetail
+      :item="errorDetail"
+      :title="'安防'"
+      v-if="showErrorDetail"
+    />
+
+    <DeviceDetail
+      :item="deviceDetail"
+      :title="'设备详情'"
+      v-if="showDeviceDetail"
+    />
+
     <Transition name="fade">
       <div v-if="!isShow">
         <div
@@ -61,6 +73,10 @@
   import { ref } from "vue";
   import Top from "./top.vue";
   import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
+  import ErrorDetail from "@/components/errorDetail.vue";
+  import { errorAlertSubject } from "@/utils/errorAlertSubject";
+  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+  import DeviceDetail from "@/components/deviceDetail.vue";
   const isShow = ref(true);
   const parkingShow = ref(false);
 
@@ -74,6 +90,34 @@
   function open() {
     isShow.value = true;
   }
+
+  const errorDetail = ref<any>({});
+
+  const showErrorDetail = ref(false);
+
+  const deviceDetail = ref<any>({});
+
+  const showDeviceDetail = ref(false);
+
+  errorAlertSubject.subscribe((data) => {
+    if (data !== null) {
+      errorDetail.value = data;
+      showErrorDetail.value = true;
+      console.log(errorDetail.value);
+    } else {
+      showErrorDetail.value = false;
+    }
+  });
+
+  deviceSelectSubject.subscribe((data) => {
+    if (data !== null) {
+      deviceDetail.value = data;
+      showDeviceDetail.value = true;
+      console.log(deviceDetail.value);
+    } else {
+      showErrorDetail.value = false;
+    }
+  });
 </script>
 
 <style scoped>

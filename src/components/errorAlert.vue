@@ -23,11 +23,11 @@
           class="list_body_content"
           v-for="(item, index) in list"
           :key="index"
-          @click="handleItemClick(item)"
+          @click="handleItemClick(item.raw)"
         >
           <div class="list_content_item data_row">
             <div
-              v-for="(value, key) in item"
+              v-for="(value, key) in getDisplayData(item)"
               :key="key"
               class="col"
               :class="{ error: item.row4 === '未处理' && key === 'row2' }"
@@ -60,15 +60,21 @@
 
   let timer: number;
 
+  const getDisplayData = (item: any) => {
+    const { raw, ...displayData } = item;
+    return displayData;
+  };
+
   const loadData = async () => {
     try {
       const data = await getErrorAlert();
       list.value = data.map(item => ({
-        row1: item.device_name?.substring(0, 10) || '',
+        row1: item.location,
         row2: item.msg_content?.substring(0, 15) || '',
         row3: item.create_time?.substring(11, 16) || '',
         row4: item.is_processed ? '已处理' : '未处理',
         row5: '查看',
+        raw: item,
       }));
     } catch (error) {
       console.error('加载异常告警数据失败:', error);
@@ -88,7 +94,7 @@
   });
 
   const handleItemClick = (item: any) => {
-    errorAlertSubject.next(item.raw);
+    errorAlertSubject.next(item);
   };
 </script>
 
