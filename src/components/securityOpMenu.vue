@@ -40,6 +40,12 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import TitleComponent from "./titleComponent.vue";
+  import { 
+    riqinbaojingBufang, 
+    riqinbaojingChefang,
+    dianziweilanBufang,
+    dianziweilanChefang 
+  } from "@/apis/securityOpMenu";
 
   const selectValue = ref<"电子围栏" | "入侵报警">("电子围栏");
   const handleSelect = (value: "电子围栏" | "入侵报警") => {
@@ -51,9 +57,26 @@
   }>();
 
   // 布防、撤防
-  const handleButton = (value: "布防" | "撤防") => {
+  const handleButton = async (value: "布防" | "撤防") => {
     emit("onButtonClick", value, selectValue.value);
-    console.log(value, selectValue.value);
+    
+    try {
+      if (selectValue.value === "电子围栏") {
+        if (value === "布防") {
+          await dianziweilanBufang();
+        } else {
+          await dianziweilanChefang();
+        }
+      } else {
+        if (value === "布防") {
+          await riqinbaojingBufang();
+        } else {
+          await riqinbaojingChefang();
+        }
+      }
+    } catch (error) {
+      console.error("操作失败:", error);
+    }
   };
 </script>
 

@@ -31,32 +31,46 @@
 <script setup lang="ts">
   import TitleComponent from "./titleComponent.vue";
   import Pagination from "./pagination.vue";
-  import { reactive, ref, onUnmounted } from "vue";
+  import { reactive, ref, onUnmounted, onMounted } from "vue";
+  import { getEnterpriseData, type Enterprise } from "@/apis/getEnterpriseData";
 
-  const data = reactive([
-    {
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png ",
-      value: "12asdfasd asd as3",
-    },
-    {
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-      value: "123asdfasdfasdfmalsdfmalskdfasdf",
-    },
-    {
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-      value: "123asdgvasdnfansdfnasdnfalsdfnalsdflasf",
-    },
-    {
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-      value: "123asdfasdfjasndfnaskfaskjdfnkjan",
-    },
-  ]);
+  // 添加 props 定义
+  interface Props {
+    bottom?: string | number
+    right?: string | number
+  }
 
-  const currentData = ref({
-    img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    value:
-      "123asdfasdfjasndfnaskfaskjdfnkjan123asdfasdfjasndfnaskfaskjdfnkjan123asdfasdfjasndfnaskfaskjdfnkjan123asdfasdfjasndfnaskfaskjdfnkjan123asdfasdfjasndfnaskfaskjdfnkjan123asdfasdfjasndfnaskfaskjdfnkjan123asdfasdfjasndfnaskfaskjdfnkjan",
-  });
+  const props = withDefaults(defineProps<Props>(), {
+    bottom: '6px',
+    right: '20px'
+  })
+
+  // 替换静态数据为接口数据
+  const data = reactive<Enterprise[]>([]);
+  const currentData = ref<Enterprise>({} as Enterprise);
+
+  // 获取数据的方法
+  const fetchData = async () => {
+    try {
+      const enterprises = await getEnterpriseData();
+      // 只获取 isStar 为 true 的企业
+      const starEnterprises = enterprises.filter((e) => e.isStar);
+      data.splice(
+        0,
+        data.length,
+        ...starEnterprises.map((e) => ({
+          img: e.imgUrl,
+          value: e.name + "\n" + e.description,
+        }))
+      );
+
+      if (data.length > 0) {
+        currentData.value = data[0];
+      }
+    } catch (error) {
+      console.error("获取企业数据失败:", error);
+    }
+  };
 
   const paginationRef = ref();
 
@@ -125,19 +139,24 @@
   // 初始化自动播放
   startAutoPlay();
 
-  // 组件卸载时清理定时器
-  onUnmounted(() => {
-    if (autoPlayInterval) {
-      clearInterval(autoPlayInterval as any);
-    }
+  // 初始化数据和定时刷新
+  onMounted(() => {
+    fetchData();
+    // 每5分钟刷新一次数据
+    const refreshInterval = setInterval(fetchData, 5 * 60 * 1000);
+
+    onUnmounted(() => {
+      clearInterval(refreshInterval);
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval as any);
+      }
+    });
   });
 </script>
 
 <style scoped>
   .star-new {
     position: absolute;
-    bottom: 6px;
-    right: 20px;
     width: 206px;
     height: 80px;
   }

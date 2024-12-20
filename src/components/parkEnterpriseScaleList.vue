@@ -5,7 +5,7 @@
       <div class="list-header">
         <div class="list-row title-row">
           <div class="row-item">{{ titleMap.row1 }}</div>
-          <div class="row-item">{{ titleMap.row2 }}</div>
+          <div class="row-item min-w-28">{{ titleMap.row2 }}</div>
           <div class="row-item">{{ titleMap.row3 }}</div>
         </div>
       </div>
@@ -16,7 +16,7 @@
           class="list-row"
         >
           <div class="row-item">{{ item.row1 }}</div>
-          <div class="row-item">{{ item.row2 }}</div>
+          <div class="row-item min-w-28">{{ item.row2 }}</div>
           <div class="row-item">{{ item.row3 }}</div>
         </div>
       </div>
@@ -26,7 +26,8 @@
 
 <script setup lang="ts">
 import TitleComponent from "./titleComponent.vue";
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { getEnterpriseData, type Enterprise } from "../apis/getEnterpriseData";
 
 const titleMap = ref({
   row1: "序号",
@@ -34,38 +35,43 @@ const titleMap = ref({
   row3: "企业类型"
 });
 
-const list = ref([
-  {
-    row1: "1",
-    row2: "某某科技有限公司",
-    row3: "科技类"
-  },
-  {
-    row1: "2", 
-    row2: "某某金融股份有限公司",
-    row3: "金融类"
-  },
-  {
-    row1: "3",
-    row2: "某某服装公司",
-    row3: "实业类"
-  },
-  {
-    row1: "4",
-    row2: "某某服务有限公司", 
-    row3: "服务类"
-  },
-  {
-    row1: "5",
-    row2: "某某有限公司",
-    row3: "其它"
-  },
-  {
-    row1: "6",
-    row2: "某某金融股份有限公司",
-    row3: "金融类" 
+const list = ref<{ row1: string; row2: string; row3: string; }[]>([]);
+
+// 将企业类型映射为中文
+const typeMap = {
+  'FINANCE': '金融类',
+  'TECHNOLOGY': '科技类',
+  'INDUSTRY': '实业类',
+  'SERVICE': '服务类',
+  'OTHER': '其它'
+};
+
+// 获取并处理数据
+const fetchData = async () => {
+  try {
+    const enterprises = await getEnterpriseData();
+    list.value = enterprises.map((item, index) => ({
+      row1: (index + 1).toString(),
+      row2: item.name,
+      row3: typeMap[item.type]
+    }));
+  } catch (error) {
+    console.error('获取企业数据失败:', error);
   }
-]);
+};
+
+let timer: number;
+
+onMounted(() => {
+  fetchData();
+  // 每5分钟刷新一次数据
+  timer = setInterval(fetchData, 5 * 60 * 1000);
+});
+
+onUnmounted(() => {
+  // 组件销毁时清除定时器
+  clearInterval(timer);
+});
 </script>
 
 <style scoped>
@@ -113,7 +119,7 @@ const list = ref([
   font-family: "SourceHanSansSC-Normal";
   font-weight: 600;
   font-size: 6px;
-  line-height: 14px;
+  line-height: 6px;
   text-align: center;
 }
 

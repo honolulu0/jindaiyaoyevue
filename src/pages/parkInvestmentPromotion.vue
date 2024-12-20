@@ -6,7 +6,7 @@
     <ParkSupporting />
     <InvestmentPromotionUnitStatistics />
     <Park365 />
-    <StarEnterprise />
+    <StarNew style="bottom: 20px; right: 20px; position: absolute;" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@
   import ParkSupporting from "@/components/parkSupporting.vue";
   import InvestmentPromotionUnitStatistics from "@/components/InvestmentPromotionUnitStatistics.vue";
   import Park365 from "@/components/park365.vue";
-  import StarEnterprise from "@/components/starEnterprise.vue";
+  import StarNew from "@/components/starNew.vue";
 </script>
 
 <style scoped></style>

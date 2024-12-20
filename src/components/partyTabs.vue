@@ -59,7 +59,7 @@
       router.push("/parkEnterprise");
     }
     if (index === 2) {
-      router.push("/parkService");
+      router.push("/parkServices");
     }
   };
 </script>

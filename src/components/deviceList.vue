@@ -199,6 +199,12 @@
     height: 229px;
     overflow-y: auto;
     overflow-x: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+
+  .device_list_body::-webkit-scrollbar {
+    display: none;            /* Chrome, Safari and Opera */
   }
 
   .device_list_content_item {
@@ -265,22 +271,5 @@
 
   .error .col {
     color: #ff0000 !important;
-  }
-
-  .device_list_body::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .device_list_body::-webkit-scrollbar-thumb {
-    background: rgba(165, 216, 252, 0.4);
-    border-radius: 2px;
-  }
-
-  .device_list_body::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .device_list_body::-webkit-scrollbar-horizontal {
-    display: none;
   }
 </style>

@@ -10,7 +10,9 @@
             class="col title_col"
           >
             <div
-              class="list_body_icon"
+              :class="{
+                list_body_icon: key === 0,
+              }"
             ></div>
             {{ item }}
           </div>
@@ -21,6 +23,7 @@
           class="list_body_content"
           v-for="(item, index) in list"
           :key="index"
+          @click="errorAlertSubject.next(item.raw)"
         >
           <div class="list_content_item data_row">
             <div
@@ -31,7 +34,7 @@
             >
               <div
                 :class="{
-                  list_body_icon: true,
+                  list_body_icon: key === 'row1',
                   list_body_icon_img: item.row4 === '未处理' && key === 'row1',
                 }"
               ></div>
@@ -45,90 +48,33 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
   import TitleComponent from "./titleComponent.vue";
+  import { getErrorAlert } from "@/apis/errorAlert";
+  import type { ErrorAlert } from "@/apis/errorAlert";
+  import { errorAlertSubject } from "@/utils/errorAlertSubject";
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
+  const list = ref<any[]>([]);
 
-  const list = ref([
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "未处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "未处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "未处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "已处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "未处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "已处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "未处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "已处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "已处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "未处理",
-      row5: "查看",
-    },
-    {
-      row1: "设备1",
-      row2: "异常描述",
-      row3: "12:00",
-      row4: "已处理",
-      row5: "查看",
-    },
-  ]);
+  const loadData = async () => {
+    try {
+      const data = await getErrorAlert();
+      list.value = data.map(item => ({
+        row1: item.device_name,
+        row2: item.msg_content,
+        row3: item.create_time.substring(11, 16),
+        row4: item.is_processed ? '已处理' : '未处理',
+        row5: '查看',
+      }));
+    } catch (error) {
+      console.error('加载异常告警数据失败:', error);
+    }
+  };
+
+  onMounted(() => {
+    loadData();
+  });
 </script>
 
 <style scoped>
@@ -153,7 +99,7 @@
   .list_body {
     width: 207px;
     height: 69px;
-    overflow-y: hidden;
+    overflow-y: scroll;
     overflow-x: hidden;
   }
 
@@ -225,20 +171,7 @@
   }
 
   .list_body::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .list_body::-webkit-scrollbar-thumb {
-    background: rgba(165, 216, 252, 0.4);
-    border-radius: 2px;
-  }
-
-  .list_body::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .list_body::-webkit-scrollbar-horizontal {
-    display: none;
+    width: 0;
   }
 
   .list_body_icon {

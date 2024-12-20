@@ -67,7 +67,6 @@
         currentPage.value * props.pageSize
       )
     );
-    console.log(currentPage.value);
   });
 
   const nextPage = () => {

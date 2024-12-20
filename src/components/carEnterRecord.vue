@@ -8,8 +8,8 @@
       <div>
         <img
           :src="item.img"
-          alt="车辆牌照"
           style="margin-top: 2px"
+          class="car-image"
         />
       </div>
       <div class="car_enter_record_info">
@@ -126,5 +126,13 @@
     display: flex;
     align-items: center;
     margin-right: 10px;
+  }
+
+  .car-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-image: url("@/assets/car.jpg");
+    background-size: 100% 100%;
   }
 </style>

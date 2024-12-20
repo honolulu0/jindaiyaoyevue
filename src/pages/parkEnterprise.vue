@@ -60,16 +60,18 @@
   import { reactive, ref, onUnmounted, onMounted } from "vue";
   import SecondaryTabs from "@/components/secondaryTabs.vue";
   import Pagination from "@/components/pagination.vue";
+  import { getEnterpriseData } from "@/apis/getEnterpriseData";
+
   const chartData1 = reactive({
-    xAxisData: ["科技类", "金融类", "实业类", "服务类", "其他"],
-    seriesData: [45, 42, 37, 20, 12],
+    xAxisData: [] as string[],
+    seriesData: [] as number[],
   });
 
   const paginationRef = ref();
 
   const chartData2 = reactive({
-    xAxisData: ["小微", "一般纳税", "其他"],
-    seriesData: [45, 42, 37],
+    xAxisData: [] as string[],
+    seriesData: [] as number[],
   });
 
   const offset1 = ref(3);
@@ -78,35 +80,72 @@
   const color1 = ref("50, 206, 202");
   const color2 = ref("0, 133, 255");
 
-  const starEnterpriseData = ref([
-    {
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-      name: "百度",
-      desc: "百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。百度是一家全球领先的人工智能公司，致力于通过技术改变世界。",
-    },
-    {
-      img: "https://www.tencent.com/img/index/tencent_logo.png",
-      name: "腾讯",
-      desc: "腾讯是中国领先的互联网增值服务提供商，主要在社交、游戏、数字内容等领域开展业务。",
-    },
-    {
-      img: "https://www.alibabagroup.com/assets/images/logo.png",
-      name: "阿里巴巴",
-      desc: "阿里巴巴是全球最大的电子商务平台之一，致力于让天下没有难做的生意。",
-    },
-    {
-      img: "https://www.bytedance.com/img/logo.png",
-      name: "字节跳动",
-      desc: "字节跳动是一家科技公司，旗下拥有抖音、今日头条等多个流行应用产品。",
-    },
-    {
-      img: "https://www.jd.com/img/logo.png",
-      name: "京东",
-      desc: "京东是中国领先的自营式电商企业，在零售基础设施和技术创新等方面处于行业领先地位。",
-    },
-  ]);
+  const starEnterpriseData = ref([]);
+  const currentStarEnterpriseData = ref({
+    img: '',
+    name: '',
+    desc: ''
+  });
 
-  const currentStarEnterpriseData = ref(starEnterpriseData.value[0]);
+  const processEnterpriseData = (data: Enterprise[]) => {
+    const typeCount = {
+      TECHNOLOGY: 0,
+      FINANCE: 0,
+      INDUSTRY: 0,
+      SERVICE: 0,
+      OTHER: 0,
+    };
+    
+    const scaleCount = {
+      SMALL: 0,
+      NORMAL: 0,
+      OTHER: 0,
+    };
+
+    data.forEach(item => {
+      typeCount[item.type]++;
+      scaleCount[item.scale]++;
+    });
+
+    chartData1.xAxisData = ['科技类', '金融类', '实业类', '服务类', '其他'];
+    chartData1.seriesData = [
+      typeCount.TECHNOLOGY,
+      typeCount.FINANCE,
+      typeCount.INDUSTRY,
+      typeCount.SERVICE,
+      typeCount.OTHER,
+    ];
+
+    chartData2.xAxisData = ['小微', '一般纳税', '其他'];
+    chartData2.seriesData = [
+      scaleCount.SMALL,
+      scaleCount.NORMAL,
+      scaleCount.OTHER,
+    ];
+  };
+
+  const fetchEnterpriseData = async () => {
+    try {
+      const data = await getEnterpriseData();
+      
+      processEnterpriseData(data);
+      
+      const starEnterprises = data
+        .filter(item => item.isStar)
+        .map(item => ({
+          img: item.imgUrl,
+          name: item.name,
+          desc: item.description
+        }));
+      
+      starEnterpriseData.value = starEnterprises;
+      if (starEnterprises.length > 0) {
+        currentStarEnterpriseData.value = starEnterprises[0];
+      }
+    } catch (error) {
+      console.error('获取企业数据失败:', error);
+    }
+  };
 
   const getCurrentStarEnterpriseData = (data: any) => {
     currentStarEnterpriseData.value = data[0];
@@ -115,11 +154,9 @@
 
   const currentIndex = ref(1);
 
-  // 添加自动翻页相关的状态和方法
   const isAutoPlaying = ref(true);
   let autoPlayInterval: NodeJS.Timer | null = null;
 
-  // 自动翻页控制方法
   const pauseAutoPlay = () => {
     isAutoPlaying.value = false;
     if (autoPlayInterval) {
@@ -136,17 +173,15 @@
   const startAutoPlay = () => {
     autoPlayInterval = setInterval(() => {
       if (isAutoPlaying.value) {
-        // 翻到下一页
         if (currentIndex.value < starEnterpriseData.value.length) {
           paginationRef.value.nextPage();
         } else {
           paginationRef.value.prevPage();
         }
       }
-    }, 5000); // 每5秒翻页一次
+    }, 5000);
   };
 
-  // 触摸相关变量和方法
   const touchStartX = ref(0);
 
   const handleTouchStart = (e: TouchEvent) => {
@@ -163,12 +198,10 @@
 
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        // 上一页
         if (currentIndex.value > 1) {
           currentIndex.value--;
         }
       } else {
-        // 下一页
         if (currentIndex.value < starEnterpriseData.value.length) {
           currentIndex.value++;
         }
@@ -176,14 +209,23 @@
     }
   };
 
-  onMounted(() => {
+  let refreshInterval: NodeJS.Timer | null = null;
+
+  onMounted(async () => {
+    await fetchEnterpriseData();
     startAutoPlay();
+    
+    refreshInterval = setInterval(async () => {
+      await fetchEnterpriseData();
+    }, 5 * 60 * 1000);
   });
 
-  // 组件卸载时清理定时器
   onUnmounted(() => {
     if (autoPlayInterval) {
       clearInterval(autoPlayInterval as any);
+    }
+    if (refreshInterval) {
+      clearInterval(refreshInterval);
     }
   });
 </script>
