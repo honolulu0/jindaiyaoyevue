@@ -115,7 +115,7 @@
       showDeviceDetail.value = true;
       console.log(deviceDetail.value);
     } else {
-      showErrorDetail.value = false;
+      showDeviceDetail.value = false;
     }
   });
 </script>
