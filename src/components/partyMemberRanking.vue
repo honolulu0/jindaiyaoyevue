@@ -12,20 +12,18 @@
   import PartyTitle from "./partyTitle.vue";
   import { onMounted, ref, reactive, computed } from "vue";
   import * as echarts from "echarts";
+  import { getTop5PartyData } from "@/apis/getTop5PartyData";
 
   const chartRef = ref();
   let chart: echarts.ECharts | null = null;
 
   // 使用reactive创建响应式数据
-  const rankingData = reactive({
-    companies: [
-      "比亚迪汽车",
-      "啊吧汽车",
-      "郑州信息科技有限公司",
-      "郑州金岱圈方物业管理有限公司",
-      "郑州金岱圈方物业管理有限公司",
-    ],
-    memberCounts: [123, 112, 89, 69, 69],
+  const rankingData = reactive<{
+    companies: string[];
+    memberCounts: number[];
+  }>({
+    companies: [],
+    memberCounts: [],
   });
 
   // 添加计算属性
@@ -44,12 +42,9 @@
   // 模拟获取数据的方法
   const fetchRankingData = async () => {
     try {
-      // 这里后续替换为实际的API调用
-      // const response = await api.getRankingData();
-      // rankingData.companies = response.companies;
-      // rankingData.memberCounts = response.memberCounts;
-
-      // 数据更新后重新渲染图表
+      const res = await getTop5PartyData();
+      rankingData.companies = res.map((item) => item.name);
+      rankingData.memberCounts = res.map((item) => item.partyMembers.length);
       updateChart();
     } catch (error) {
       console.error("获取排名数据失败:", error);

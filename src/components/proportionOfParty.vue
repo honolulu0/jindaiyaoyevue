@@ -9,15 +9,23 @@
 import PartyTitle from "@/components/partyTitle.vue";
 import * as echarts from 'echarts';
 import { onMounted, ref } from 'vue';
+import { getTop5PartyData } from '@/apis/getTop5PartyData';
+import { getPartyBuildingData } from '@/apis/getPartyBuildingData';
 
 const chartRef = ref();
 
-onMounted(() => {
+onMounted(async () => {
+  // 获取数据
+  const [partyData, buildingData] = await Promise.all([
+    getTop5PartyData(),
+    getPartyBuildingData()
+  ]);
+  
   const chart = echarts.init(chartRef.value);
   
   const option = {
     legend: {
-      data: ['2024年'],
+      data: [`${new Date().getFullYear()}年`],
       right: 0,
       top: 0,
       icon: 'rect',
@@ -40,7 +48,7 @@ onMounted(() => {
     },
     xAxis: {
       type: 'category',
-      data: ['啤吐汽车', '比亚迪汽车', '郑州圆方物联', '郑州信息科技有限责任公司', '郑州数码产品研发中心'],
+      data: partyData.map(item => item.name),
       axisLabel: {
         fontSize: 6,
         fontFamily: 'SourceHanSansCN, SourceHanSansCN',
@@ -95,10 +103,13 @@ onMounted(() => {
       }
     },
     series: [{
-      name: '2024年',
+      name: `${new Date().getFullYear()}年`,
       type: 'pictorialBar',
       symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
-      data: [30, 70, 35, 55, 25],
+      data: partyData.map(item => {
+        const percentage = ((item.partyMembers?.length || 0) / buildingData.totalMember * 100).toFixed(2);
+        return Number(percentage);
+      }),
       itemStyle: {
         color: {
           type: 'linear',

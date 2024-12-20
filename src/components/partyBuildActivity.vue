@@ -7,7 +7,10 @@
         v-for="item in partyBuildActivityContentItemList"
         :key="item.title"
       >
-        <div class="party_build_activity_content_item_img"></div>
+        <div
+          class="party_build_activity_content_item_img"
+          :style="{ backgroundImage: `url(${item.imgUrl})` }"
+        ></div>
         <div class="party_build_activity_content_item_text">
           <span class="party_build_activity_content_item_text_title">
             {{ item.title }}
@@ -23,22 +26,35 @@
 </template>
 
 <script setup lang="ts">
+  import { getPartyActivityData } from "@/apis/getPartyActivityData";
   import PartyTitle from "@/components/partyTitle.vue";
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
   const partyBuildActivityContentItemList = ref([
     {
-      title: "金岱生物医药产业园2024年度党建活动圆满结束",
-      value:
-        "金岱生物医药产业园于2024年12月于郑州国际会展中心举行为期一年一度党建活动，活动圆满结束。",
-      time: "2024-12-11",
+      title: "",
+      value: "",
+      time: "",
+      imgUrl: "",
     },
     {
-      title: "金岱生物医药产业园2024年度党建活动圆满结束",
-      value:
-        "金岱生物医药产业园于2024年12月于郑州国际会展中心举行为期一年一度党建活动，活动圆满结束。",
-      time: "2024-12-11",
+      title: "",
+      value: "",
+      time: "",
+      imgUrl: "",
     },
   ]);
+
+  onMounted(async () => {
+    const res = await getPartyActivityData();
+    partyBuildActivityContentItemList.value = res
+      .map((item) => ({
+        title: item.title,
+        value: item.description,
+        time: item.createAt,
+        imgUrl: item.imgUrl,
+      }))
+      .slice(0, 2);
+  });
 </script>
 
 <style scoped>
@@ -113,6 +129,5 @@
     width: 81px;
     height: 57px;
     background-size: 100% 100%;
-    background-image: url("@/assets/party/党建活动图.png");
   }
 </style>

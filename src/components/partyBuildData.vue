@@ -23,30 +23,57 @@
 
 <script setup lang="ts">
   import PartyTitle from "@/components/partyTitle.vue";
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
+  import { getPartyBuildingData } from "@/apis/getPartyBuildingData";
 
   const partyBuildDataContentItemList = ref([
     {
       title: "园区党组支部",
-      value: "1000",
-      unit: "人",
+      value: "0",
+      unit: "个",
     },
     {
       title: "园区党员人数",
-      value: "1000",
+      value: "0",
       unit: "人",
     },
     {
       title: "正式党员人数",
-      value: "1000",
+      value: "0",
       unit: "人",
     },
     {
       title: "预备党员人数",
-      value: "1000",
+      value: "0",
       unit: "人",
     },
   ]);
+
+  onMounted(async () => {
+    const res = await getPartyBuildingData();
+    partyBuildDataContentItemList.value = [
+      {
+        title: "园区党组支部",
+        value: res.totalMemberBranch.toString(),
+        unit: "人",
+      },
+      {
+        title: "园区党员人数",
+        value: res.totalMember.toString(),
+        unit: "人",
+      },
+      {
+        title: "正式党员人数",
+        value: res.isOfficial.toString(),
+        unit: "人",
+      },
+      {
+        title: "预备党员人数",
+        value: res.unOfficial.toString(),
+        unit: "人",
+      },
+    ];
+  });
 </script>
 
 <style scoped>

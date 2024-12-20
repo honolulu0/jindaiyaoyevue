@@ -24,28 +24,45 @@
 </template>
 
 <script setup lang="ts">
+  import {
+    getGreatPartyMember,
+    GreatPartyMemberDTO,
+  } from "@/apis/greatPartyMenber";
   import PartyTitle from "./partyTitle.vue";
-  import { ref } from "vue";
+  import { onMounted, ref, onUnmounted } from "vue";
 
   const truncateDescription = (text: string) => {
     return text.length > 40 ? text.slice(0, 40) + "..." : text;
   };
 
-  const list = ref([
-    {
-      name: "张三",
-      unit: "保安",
-      img: "https://picsum.photos/200/300",
-      description:
-        "张三是一名保安，负责小区的安全巡逻。张三是一名保安，负责小区的安全巡逻。张三是一名保安，负责小区的安全巡逻。",
-    },
-    {
-      name: "张三",
-      unit: "保安",
-      img: "https://picsum.photos/200/300",
-      description: "张三是一名保安，负责小区的安全巡逻。",
-    },
-  ]);
+  const list = ref<GreatPartyMemberDTO[]>([]);
+
+  const getRandomMembers = (data: GreatPartyMemberDTO[]) => {
+    const shuffled = [...data].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 2);
+  };
+
+  const updateMemberList = async () => {
+    try {
+      const res = await getGreatPartyMember();
+      if (res) {
+        list.value = getRandomMembers(res);
+      }
+    } catch (error) {
+      console.error("获取党员数据失败:", error);
+    }
+  };
+
+  onMounted(() => {
+    updateMemberList(); // 初始加载
+    // 设置1分钟定时刷新
+    const timer = setInterval(updateMemberList, 60 * 1000);
+
+    // 组件卸载时清除定时器
+    onUnmounted(() => {
+      clearInterval(timer);
+    });
+  });
 </script>
 
 <style scoped>
