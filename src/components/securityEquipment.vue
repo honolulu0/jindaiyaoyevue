@@ -19,25 +19,29 @@
 
 <script setup lang="ts">
   import TitleComponent from "./titleComponent.vue";
-  import { ref } from "vue";
+  import { onMounted, ref } from "vue";
+  import { getDeviceCount } from "../apis/deviceCount";
 
   const baseUrl = import.meta.url.substring(
     0,
     import.meta.url.lastIndexOf("/")
   );
 
+  onMounted(async () => {
+    const res = await getDeviceCount();
+    const data = res.securityDevices.map((item) => ({
+      title: item.title,
+      number: item.number,
+      unit: item.unit,
+      url: item.url,
+    }));
+    contentItem.value = data;
+  });
+
   const contentItem = ref([
     {
-      title: "视频监控",
-      number: 100,
-      unit: "台",
-      url: `url(${encodeURI(
-        `${baseUrl}/../assets/securityEquipment/监控+底座.png`
-      )})`,
-    },
-    {
       title: "入侵报警",
-      number: 100,
+      number: 0,
       unit: "台",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/入侵报警+底座.png`
@@ -45,15 +49,23 @@
     },
     {
       title: "电子围栏",
-      number: 100,
+      number: 0,
       unit: "台",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/电子围栏+底座.png`
       )})`,
     },
     {
+      title: "视频监控",
+      number: 0,
+      unit: "台",
+      url: `url(${encodeURI(
+        `${baseUrl}/../assets/securityEquipment/监控+底座.png`
+      )})`,
+    },
+    {
       title: "车牌识别",
-      number: 100,
+      number: 0,
       unit: "台",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/车牌识别+底座.png`

@@ -30,7 +30,7 @@
       </div>
       <div class="circle-progress_bg"></div>
       <CircleProgress
-        :percentage="45"
+        :percentage="rentedPercentage"
         startColor="#a5d8fc"
         endColor="#a5d8fc"
         style="position: absolute; top: 3px; right: 19px"
@@ -64,7 +64,7 @@
       </div>
       <div class="circle-progress_bg"></div>
       <CircleProgress
-        :percentage="45"
+        :percentage="soldPercentage"
         startColor="#fee186"
         endColor="#fee186"
         style="position: absolute; top: 3px; right: 19px"
@@ -74,10 +74,36 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from "vue";
+  import { reactive, ref, onMounted, onUnmounted } from "vue";
   import CircleProgress from "@/components/circleProgress.vue";
+  import { getInvestmentPromotionUnitStatistics } from "@/apis/getInvestmentPromotionUnitStatistics";
 
-  const statisticsBoxPositionRent = reactive([
+  let timer: number | null = null;
+
+  const refreshData = async () => {
+    const res = await getInvestmentPromotionUnitStatistics();
+    statisticsBoxPositionRent.value = res.statisticsBoxPositionRent;
+    statisticsBoxPositionSell.value = res.statisticsBoxPositionSell;
+    soldPercentage.value = res.soldPercentage;
+    rentedPercentage.value = res.rentedPercentage;
+  };
+
+  onMounted(() => {
+    refreshData();
+    
+    timer = window.setInterval(() => {
+      refreshData();
+    }, 5 * 60 * 1000);
+  });
+
+  onUnmounted(() => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  });
+
+  const statisticsBoxPositionRent = ref([
     {
       boxStyle: {
         width: "39px",
@@ -108,7 +134,7 @@
     },
   ]);
 
-  const statisticsBoxPositionSell = reactive([
+  const statisticsBoxPositionSell = ref([
     {
       boxStyle: {
         width: "39px",
@@ -138,6 +164,9 @@
       color: "#ffffff",
     },
   ]);
+
+  const soldPercentage = ref(0);
+  const rentedPercentage = ref(0);
 </script>
 
 <style scoped>

@@ -18,6 +18,11 @@ export default defineConfig({
       '/park_api': {
         target: 'http://47.120.12.122:8002/',
         secure: false
+      },
+      '/jindai3admin': {
+        target: 'https://jindai3admin.turbo-dev.cn/',
+        changeOrigin: true,
+        secure: true,
       }
     }
   }

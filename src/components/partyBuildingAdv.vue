@@ -11,7 +11,6 @@
         data-setup="{}"
       >
         <source
-          src="https://www.w3schools.com/html/mov_bbb.mp4"
           type="video/mp4"
         />
       </video>
@@ -20,24 +19,38 @@
 </template>
 
 <script setup lang="ts">
-  import PartyTitle from "./partyTitle.vue";
+  import { getPartyAdv } from "@/apis/getPartyAdv";
+import PartyTitle from "./partyTitle.vue";
   import videojs from "video.js";
   import "video.js/dist/video-js.css";
   import { onMounted, onBeforeUnmount } from "vue";
 
   let player: any;
+  let timer: any;
 
-  onMounted(() => {
+  async function updateVideo() {
+    const url = await getPartyAdv();
+    player.src(url);
+  }
+
+  onMounted(async () => {
+    const url = await getPartyAdv();
     player = videojs("party-video", {
       controls: true,
       fluid: false,
       controlBar: false,
     });
+    player.src(url);
+    
+    timer = setInterval(updateVideo, 5 * 60 * 1000);
   });
 
   onBeforeUnmount(() => {
     if (player) {
       player.dispose();
+    }
+    if (timer) {
+      clearInterval(timer);
     }
   });
 </script>
