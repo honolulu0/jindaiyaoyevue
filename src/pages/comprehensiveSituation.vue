@@ -9,7 +9,7 @@
     <RealtimeElectricityConsumption />
     <ParkingData />
     <DistributionBoxTemp />
-    <StarNew />
+    <StarNew style="bottom: 3px; right: 20px; position: absolute;" />
   </div>
 </template>
 
