@@ -39,6 +39,8 @@
   import { parkingSubject, topTabsSubject } from "@/event";
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
+  import { errorAlertSubject } from "@/utils/errorAlertSubject";
+  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
   const router = useRouter();
   const tabsName = reactive([
     {
@@ -66,6 +68,8 @@
         setClick(1);
         router.push("/parkInvestmentPromotion");
         parkingSubject.next(true);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
     {
@@ -80,6 +84,8 @@
         setClick(2);
         router.push("/securitySituation");
         parkingSubject.next(true);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
     {
@@ -94,6 +100,8 @@
         setClick(3);
         router.push("/parkFacilities");
         parkingSubject.next(true);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
     {
@@ -108,6 +116,8 @@
         setClick(4);
         router.push("/powerEnvironment");
         parkingSubject.next(false);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
     {
@@ -122,6 +132,8 @@
         setClick(5);
         router.push("/energyConsumptionSituation");
         parkingSubject.next(false);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
     {
@@ -136,6 +148,8 @@
         setClick(6);
         router.push("/enterprises");
         parkingSubject.next(false);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
     {
@@ -152,6 +166,8 @@
         router.push("/parkPolicy");
         // router.push("/partyBuilding");
         parkingSubject.next(false);
+        errorAlertSubject.next(null);
+        deviceSelectSubject.next(null);
       },
     },
   ]);

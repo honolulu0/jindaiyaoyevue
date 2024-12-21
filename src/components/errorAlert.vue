@@ -81,6 +81,12 @@
     }
   };
 
+  errorAlertSubject.subscribe(item => {
+    if (item === null) {
+      loadData();
+    }
+  });
+
   onMounted(() => {
     loadData();
     // 每30秒刷新一次数据

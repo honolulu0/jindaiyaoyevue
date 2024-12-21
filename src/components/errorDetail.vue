@@ -29,13 +29,14 @@
       <div class="device-error-info-btn">
         <div
           class="device-error-info-btn-processed"
-          v-if="item.is_processed === '1'"
+          v-if="item.is_processed === 1 || item.is_processed === '1'"
         >
           已处理
         </div>
         <div
           class="device-error-info-btn-unprocessed"
           v-else
+          @click="handleProcessedBtnClick(item.id)"
         >
           未处理
         </div>
@@ -55,7 +56,8 @@
 <script setup lang="ts">
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
   import TitleComponent from "./titleComponent.vue";
-
+  import axiosInstance from "../apis/axios";
+import { processError } from "@/apis/processError";
   const DEVICE_TYPE_MAP = {
     "1": "水表",
     "2": "电表",
@@ -72,6 +74,7 @@
 
   export interface ErrorDetailType {
     item: {
+      id: string;
       device_name: string;
       device_type: string;
       msg_content: string;
@@ -84,6 +87,7 @@
 
   const props = withDefaults(defineProps<ErrorDetailType>(), {
     item: () => ({
+      id: "",
       device_name: "",
       device_type: "",
       msg_content: "",
@@ -100,6 +104,13 @@
 
   const getDeviceTypeName = (type: string) => {
     return DEVICE_TYPE_MAP[type as keyof typeof DEVICE_TYPE_MAP] || type;
+  };
+
+  const handleProcessedBtnClick = async (id: string) => {
+    const res = await processError(id);
+    if (res) {
+      props.item.is_processed = "1";
+    }
   };
 
   const formatDateTime = (dateTimeString: string) => {
@@ -120,7 +131,7 @@
 <style scoped>
   .error-detail {
     width: 271px;
-    height: 481px;
+    height: 485px;
     position: absolute;
     left: 20px;
     top: 73px;

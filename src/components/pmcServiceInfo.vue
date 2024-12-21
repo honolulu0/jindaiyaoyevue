@@ -17,21 +17,24 @@
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
   import titleComponent from "./titleComponent.vue";
-  import { getServiceList, type ServiceListVO } from '@/apis/parkServiceList'
+  import { getServices, type ServiceType } from '@/apis/getServices'
 
-  const serviceInfoList = ref<ServiceListVO['items']>([])
+  const serviceInfoList = ref<any[]>([])
 
-  const getServices = async () => {
+  const getServiceData = async () => {
     try {
-      const res = await getServiceList({})
-      serviceInfoList.value = res.items
+      const res = await getServices()
+      serviceInfoList.value = res.map(item => ({
+        img: `url("${encodeURI(item.cover_url)}")`,
+        name: item.title
+      }))
     } catch (error) {
       console.error('获取服务列表失败:', error)
     }
   }
 
   onMounted(() => {
-    getServices()
+    getServiceData()
   })
 </script>
 

@@ -20,7 +20,7 @@
           class="list_content_item data_row"
           @click="handleRowClick(item)"
         >
-          <template v-for="(value, key) in item">
+          <template v-for="(value, key) in getDisplayData(item)">
             <div
               v-if="key !== 'id'"
               :key="key"
@@ -43,9 +43,16 @@
   // 定义emit
   const emit = defineEmits(["rowClick"]);
 
-  // 点击行的处理函数
-  const handleRowClick = (rowData: any) => {
-    emit("rowClick", rowData);
+  // 添加获取显示数据的方法
+  const getDisplayData = (item: RepairListVO) => {
+    const { raw, ...displayData } = item;
+    return displayData;
+  };
+
+  // 修改点击行的处理函数
+  const handleRowClick = (rowData: RepairListVO) => {
+    emit("rowClick", rowData.raw);
+    console.log(rowData.raw);
   };
 
   // const titleMap = ref({
@@ -197,7 +204,7 @@
   //     id: 18,
   //     row1: "其他类型",
   //     row2: "12栋394号房间",
-  //     row3: "设备异常设备异常",
+  //     row3: "设备��常设备异常",
   //     row4: "12/02",
   //     row5: "未解决",
   //   },
@@ -210,6 +217,7 @@
     row4: "日期",
     row5: "事件进度",
   });
+
 
   const list = ref<RepairListVO[]>([]);
 

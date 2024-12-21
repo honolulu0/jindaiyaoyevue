@@ -6,8 +6,6 @@
     <SecondaryTabs :activeIndex="2" />
     <div
       class="content_container"
-      @mouseenter="pauseAutoPlay"
-      @mouseleave="resumeAutoPlay"
     >
       <div class="tab_container1">
         <div
@@ -22,168 +20,68 @@
       </div>
       <div
         class="img"
-        :style="{ backgroundImage: `url(${currentPageData.img})` }"
+        :style="{ backgroundImage: `${customEncodeURI(currentPageData.cover_url || currentPageData.cover)}` }"
       ></div>
-      <div
-        style="
-          position: absolute;
-          top: 262px;
-          width: 100%;
-          height: max-content;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        "
-      >
-        <Pagination
-          :pageSize="1"
-          :data="content"
-          @currentPageData="handleCurrentPageData"
-          ref="paginationRef"
-        />
-      </div>
       <div class="title">{{ currentPageData.title }}</div>
-      <div class="content">{{ currentPageData.content }}</div>
+      <div class="content" v-html="currentPageData.content"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import SecondaryTabs from "@/components/secondaryTabs.vue";
-  import Pagination from "@/components/pagination.vue";
-  import { ref, onMounted, onUnmounted } from "vue";
+  import { ref, onMounted } from "vue";
+  import { getServices, type ServiceType } from "@/apis/getServices";
 
-  const content = ref([
-    {
-      title: "维修服务",
-      content: "维修服务内容1",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容2",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容3",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容4",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容5",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容6",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容7",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-    {
-      title: "维修服务",
-      content: "维修服务内容8",
-      img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-    },
-  ]);
+  const content = ref<ServiceType[]>([]);
+  const servicesByTitle = ref<Record<string, ServiceType[]>>({});
 
-  const paginationRef = ref();
+  const tabList = ref<{ label: string; key: number }[]>([]);
+  const activeTab = ref(1);
 
-  const currentPageData = ref({
-    title: "维修服务",
-    content: "维修服务内容1",
-    img: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-  });
+  const loadServices = async () => {
+    try {
+      const data = await getServices();
+      content.value = data;
+      
+      const groupedData: Record<string, ServiceType[]> = {};
+      data.forEach((item: ServiceType) => {
+        if (!groupedData[item.title]) {
+          groupedData[item.title] = [];
+        }
+        groupedData[item.title].push(item);
+      });
+      servicesByTitle.value = groupedData;
 
-  const handleCurrentPageData = (data: any) => {
-    currentPageData.value = data[0];
+      tabList.value = Object.keys(groupedData).map((title, index) => ({
+        label: title,
+        key: index + 1
+      }));
+
+      if (tabList.value.length > 0) {
+        handleTabClick(1);
+      }
+    } catch (error) {
+      console.error('加载服务数据失败:', error);
+    }
   };
 
-  const tabList = ref([
-    { label: "维修服务", key: 1 },
-    { label: "家政服务", key: 2 },
-    { label: "租赁服务", key: 3 },
-    { label: "会议服务", key: 4 },
-    { label: "代办服务", key: 5 },
-    { label: "其他服务", key: 6 },
-  ]);
+  function customEncodeURI(url: string) {
+    return `url("${encodeURI(url)}")`;
+  }
 
-  const activeTab = ref(1);
+  const currentPageData = ref<ServiceType>({} as ServiceType);
 
   const handleTabClick = (key: number) => {
     activeTab.value = key;
-  };
-
-  // 添加自动翻页相关的状态
-  const isAutoPlaying = ref(true);
-  let autoPlayInterval: NodeJS.Timer | null = null;
-
-  // 自动翻页控制方法
-  const pauseAutoPlay = () => {
-    isAutoPlaying.value = false;
-    if (autoPlayInterval) {
-      clearInterval(autoPlayInterval as any);
-      autoPlayInterval = null;
+    const title = tabList.value[key - 1]?.label;
+    if (title && servicesByTitle.value[title]?.length > 0) {
+      currentPageData.value = servicesByTitle.value[title][0];
     }
   };
 
-  const resumeAutoPlay = () => {
-    isAutoPlaying.value = true;
-    startAutoPlay();
-  };
-
-  const startAutoPlay = () => {
-    autoPlayInterval = setInterval(() => {
-      if (isAutoPlaying.value) {
-        if (paginationRef.value) {
-          paginationRef.value.nextPage();
-        }
-      }
-    }, 5000); // 每5秒翻页一次
-  };
-
-  // 触摸相关变量和方法
-  const touchStartX = ref(0);
-
-  const handleTouchStart = (e: TouchEvent) => {
-    touchStartX.value = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    e.preventDefault();
-  };
-
-  const handleTouchEnd = (e: TouchEvent) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchEndX - touchStartX.value;
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        paginationRef.value?.prevPage();
-      } else {
-        paginationRef.value?.nextPage();
-      }
-    }
-  };
-
-  // 生命周期钩子
-  onMounted(() => {
-    startAutoPlay();
-  });
-
-  onUnmounted(() => {
-    if (autoPlayInterval) {
-      clearInterval(autoPlayInterval as any);
-    }
+  onMounted(async () => {
+    await loadServices();
   });
 </script>
 
@@ -248,7 +146,7 @@
     left: 191px;
     width: 368px;
     height: 179px;
-    background-size: contain;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
   }
 
@@ -279,5 +177,6 @@
     margin-left: 187px;
     margin-right: 187px;
     text-indent: 2em;
+    overflow: hidden;
   }
 </style>

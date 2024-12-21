@@ -78,6 +78,12 @@
     }
   };
 
+  errorAlertSubject.subscribe(item => {
+    if (item === null) {
+      loadData();
+    }
+  });
+
   let timer: number | null = null;
 
   const startAutoRefresh = () => {

@@ -40,6 +40,7 @@ export interface RepairListVO {
   row3: string // 事件描述
   row4: string // 日期
   row5: string // 事件进度
+  raw: any // 添加原始数据字段
 }
 
 // DTO 转 VO 的转换函数
@@ -50,7 +51,8 @@ const convertToVO = (dto: RepairListDTO): RepairListVO[] => {
     row2: item.building_room || '未知位置',
     row3: item.description,
     row4: item.create_datetime.split(' ')[0].split('-').slice(1).join('/'),
-    row5: item.status_label
+    row5: item.status_label,
+    raw: item // 保存原始数据
   }))
 }
 

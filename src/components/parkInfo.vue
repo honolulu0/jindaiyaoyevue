@@ -21,20 +21,29 @@
 </template>
 
 <script setup lang="ts">
-  const textList = [
-    {
-      key: 2,
-      label: "园区名称：",
-      content: "金岱生物医药产业园",
-      position: { top: "0px", left: "0px" },
-    },
-    {
-      key: 3,
-      label: "总建筑面积：",
-      content: "6.97万平米",
-      position: { top: "0px", left: "105px" },
-    },
-  ];
+import { onMounted, ref, computed } from 'vue'
+import { getParkInfo, type ParkInfoType } from '@/apis/getParkInfo'
+
+const parkInfo = ref<ParkInfoType>()
+
+onMounted(async () => {
+  parkInfo.value = await getParkInfo()
+})
+
+const textList = computed(() => [
+  {
+    key: 2,
+    label: "园区名称：",
+    content: parkInfo.value?.name || '-',
+    position: { top: "0px", left: "0px" },
+  },
+  {
+    key: 3,
+    label: "总建筑面积：",
+    content: (parkInfo.value?.totalBuildingArea || '-') + '万m²',
+    position: { top: "0px", left: "125px" },
+  },
+])
 </script>
 
 <style scoped>
@@ -81,7 +90,7 @@
   }
 
   .text_container {
-    width: 210px;
+    width: 240px;
     height: 93px;
     position: absolute;
     left: 0;

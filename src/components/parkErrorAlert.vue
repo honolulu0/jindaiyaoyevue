@@ -80,6 +80,12 @@
     }
   };
 
+  errorAlertSubject.subscribe(item => {
+    if (item === null) {
+      loadData();
+    }
+  });
+
   onMounted(() => {
     loadData();
     timer = setInterval(loadData, 30000);

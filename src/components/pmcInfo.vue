@@ -2,7 +2,10 @@
   <div class="park_profile">
     <div class="title_bg"></div>
     <div class="title">物业公司介绍</div>
-    <div class="park_img"></div>
+    <div
+      class="park_img"
+      :style="{ backgroundImage: `url(${pmcInfo?.imgUrl})` }"
+    ></div>
     <div class="text_container">
       <div
         class="absolute h-8"
@@ -18,40 +21,53 @@
         >
       </div>
       <p class="text_area">
-        这里是文案描述，这里是文案描述，这里是文这里是文案描述，这里是文案描述，这里是文
+        {{
+          pmcInfo?.description ??
+          "这里是文案描述，这里是文案描述，这里是文这里是文案描述，这里是文案描述，这里是文"
+        }}
       </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const textList = [
-    {
-      key: 1,
-      label: "物业公司：",
-      content: "郑州金岱圆方物业管理有限公司",
-      position: { top: 0, left: 0 },
-    },
-    {
-      key: 2,
-      label: "成立年份：",
-      content: "2018年",
-      position: { top: "13px", left: "0px" },
-    },
-    {
-      key: 3,
-      label: "员工人数：",
-      content: "220人",
-      position: { top: "13px", left: "105px" },
-    },
-    {
-      key: 4,
-      label: "管理费用：",
-      content: "2,666元/m² ~ 3,220元/m",
-      position: { top: "27px", left: "0px" },
-      width: "105px",
-    },
-  ];
+  import { onMounted, ref } from "vue";
+  import { getPmcInfo, type PmcInfoType } from "@/apis/getPmcInfo";
+
+  const pmcInfo = ref<PmcInfoType>();
+
+  onMounted(async () => {
+    pmcInfo.value = await getPmcInfo();
+    textList.value = [
+      {
+        key: 1,
+        label: "物业公司：",
+        content: pmcInfo.value?.name ?? "郑州金岱圆方物业管理有限公司",
+        position: { top: 0, left: 0 },
+      },
+      {
+        key: 2,
+        label: "成立年份：",
+        content: pmcInfo.value?.yearEstablished + "年",
+        position: { top: "13px", left: "0px" },
+      },
+      {
+        key: 3,
+        label: "员工人数：",
+        content: pmcInfo.value?.employeeCount + "人",
+        position: { top: "13px", left: "105px" },
+      },
+      {
+        key: 4,
+        label: "管理费用：",
+        content: `${pmcInfo.value?.managementFeeStartAt ?? "0"}元/m² ~ ${pmcInfo.value?.managementFeeEndAt ?? "0"}元/m²`,
+        position: { top: "27px", left: "0px" },
+        width: "105px",
+      },
+    ];
+  });
+
+  const textList = ref<any[]>([]);
 </script>
 
 <style scoped>
@@ -88,7 +104,6 @@
   }
 
   .park_img {
-    background-image: url("@/assets/park_img.png");
     background-size: cover;
     width: 205px;
     height: 88px;
@@ -142,7 +157,7 @@
     text-align: left;
     font-style: normal;
     text-indent: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-
-
 </style>

@@ -77,6 +77,7 @@
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
   import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
   import DeviceDetail from "@/components/deviceDetail.vue";
+  import { parkingSubject } from "@/event";
   const isShow = ref(true);
   const parkingShow = ref(false);
 
@@ -102,6 +103,7 @@
   errorAlertSubject.subscribe((data) => {
     if (data !== null) {
       errorDetail.value = data;
+      showDeviceDetail.value = false;
       showErrorDetail.value = true;
       console.log(errorDetail.value);
     } else {
@@ -112,10 +114,19 @@
   deviceSelectSubject.subscribe((data) => {
     if (data !== null) {
       deviceDetail.value = data;
+      showErrorDetail.value = false;
       showDeviceDetail.value = true;
       console.log(deviceDetail.value);
     } else {
       showDeviceDetail.value = false;
+    }
+  });
+
+  parkingSubject.subscribe((data) => {
+    if (data === true) {
+      parkingShow.value = true;
+    } else {
+      parkingShow.value = false;
     }
   });
 </script>
@@ -249,12 +260,12 @@
     justify-content: center;
   }
 
-  .defense_deployment_success_close_btn {
+  /* .defense_deployment_success_close_btn {
     background-image: url("@/assets/关闭按钮.png");
     background-size: 100%;
     width: 14px;
     height: 14px;
-  }
+  } */
 
   .defense_deployment_success_content {
     font-family: YouSheBiaoTiHei;

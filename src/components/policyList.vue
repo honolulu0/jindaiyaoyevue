@@ -23,13 +23,13 @@
           </div>
           <div class="policy_list_content_list_item_content">
             <div class="policy_list_content_list_item_sender">
-              发文机关：{{ item.sender }}
+              发文机关：{{ item.issuing_authority }}
             </div>
             <div class="policy_list_content_list_item_docNum">
-              发文字号：{{ item.docNum }}
+              发文字号：{{ item.document_number }}
             </div>
             <div class="policy_list_content_list_item_time">
-              发文时间：{{ item.time }}
+              发文时间：{{ item.publish_date }}
             </div>
           </div>
         </div>
@@ -39,7 +39,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
+  import { getPolicy, type PolicyData } from "@/apis/getPolicy";
 
   const tabList = ref([
     { label: "省级政策", key: 1 },
@@ -47,44 +48,36 @@
     { label: "其他政策", key: 3 },
   ]);
 
-  const policyList = ref([
-    {
-      title: "河南省人民政府办公厅关于印发促进全省低空经济高质量发展实施方案(2024-2027年)的通知",
-      sender: "政策发布者",
-      time: "2024年1月1日",
-      docNum: "豫政办〔2024)33号",
-    },
-    {
-      title: "河南省人民政府办公厅关于印发促进全省低空经济高质量发展实施方案(2024-2027年)的通知",
-      sender: "政策发布者",
-      time: "2024年1月1日",
-      docNum: "豫政办〔2024)33号",
-    },
-    {
-      title: "河南省人民政府办公厅关于印发促进全省低空经济高质量发展实施方案(2024-2027年)的通知",
-      sender: "政策发布者",
-      time: "2024年1月1日",
-      docNum: "豫政办〔2024)33号",
-    },
-    {
-      title: "河南省人民政府办公厅关于印发促进全省低空经济高质量发展实施方案(2024-2027年)的通知",
-      sender: "政策发布者",
-      time: "2024年1月1日",
-      docNum: "豫政办〔2024)33号",
-    },
-    {
-      title: "河南省人民政府办公厅关于印发促进全省低空经济高质量发展实施方案(2024-2027年)的通知", 
-      sender: "政策发布者",
-      time: "2024年1月1日",
-      docNum: "豫政办〔2024)33号",
-    },
-  ]);
-
+  const policyList = ref<PolicyData[]>([]);
   const activeTab = ref(1);
 
-  const handleTabClick = (key: number) => {
-    activeTab.value = key;
+  const loadPolicyData = async () => {
+    try {
+      const res = await getPolicy();
+      switch (activeTab.value) {
+        case 1:
+          policyList.value = res.province.data;
+          break;
+        case 2:
+          policyList.value = res.city.data;
+          break;
+        case 3:
+          policyList.value = res.other.data;
+          break;
+      }
+    } catch (error) {
+      console.error('获取政策列表失败:', error);
+    }
   };
+
+  const handleTabClick = async (key: number) => {
+    activeTab.value = key;
+    await loadPolicyData();
+  };
+
+  onMounted(() => {
+    loadPolicyData();
+  });
 </script>
 
 <style scoped>
@@ -156,7 +149,15 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
   }
+
+  /* 为 Webkit 浏览器（Chrome、Safari等）添加滚动条隐藏样式 */
+  .policy_list_content_list::-webkit-scrollbar {
+    display: none;
+  }
+
   .policy_list_content_list_item {
     width: 100%;
     height: 35px;

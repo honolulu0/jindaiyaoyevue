@@ -14,10 +14,25 @@
         style="margin-top: 10px"
       />
       <div class="device-info-content">
-        <div>设备名称:</div>
-        <div class="device-name">{{ item.device_name }}</div>
-        <div>设备类型:</div>
-        <div class="device-type">{{ getDeviceTypeName(item.device_type) }}</div>
+        <div>设备状态:</div>
+        <div class="device-name" :style="{ color: deviceDetail.status === '异常' ? '#FF0000' : '#00FF00' }">{{ deviceDetail.status }}</div>
+        <div>设备位置:</div>
+        <div class="device-type">{{ deviceDetail.location }}</div>
+        <div>设备实时状态:</div>
+        <div class="device-realtime-status">
+          <VueJsonPretty
+            style="width: max-content; height: max-content"
+            :data="deviceDetail.realtime_data"
+          />
+        </div>
+      </div>
+      <TitleComponent
+        titleText="监控视频"
+        style="margin-top: 10px"
+        v-if="deviceDetail.url"
+      />
+      <div class="device-realtime-status">
+        <WebRTCStream :url="deviceDetail.url" />
       </div>
     </div>
     <div class="back-btn">
@@ -32,10 +47,13 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from "vue";
+  import { onMounted, ref } from "vue";
   import TitleComponent from "./titleComponent.vue";
   import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
   import { getDeviceInfo } from "@/apis/getDeviceInfo";
+  import WebRTCStream from "./WebRTCStream.vue";
+  import VueJsonPretty from "vue-json-pretty";
+  import "vue-json-pretty/lib/styles.css";
 
   const DEVICE_TYPE_MAP = {
     "1": "水表",
@@ -75,16 +93,19 @@
     deviceSelectSubject.next(null);
   };
 
+  const deviceDetail = ref<any>({});
+
   onMounted(async () => {
     const res = await getDeviceInfo(props.item.device_name);
-    console.log(res);
+    deviceDetail.value = res[0];
+    console.log(deviceDetail.value);
   });
 </script>
 
 <style scoped>
   .error-detail {
     width: 271px;
-    height: 481px;
+    height: 485px;
     position: absolute;
     left: 20px;
     top: 73px;
@@ -164,5 +185,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .device-realtime-status {
+    max-height: 200px;
+    overflow: auto;
+    margin-right: 10px;
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+  
+  /* Webkit浏览器（Chrome、Safari等）隐藏滚动条 */
+  .device-realtime-status::-webkit-scrollbar {
+    display: none;
   }
 </style>

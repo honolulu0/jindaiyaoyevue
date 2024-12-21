@@ -8,7 +8,7 @@
     <div class="search_box"></div>
     <input
       type="text"
-      placeholder="输入对应搜索信息"
+      placeholder="请输入设备名称"
       class="search_input"
       v-model="searchValue"
     />

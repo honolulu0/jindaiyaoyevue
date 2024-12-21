@@ -17,6 +17,6 @@ export const modelSubject = new BehaviorSubject<ModelSubjectType>({
   content: "",
 });
 
-export const parkingSubject = new BehaviorSubject<boolean>(false);
+export const parkingSubject = new BehaviorSubject<boolean>(true);
 
 export const topTabsSubject = new BehaviorSubject<number>(0);

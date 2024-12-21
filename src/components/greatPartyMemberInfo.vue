@@ -45,8 +45,9 @@
   const updateMemberList = async () => {
     try {
       const res = await getGreatPartyMember();
-      if (res) {
-        list.value = getRandomMembers(res);
+      const greatMembers = res.filter((item) => item.isGreat);
+      if (greatMembers.length > 0) {
+        list.value = getRandomMembers(greatMembers);
       }
     } catch (error) {
       console.error("获取党员数据失败:", error);

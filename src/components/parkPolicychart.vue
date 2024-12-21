@@ -20,7 +20,8 @@
 
 <script setup lang="ts">
   import TitleComponent from "./titleComponent.vue";
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
+  import { getPolicy } from "@/apis/getPolicy";
 
   const baseUrl = import.meta.url.substring(
     0,
@@ -30,23 +31,34 @@
   const contentItem = ref([
     {
       title: "省级政策",
-      number: 100,
-      unit: "台",
+      number: 0,
+      unit: "条",
       url: `url(${encodeURI(`${baseUrl}/../assets/parkPolicy/政策icon.png`)})`,
     },
     {
       title: "市级政策",
-      number: 100,
-      unit: "台",
+      number: 0,
+      unit: "条",
       url: `url(${encodeURI(`${baseUrl}/../assets/parkPolicy/政策icon.png`)})`,
     },
     {
-      title: "区级政策",
-      number: 100,
-      unit: "台",
+      title: "其他政策",
+      number: 0,
+      unit: "条",
       url: `url(${encodeURI(`${baseUrl}/../assets/parkPolicy/政策icon.png`)})`,
     },
   ]);
+
+  onMounted(async () => {
+    try {
+      const policyData = await getPolicy();
+      contentItem.value[0].number = policyData.province.total;
+      contentItem.value[1].number = policyData.city.total;
+      contentItem.value[2].number = policyData.other.total;
+    } catch (error) {
+      console.error('获取政策数据失败:', error);
+    }
+  });
 </script>
 
 <style scoped>

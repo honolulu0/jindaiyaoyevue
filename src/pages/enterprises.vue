@@ -95,20 +95,21 @@
 
   const handleRowClick = (rowData: any) => {
     showModel.value = true;
+    modelData.value = {
+      title: rowData.title || '无',
+      type: rowData.category_name || '无',
+      time: rowData.create_datetime || '无',
+      parkName: rowData.park_name || '无',
+      address: rowData.building_room || '无',
+      enterpriseName: rowData.company_name || '无',
+      eventDescription: rowData.description || '无',
+      contactName: rowData.contact_name || '无',
+      contactPhone: rowData.contact_phone || '无',
+      otherDescription: rowData.feedback || '无'
+    };
   };
 
-  const modelData = ref({
-    title: "报修事件详情",
-    type: "报修事件",
-    time: "2024-01-01 10:00:00",
-    parkName: "金岱生物医药产业园",
-    address: "12栋2134号房间",
-    enterpriseName: "河南金岱生物医药产业园有限公司",
-    eventDescription: "这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述这是一条报修事件的描述",
-    contactName: "张三",
-    contactPhone: "13800138000",
-    otherDescription: "其他信息",
-  });
+  const modelData = ref({});
 
   const closeModel = () => {
     showModel.value = false;

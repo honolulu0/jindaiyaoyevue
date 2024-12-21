@@ -1,8 +1,8 @@
 <template>
-  <div class="park_profile">
+  <div class="park_profile" v-if="parkInfo">
     <div class="title_bg"></div>
     <div class="title">园区概况</div>
-    <div class="park_img"></div>
+    <div class="park_img" :style="{ backgroundImage: `url(${parkInfo.imgUrl})` }"></div>
     <div class="text_container">
       <div
         class="absolute h-8"
@@ -17,60 +17,77 @@
           >{{ item.content }}</span
         >
       </div>
-      <p class="text_area">
-        这里是文案描述，这里是文案描述，这里是文这里是文案描述，这里是文案描述，这里是文
-      </p>
+      <p class="text_area">{{ parkInfo.description }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const textList = [
-    {
-      key: 1,
-      label: "园区名称：",
-      content: "建中·金岱生物医药产业园",
-      position: { top: 0, left: 0 },
-    },
-    {
-      key: 2,
-      label: "建成年份：",
-      content: "2024年",
-      position: { top: "13px", left: "0px" },
-    },
-    {
-      key: 3,
-      label: "园区位置：",
-      content: "河南省郑州市金水区",
-      position: { top: "13px", left: "105px" },
-    },
-    {
-      key: 4,
-      label: "总建筑面积：",
-      content: "6.97万平方米",
-      position: { top: "27px", left: "0px" },
-    },
-    {
-      key: 5,
-      label: "楼栋数量：",
-      content: "20栋",
-      position: { top: "27px", left: "105px" },
-    },
-    {
-      key: 6,
-      label: "租金区间：",
-      content: "12元/m²/天 ~ 20元/m²/天",
-      position: { top: "40px", left: "0px" },
-      width: "105px",
-    },
-    {
-      key: 7,
-      label: "售价区间：",
-      content: "36,666元/m² ~ 63,220元/m²",
-      position: { top: "54px", left: "0px" },
-      width: "105px",
-    },
-  ];
+import { ref, onMounted, computed } from 'vue'
+import { getParkInfo, type ParkInfoType } from '@/apis/getParkInfo'
+
+const parkInfo = ref<ParkInfoType>()
+
+// 获取园区信息
+const fetchParkInfo = async () => {
+  try {
+    parkInfo.value = await getParkInfo() // 这里的 ID 根据实际需求传入
+  } catch (error) {
+    console.error('获取园区信息失败:', error)
+  }
+}
+
+onMounted(() => {
+  fetchParkInfo()
+})
+
+// 使用计算属性生成文本列表
+const textList = computed(() => [
+  {
+    key: 1,
+    label: "园区名称：",
+    content: parkInfo.value?.name,
+    position: { top: 0, left: 0 },
+  },
+  {
+    key: 2,
+    label: "建成年份：",
+    content: parkInfo.value?.yearOfFinishBuilding + "年",
+    position: { top: "13px", left: "0px" },
+  },
+  {
+    key: 3,
+    label: "园区位置：",
+    content: parkInfo.value?.location,
+    position: { top: "13px", left: "105px" },
+  },
+  {
+    key: 4,
+    label: "总建筑面积：",
+    content: parkInfo.value?.totalBuildingArea + "万m²",
+    position: { top: "27px", left: "0px" },
+  },
+  {
+    key: 5,
+    label: "楼栋数量：",
+    content: parkInfo.value?.totalUnit + "栋",
+    position: { top: "27px", left: "105px" },
+  },
+  {
+    key: 6,
+    label: "租金区间：",
+    content: parkInfo.value?.rentPriceStartAt + "元/m²/月 - " + parkInfo.value?.rentPriceEndAt + "元/m²/月",
+    position: { top: "40px", left: "0px" },
+    width: "105px",
+  },
+  {
+    key: 7,
+    label: "售价区间：",
+    content: parkInfo.value?.sellPriceStartAt + "元/m² - " + parkInfo.value?.sellPriceEndAt + "元/m²",
+    position: { top: "54px", left: "0px" },
+    width: "105px",
+  },
+])
 </script>
 
 <style scoped>
@@ -117,11 +134,12 @@
   }
 
   .text_container {
-    width: 210px;
+    width: 250px;
     height: 93px;
     position: absolute;
     left: 0;
     top: 113px;
+
   }
 
   .text_label {
@@ -161,6 +179,8 @@
     text-align: left;
     font-style: normal;
     text-indent: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
 
