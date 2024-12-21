@@ -135,6 +135,7 @@
 	errorAlertSubject.subscribe((data) => {
 		if (data !== null) {
 			errorDetail.value = data;
+			showDeviceDetail.value = false;
 			showErrorDetail.value = true;
 			console.log(errorDetail.value);
 		} else {
@@ -145,6 +146,7 @@
 	deviceSelectSubject.subscribe((data) => {
 		if (data !== null) {
 			deviceDetail.value = data;
+			showErrorDetail.value = false;
 			showDeviceDetail.value = true;
 			console.log(deviceDetail.value);
 		} else {
