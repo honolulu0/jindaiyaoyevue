@@ -73,21 +73,21 @@
 	};
 	const cheJianLouCengList = {
 		"1号车间A座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"1号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
+		"1号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 1, "B1": 1 },
+		"1号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 2, "B1": 2 },
+		"1号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 3, "B1": 3 },
+		"1号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 4, "B1": 4 },
+		"1号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 5, "B1": 5 },
+		"1号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 6, "B1": 6 },
+		"1号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 7, "B1": 7 },
 		"2号车间A座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 },
-		"2号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 0 }
+		"2号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 1, "B1": 1 },
+		"2号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 2, "B1": 2 },
+		"2号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 3, "B1": 3 },
+		"2号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 4, "B1": 4 },
+		"2号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 5, "B1": 5 },
+		"2号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 6, "B1": 6 },
+		"2号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 7, "B1": 7 }
 	};
 
 	// 默认使用的当前楼层
@@ -95,9 +95,8 @@
 	let paringTitle = ref(cheJianList[buildingName.value as keyof typeof cheJianList]);
 	let parkingData = ref(cheJianLouCengList[paringTitle.value as keyof typeof cheJianLouCengList]); // 初始化为楼层列表
 
-
 	// 点击楼层的操作
-	function handleJujiaoLouceng(floorId: number) {
+	function handleJujiaoLouceng(floorId : number) {
 		// 触发 UE 调用
 		window.ue.call("kanlouceng", {
 			"BuildingName": buildingName,
@@ -161,7 +160,7 @@
 				// kanlouceng(msg.name)
 				buildingName = building.name
 				paringTitle.value = cheJianList[building.name as keyof typeof cheJianList]
-				// cheJianLouCengList[paringTitle];
+				parkingData.value = cheJianLouCengList[paringTitle.value as keyof typeof cheJianLouCengList];
 				jujiao()
 			};
 			window.ue.interface.getchuanganqi = (msg) => {
