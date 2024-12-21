@@ -1,4 +1,4 @@
-import { topTabsSubject } from '@/event';
+import { parkingSubject, topTabsSubject } from '@/event';
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -85,6 +85,12 @@ router.afterEach((to, from) => {
 
   if (pathToIndex.hasOwnProperty(to.path)) {
     topTabsSubject.next(pathToIndex[to.path as keyof typeof pathToIndex] ?? 0);
+
+    if (to.path === "/parkFacilities" || to.path === "/comprehensiveSituation" || to.path === "/parkInvestmentPromotion" || to.path === "/securitySituation") {
+      parkingSubject.next(true);
+    } else {
+      parkingSubject.next(false);
+    }
   }
 });
 
