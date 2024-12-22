@@ -44,7 +44,8 @@
           </div>
         </div>
         <div v-if="loading" class="loading">加载中...</div>
-        <div v-if="!hasMore && list.length > 0" class="no-more">没有更多数据</div>
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div v-if="!hasMore && list.length > 0 && !errorMessage" class="no-more">没有更多数据</div>
       </div>
     </div>
   </div>
@@ -67,6 +68,9 @@
   const loading = ref(false);
   const hasMore = ref(true);
 
+  const errorMessage = ref('');
+  const retryCountdown = ref(0);
+
   const getDisplayData = (item: any) => {
     const { raw, ...displayData } = item;
     return displayData;
@@ -77,6 +81,7 @@
     
     try {
       loading.value = true;
+      errorMessage.value = '';
       if (isRefresh) {
         currentPage.value = 1;
         list.value = [];
@@ -104,6 +109,18 @@
       }
     } catch (error) {
       console.error("加载异常告警数据失败:", error);
+      hasMore.value = false;
+      list.value = isRefresh ? [] : list.value;
+      errorMessage.value = '数据加载失败，30秒后重试';
+      
+      retryCountdown.value = 30;
+      const countdownTimer = setInterval(() => {
+        retryCountdown.value--;
+        errorMessage.value = `数据加载失败，${retryCountdown.value}秒后重试`;
+        if (retryCountdown.value <= 0) {
+          clearInterval(countdownTimer);
+        }
+      }, 1000);
     } finally {
       loading.value = false;
     }
@@ -259,5 +276,12 @@
     padding: 5px 0;
     font-size: 12px;
     color: #94dcef;
+  }
+
+  .error-message {
+    text-align: center;
+    padding: 5px 0;
+    font-size: 12px;
+    color: #ff6b6b;
   }
 </style>
