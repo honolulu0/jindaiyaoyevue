@@ -206,13 +206,17 @@
   watch(
     () => [props.currentYearData, props.lastYearData],
     () => {
-      const chart = echarts.init(chartRef.value);
+      const chart = echarts.init(chartRef.value, null, {
+        renderer: 'svg'  // 使用SVG渲染器
+      });
       chart.setOption(option.value);
     }
   );
 
   onMounted(() => {
-    const chart = echarts.init(chartRef.value);
+    const chart = echarts.init(chartRef.value, null, {
+      renderer: 'svg'  // 使用SVG渲染器
+    });
     chart.setOption(option.value);
 
     window.addEventListener("resize", () => {

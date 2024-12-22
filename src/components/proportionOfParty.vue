@@ -20,9 +20,11 @@ onMounted(async () => {
     getTop5PartyData(),
     getPartyBuildingData()
   ]);
-  
-  const chart = echarts.init(chartRef.value);
-  
+
+  const chart = echarts.init(chartRef.value, null, {
+    renderer: "svg",
+  });
+
   const option = {
     legend: {
       data: [`${new Date().getFullYear()}年`],

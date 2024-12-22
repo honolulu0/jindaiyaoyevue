@@ -143,7 +143,9 @@
   };
 
   const initChart = () => {
-    chart = echarts.init(chartRef.value);
+    chart = echarts.init(chartRef.value, null, {
+      renderer: "svg",
+    });
     updateChart();
 
     window.addEventListener("resize", () => {

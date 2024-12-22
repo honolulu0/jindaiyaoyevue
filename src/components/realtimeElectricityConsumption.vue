@@ -154,7 +154,9 @@
 
   onMounted(() => {
     if (chartRef.value) {
-      const chart = echarts.init(chartRef.value);
+      const chart = echarts.init(chartRef.value, null, {
+        renderer: "svg",
+      });
       chart.setOption(option.value);
       window.addEventListener("resize", () => {
         chart.resize();
@@ -166,7 +168,9 @@
   watch(
     () => [data.powerData, data.waterData],
     () => {
-      const chart = echarts.init(chartRef.value);
+      const chart = echarts.init(chartRef.value, null, {
+        renderer: 'svg'  // 使用SVG渲染器
+      });
       chart.setOption(option.value);
     }
   );
