@@ -5,7 +5,7 @@
   >
     <div class="bg_top"></div>
     <span class="title">建中·金岱生物医药产业园</span>
-    <span class="sub_title">Jindai Digital Innovation Park</span>
+    <span class="sub_title">JINDAI Biomedical Industry Park</span>
     <div class="tab_container">
       <TopTab
         v-for="tab in tabsName"

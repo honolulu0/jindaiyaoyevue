@@ -138,7 +138,7 @@
 					console.log("ue callback:" + rv);
 				}
 			);
-			parkingShow.value = false
+			// parkingShow.value = false
 			return
 		} else if (key == "全部") {
 			jujiao("DX")
@@ -191,13 +191,25 @@
 			showDeviceDetail.value = false;
 			showErrorDetail.value = true;
 			console.log(errorDetail.value);
-			console.log(data,data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false);
-			juJiaoYiChangChuanGanQi(data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false)
+			console.log(data, data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false);
+
+			if (data.lou == "DX") {
+				jujiao("DX")
+			}
+
+			// 先变色
+			chuanganqibianseyichang(data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false)
+			// 再聚焦
+			setTimeout(() => {
+				juJiaoChuanGanQi(data.lou, data.ceng, data.device_name)
+				chuanganqibianseyichang(data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false)
+			}, 2000)
+
 		} else {
 			showErrorDetail.value = false;
 		}
 	});
-	function juJiaoYiChangChuanGanQi(BuildingName : string, floorId : number, SensorName : string, Warning : boolean) {
+	function chuanganqibianseyichang(BuildingName : string, floorId : number, SensorName : string, Warning : boolean) {
 		// 创建一个临时变量，保存 buildingName 的值 
 
 		// {
@@ -207,9 +219,9 @@
 		//     "Warning": true
 		// }
 		// warning字段用来控制是否开启报警，或是关闭报警
-		console.log(BuildingName, floorId,SensorName,Warning);
+		console.log(BuildingName, floorId, SensorName, Warning);
 		window.ue.call(
-			"juJiaoYiChangChuanGanQi",
+			"jujiaoyichangchuanganqi",
 			{
 				"BuildingName": BuildingName,
 				"FloorID": floorId,
@@ -227,7 +239,7 @@
 			showErrorDetail.value = false;
 			showDeviceDetail.value = true;
 			console.log(deviceDetail.value);
-			console.log(data,data.lou, data.ceng, data.device_name);
+			console.log(data, data.lou, data.ceng, data.device_name);
 			juJiaoChuanGanQi(data.lou, data.ceng, data.device_name)
 		} else {
 			showDeviceDetail.value = false;
@@ -244,9 +256,9 @@
 		//     "SensorName": "CGQ_1A_001"
 		// } juJiaoYiChangChuanGanQi
 		// yinchangXianshiChuanganqiByLeibie
-			console.log(BuildingName,floorId,SensorName);
+		console.log(BuildingName, floorId, SensorName);
 		window.ue.call(
-			"setChuanGanQi",
+			"jujiaochuanganqi",
 			{
 				"BuildingName": BuildingName,
 				"FloorID": floorId,
@@ -300,6 +312,9 @@
 		} catch (error) {
 			console.error("错误:", error);
 		}
+		// setTimeout(() => {
+		// 	jujiao("DX")
+		// },3000)
 
 	});
 </script>
@@ -424,7 +439,7 @@
 		justify-content: center;
 	}
 
-/* 	.defense_deployment_success {
+	/* 	.defense_deployment_success {
 		background-image: url("@/assets/弹窗背景.png");
 		background-size: 100%;
 		width: 587px;
@@ -433,7 +448,7 @@
 		align-items: center;
 		justify-content: center;
 	} */
-/* 
+	/* 
 	.defense_deployment_success_close_btn {
 		background-image: url("@/assets/关闭按钮.png");
 		background-size: 100%;
