@@ -20,10 +20,11 @@
         <div class="device-type">{{ deviceDetail.location }}</div>
         <div>设备实时状态:</div>
         <div class="device-realtime-status">
-          <VueJsonPretty
+			<div class="device-name" style="#00FF00">正常</div>
+ <!--         <VueJsonPretty
             style="width: max-content; height: max-content"
             :data="deviceDetail.realtime_data"
-          />
+          /> -->
         </div>
       </div>
       <TitleComponent

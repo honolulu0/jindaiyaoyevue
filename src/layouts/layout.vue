@@ -53,7 +53,7 @@
 	import DeviceDetail from "@/components/deviceDetail.vue";
 	// import { parkingSubject } from "@/event";
 	const isShow = ref(true);
-	const parkingShow = ref(false);
+	const parkingShow = ref(true);
 	const cheJianList = {
 		"1A": "1号车间A座",
 		"1B": "1号车间B座",
