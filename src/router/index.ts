@@ -1,4 +1,5 @@
 import { parkingSubject, topTabsSubject } from '@/event';
+import { isShowAllBlackSubject } from '@/utils/isShowSubject';
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -90,6 +91,14 @@ router.afterEach((to, from) => {
       parkingSubject.next(true);
     } else {
       parkingSubject.next(false);
+    }
+
+    if (to.path === "/parkPolicy" || to.path === "/parkEnterprise" || to.path === "/parkServices" || to.path === "/partyBuilding") {
+      isShowAllBlackSubject.next(true);
+      console.log("set isShowAllBlackSubject to true");
+    } else {
+      isShowAllBlackSubject.next(false);
+      console.log("set isShowAllBlackSubject to false");
     }
   }
 });
