@@ -139,7 +139,7 @@
   };
 
   onMounted(async () => {
-    myChart = echarts.init(chartRef.value);
+    myChart = echarts.init(chartRef.value, undefined, { renderer: "svg" });
     await updateChartData();
 
     // 每30秒更新一次数据

@@ -40,10 +40,14 @@
     currentYearData.value = thisYear.stats.map((item: any) => item.total_count);
     lastYearData.value = lastYear.stats.map((item: any) => item.total_count);
     console.log(thisYear.totals.total_processed, lastYear.totals.total_count);
-    handleData.value =
-      ((thisYear.totals.total_processed / thisYear.totals.total_count) * 100).toFixed(0);
+    handleData.value = (
+      (thisYear.totals.total_processed / thisYear.totals.total_count) *
+      100
+    ).toFixed(0);
 
-    chartInstance.value = echarts.init(chartRef.value);
+    chartInstance.value = echarts.init(chartRef.value, undefined, {
+      renderer: "svg",
+    });
     chartInstance.value.setOption(option.value);
 
     const handleResize = () => chartInstance.value?.resize();
@@ -58,7 +62,7 @@
   const currentYearData = ref([10, 12, 15, 20, 15, 12, 10, 8, 12, 15, 10, 1]);
   const lastYearData = ref([30, 20, 10, 30, 25, 10, 8, 15, 20, 25, 30, 10]);
 
-  const handleData = ref(0)
+  const handleData = ref(0);
 
   const chartRef = ref();
 

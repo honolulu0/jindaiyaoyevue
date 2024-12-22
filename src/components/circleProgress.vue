@@ -6,6 +6,7 @@
     <v-chart
       :option="option"
       autoresize
+      :init-options="{ renderer: 'svg' }"
     />
   </div>
 </template>
