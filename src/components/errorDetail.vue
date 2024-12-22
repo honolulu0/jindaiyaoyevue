@@ -135,8 +135,8 @@ import { processError } from "@/apis/processError";
     position: absolute;
     left: 20px;
     top: 73px;
-    background-color: rgba(65, 108, 145, 1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(65, 108, 145, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px 0 0 10px;
     overflow: hidden;
   }

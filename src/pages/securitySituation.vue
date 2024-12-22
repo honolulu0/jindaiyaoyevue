@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
-    <SecurityEquipment v-if="!isShowDetail" />
-    <AreaMonitoring v-if="!isShowDetail" />
+    <SecurityEquipment v-show="!isShowDetail" />
+    <AreaMonitoring v-show="!isShowDetail" />
     <SecurityOpMenu @onButtonClick="handleButtonClick" />
     <ErrorAlert @itemClick="handleItemClick" />
     <CarEnterRecord />
@@ -40,6 +40,8 @@
   import AreaMonitoring from "@/components/areaMonitoring.vue";
   import ErrorDetail from "@/components/errorDetail.vue";
   import { ref } from "vue";
+  import { errorAlertSubject } from "@/utils/errorAlertSubject";
+import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 
   const modelData = ref({
     title: "",
@@ -63,7 +65,21 @@
 
   const isShowDetail = ref(false);
 
-  const isShowModel = ref(false);
+  errorAlertSubject.subscribe((item) => {
+    if (item !== null) {
+      isShowDetail.value = true;
+    } else {
+      isShowDetail.value = false;
+    }
+  });
+
+  deviceSelectSubject.subscribe((item) => {
+    if (item !== null) {
+      isShowDetail.value = true;
+    } else {
+      isShowDetail.value = false;
+    }
+  });
 
   const handleButtonClick = (
     value: "布防" | "撤防",

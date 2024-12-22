@@ -11,11 +11,14 @@ export interface ErrorAlert {
   is_processed: boolean;
 }
 
-export const getErrorAlert = async (): Promise<ErrorAlert[]> => {
+export const getErrorAlert = async (params: {
+  page: number;
+  pageSize: number;
+}): Promise<ErrorAlert[]> => {
   const res = await axiosInstance.get<any>("/park_api/alerts", {
     params: {
-      page: 1,
-      pageSize: 10000,
+      page: params.page ?? 1,
+      pageSize: params.pageSize ?? 10000,
     },
   });
   return res.data.items;

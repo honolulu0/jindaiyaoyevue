@@ -1,12 +1,19 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
-    <DistributionBoxInfo />
+    <DistributionBoxInfo v-show="isShow" />
     <DistributionBoxWarning
       :currentYearData="currentYearData"
       :lastYearData="lastYearData"
+      v-show="isShow"
     />
-    <DistributionBoxElectricityCount :chartData="chartData" />
-    <DistributionBoxVoltage :option="voltageOption" />
+    <DistributionBoxElectricityCount
+      :chartData="chartData"
+      v-show="isShow"
+    />
+    <DistributionBoxVoltage
+      :option="voltageOption"
+      v-show="isShow"
+    />
     <DistributionBoxTempRing :data="tempData" />
     <DistributionBoxTempLineChart :option="voltageOption" />
     <PowerErrorAlert />
@@ -22,6 +29,8 @@
   import DistributionBoxTempLineChart from "@/components/distributionBoxTempLineChart.vue";
   import PowerErrorAlert from "@/components/powerErrorAlert.vue";
   import { ref } from "vue";
+import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+import { errorAlertSubject } from "@/utils/errorAlertSubject";
   const currentYearData = ref([10, 12, 15, 20, 15, 12, 10, 8, 12, 15, 10, 1]);
   const lastYearData = ref([30, 20, 10, 30, 25, 10, 8, 15, 20, 25, 30, 10]);
   const chartData = ref([
@@ -54,6 +63,24 @@
   const generateRandomData = (length = 12) => {
     return Array.from({ length }, () => Math.floor(Math.random() * 30) + 1);
   };
+
+  const isShow = ref(true);
+
+  deviceSelectSubject.subscribe((item) => {
+    if (item !== null) {
+      isShow.value = false;
+    } else {
+      isShow.value = true;
+    }
+  });
+
+  errorAlertSubject.subscribe((item) => {
+    if (item !== null) {
+      isShow.value = false;
+    } else {
+      isShow.value = true;
+    }
+  });
 
   // 生成随机数据
   const randomData = generateRandomData();
