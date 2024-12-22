@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div class="list_body">
+      <div class="list_body" @scroll="handleScroll">
         <div
           class="list_body_content"
           v-for="(item, index) in list"
@@ -42,6 +42,8 @@
             </div>
           </div>
         </div>
+        <div v-if="loading" class="loading">加载中...</div>
+        <div v-if="!hasMore && list.length > 0" class="no-more">没有更多数据</div>
       </div>
     </div>
   </div>
@@ -53,6 +55,7 @@
   import { getErrorAlert } from "@/apis/errorAlert";
   import type { ErrorAlert } from "@/apis/errorAlert";
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
+import dayjs from "dayjs";
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
@@ -64,31 +67,68 @@
 
   let timer: number | null = null;
 
-  const loadData = async () => {
+  const pageSize = ref(10);
+  const currentPage = ref(1);
+  const loading = ref(false);
+  const hasMore = ref(true);
+
+  const loadData = async (isRefresh = true) => {
+    if (loading.value || (!hasMore.value && !isRefresh)) return;
+    
     try {
-      const data = await getErrorAlert();
-      list.value = data.map(item => ({
+      loading.value = true;
+      if (isRefresh) {
+        currentPage.value = 1;
+        list.value = [];
+      }
+      
+      const data = await getErrorAlert({
+        page: currentPage.value,
+        pageSize: pageSize.value
+      });
+      
+      const formattedData = data.map(item => ({
         raw: item,
         row1: item.location,
         row2: item.msg_content,
-        row3: item.create_time.substring(11, 16),
+        row3: dayjs(item.create_time).format("YYYY/MM/DD HH:mm"),
         row4: item.is_processed ? '已处理' : '未处理',
         row5: '查看'
       }));
+
+      list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
+      
+      hasMore.value = formattedData.length === pageSize.value;
+      if (hasMore.value) {
+        currentPage.value++;
+      }
     } catch (error) {
       console.error('加载异常告警数据失败:', error);
+    } finally {
+      loading.value = false;
     }
   };
 
-  errorAlertSubject.subscribe(item => {
+  const handleScroll = (e: Event) => {
+    const target = e.target as HTMLElement;
+    const scrollHeight = target.scrollHeight;
+    const scrollTop = target.scrollTop;
+    const clientHeight = target.clientHeight;
+    
+    if (scrollHeight - scrollTop - clientHeight < 20) {
+      loadData(false);
+    }
+  };
+
+  const subscription = errorAlertSubject.subscribe((item) => {
     if (item === null) {
       loadData();
     }
   });
 
   onMounted(() => {
-    loadData();
-    timer = setInterval(loadData, 30000);
+    loadData(true);
+    timer = setInterval(() => loadData(true), 30000);
   });
 
   onUnmounted(() => {
@@ -96,6 +136,7 @@
       clearInterval(timer);
       timer = null;
     }
+    subscription.unsubscribe();
   });
 </script>
 
@@ -205,5 +246,13 @@
   .list_body_icon_img {
     margin-top: 4px;
     background-image: url("@/assets/parkFacilities/设备异常列表中icon.png");
+  }
+
+  .loading,
+  .no-more {
+    text-align: center;
+    padding: 5px 0;
+    font-size: 12px;
+    color: #94dcef;
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
-    <SmartDevice />
-    <DeviceList />
+    <SmartDevice v-show="isShow" />
+    <DeviceList v-show="isShow" />
     <SecurityOpMenu @onButtonClick="handleButtonClick" />
     <ErrorAlert />
     <CarEnterRecord />
@@ -35,12 +35,32 @@
   import CarEnterRecord from "@/components/carEnterRecord.vue";
 
   import { ref } from "vue";
+import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+import { errorAlertSubject } from "@/utils/errorAlertSubject";
 
   const isShowModel = ref(false);
   const modelData = ref({
     title: "",
     content: "",
     err: false,
+  });
+
+  const isShow = ref(true);
+
+  deviceSelectSubject.subscribe((item) => {
+    if (item !== null) { 
+      isShow.value = false;
+    } else {
+      isShow.value = true;
+    }
+  });
+
+  errorAlertSubject.subscribe((item) => {
+    if (item !== null) {
+      isShow.value = false;
+    } else {
+      isShow.value = true;
+    }
   });
 
   const handleButtonClick = (

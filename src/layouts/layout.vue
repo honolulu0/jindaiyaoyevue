@@ -424,7 +424,7 @@
 		justify-content: center;
 	}
 
-	.defense_deployment_success {
+/* 	.defense_deployment_success {
 		background-image: url("@/assets/弹窗背景.png");
 		background-size: 100%;
 		width: 587px;
@@ -432,14 +432,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
+	} */
+/* 
 	.defense_deployment_success_close_btn {
 		background-image: url("@/assets/关闭按钮.png");
 		background-size: 100%;
 		width: 14px;
 		height: 14px;
-	}
+	} */
 
 	.defense_deployment_success_content {
 		font-family: YouSheBiaoTiHei;
