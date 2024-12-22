@@ -10,7 +10,7 @@
 					</div>
 					<div class="parking_content">
 						<div class="parking_content_item" v-for="(value, key) in parkingData" :key="key"
-							@click="handleJujiaoLouceng(value)">
+							@click="handleJujiaoLouceng(key,value)">
 							<div class="parking_content_item_bg">
 								<div class="parking_content_item_value">
 									<span>{{ key }}</span>
@@ -52,7 +52,7 @@
 	import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 	import DeviceDetail from "@/components/deviceDetail.vue";
 	import { parkingSubject } from "@/event";
-	const isShow = ref(true);
+	const isShow = ref(false);
 	const parkingShow = ref(true);
 	const cheJianList = {
 		"1A": "1号车间A座",
@@ -72,23 +72,42 @@
 		"2G": "2号车间G座",
 		"2H": "2号车间H座",
 	};
+
+	const diCengList = {
+		"1A": "1F",
+		"1B": "1F",
+		"1C": "1F",
+		"1D": "1F",
+		"1E": "1F",
+		"1F": "1F",
+		"1G": "1F",
+		"1H": "1F",
+		"2A": "2F",
+		"2B": "2F",
+		"2C": "2F",
+		"2D": "2F",
+		"2E": "2F",
+		"2F": "2F",
+		"2G": "2F",
+		"2H": "2F",
+	};
 	const cheJianLouCengList = {
-		"1号车间A座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 1 },
-		"1号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 1, "B1": 0 },
-		"1号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 2, "B1": 0 },
-		"1号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 3, "B1": 0 },
-		"1号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 4, "B1": 0 },
-		"1号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 5, "B1": 3 },
-		"1号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 6, "B1": 3 },
-		"1号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 7, "B1": 3 },
-		"2号车间A座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "B1": 1 },
-		"2号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 1, "B1": 2 },
-		"2号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 2, "B1": 2 },
-		"2号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 3, "B1": 2 },
-		"2号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 4, "B1": 2 },
-		"2号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 5, "B1": 3 },
-		"2号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 6, "B1": 3 },
-		"2号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 7, "B1": 1 },
+		"1号车间A座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "P": 1, "主视图": 0 },
+		"1号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 1, "P": 0, "主视图": 0 },
+		"1号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 2, "P": 0, "主视图": 0 },
+		"1号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 3, "P": 0, "主视图": 0 },
+		"1号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 4, "P": 0, "主视图": 0 },
+		"1号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 5, "P": 3, "主视图": 0 },
+		"1号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 6, "P": 3, "主视图": 0 },
+		"1号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 7, "P": 3, "主视图": 0 },
+		"2号车间A座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 0, "P": 1, "主视图": 0 },
+		"2号车间B座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 1, "P": 2, "主视图": 0 },
+		"2号车间C座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 2, "P": 2, "主视图": 0 },
+		"2号车间D座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 3, "P": 2, "主视图": 0 },
+		"2号车间E座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 4, "P": 2, "主视图": 0 },
+		"2号车间F座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 5, "P": 3, "主视图": 0 },
+		"2号车间G座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 6, "P": 3, "主视图": 0 },
+		"2号车间H座": { "5F": 3, "4F": 2, "3F": 1, "2F": 0, "1F": 7, "P": 1, "主视图": 0 },
 	};
 
 	// 默认使用的当前楼层
@@ -101,12 +120,33 @@
 	); // 初始化为楼层列表
 
 	// 点击楼层的操作
-	function handleJujiaoLouceng(floorId : number) {
-		// 触发 UE 调用
+	function handleJujiaoLouceng(key : string, floorId : number) {
+		// 创建一个临时变量，保存 buildingName 的值
+
+		console.log(buildingName.value, key, floorId);
+		let tempName = buildingName.value;
+
+		if (key == "P") {
+			tempName = key;  // 将临时变量 tempName 修改为 'P'
+		} else if (key == "1F") {
+			tempName = diCengList[buildingName.value as keyof typeof diCengList] + "1"
+		} else if (key == "主视图") {
+			window.ue.call(
+				"reback",
+				{},
+				function (rv) {
+					console.log("ue callback:" + rv);
+				}
+			);
+			isShow.value = false
+			return
+		}
+
+
 		window.ue.call(
 			"kanlouceng",
 			{
-				BuildingName: buildingName,
+				BuildingName: tempName,
 				FloorID: floorId,
 			},
 			function (rv) {
@@ -175,8 +215,9 @@
 		try {
 			if (window.ue && window.ue.interface) {
 				window.ue.interface.setlouzuo = (building) => {
+					isShow.value = true
 					console.log(building);
-					buildingName = building.name;
+					buildingName.value = building.name;
 					paringTitle.value =
 						cheJianList[building.name as keyof typeof cheJianList];
 					parkingData.value =
