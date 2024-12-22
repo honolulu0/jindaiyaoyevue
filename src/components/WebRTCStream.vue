@@ -34,7 +34,7 @@
     },
     webrtcUrl: {
       type: String,
-      default: "http://localhost:4000", // webrtc-streamer 服务地址
+      default: "http://localhost:8000", // webrtc-streamer 服务地址
     },
   });
 
