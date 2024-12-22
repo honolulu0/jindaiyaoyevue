@@ -147,7 +147,9 @@
   });
 
   onMounted(() => {
-    chart = echarts.init(chartRef.value);
+    chart = echarts.init(chartRef.value, null, {
+      renderer: "svg",
+    });
     chart.setOption(getChartOption());
   });
 

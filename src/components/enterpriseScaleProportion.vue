@@ -141,7 +141,9 @@
   };
 
   onMounted(() => {
-    myChart = echarts.init(chartRef.value);
+    myChart = echarts.init(chartRef.value, null, {
+      renderer: "svg",
+    });
     initChart();
     
     // 设置5分钟刷新

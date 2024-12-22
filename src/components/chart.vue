@@ -255,7 +255,9 @@
   );
 
   onMounted(() => {
-    myChart = echarts.init(chartRef.value as HTMLElement);
+    myChart = echarts.init(chartRef.value as HTMLElement, null, {
+      renderer: "svg",
+    });
     initChart();
 
     window.addEventListener("resize", () => {

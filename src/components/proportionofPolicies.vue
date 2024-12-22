@@ -58,9 +58,15 @@
         otherPercentage
       });
 
-      const chart1 = echarts.init(chartRef1.value);
-      const chart2 = echarts.init(chartRef2.value);
-      const chart3 = echarts.init(chartRef3.value);
+      const chart1 = echarts.init(chartRef1.value, null, {
+        renderer: "svg",
+      });
+      const chart2 = echarts.init(chartRef2.value, null, {
+        renderer: "svg",
+      });
+      const chart3 = echarts.init(chartRef3.value, null, {
+        renderer: "svg",
+      });
 
       const option1 = {
         series: [
