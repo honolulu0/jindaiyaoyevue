@@ -4,7 +4,7 @@
 		<Transition name="fade">
 			<div v-if="isShow">
 				<div class="bg_left"></div>
-				<div class="parking" v-if="parkingShow">
+				<div class="parking" v-show="parkingShow">
 					<div class="parking_title">
 						<span>{{ paringTitle }}</span>
 					</div>
@@ -28,7 +28,7 @@
 			</div>
 		</Transition>
 
-		<ErrorDetail :item="errorDetail" :title="'安防'" v-if="showErrorDetail" />
+		<ErrorDetail :item="errorDetail"  :title="errorDetail.device_type_name" v-if="showErrorDetail" />
 
 		<DeviceDetail :item="deviceDetail" :title="'设备详情'" v-if="showDeviceDetail" />
 
@@ -51,9 +51,9 @@
 	import { errorAlertSubject } from "@/utils/errorAlertSubject";
 	import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 	import DeviceDetail from "@/components/deviceDetail.vue";
-	import { parkingSubject } from "@/event";
-	const isShow = ref(false);
-	const parkingShow = ref(true);
+	// import { parkingSubject } from "@/event";
+	const isShow = ref(true);
+	const parkingShow = ref(false);
 	const cheJianList = {
 		"1A": "1号车间A座",
 		"1B": "1号车间B座",
@@ -138,7 +138,7 @@
 					console.log("ue callback:" + rv);
 				}
 			);
-			isShow.value = false
+			parkingShow.value = false
 			return
 		}
 
@@ -187,36 +187,86 @@
 			showDeviceDetail.value = false;
 			showErrorDetail.value = true;
 			console.log(errorDetail.value);
+			// juJiaoYiChangChuanGanQi(data.location, data.location, data.device_name, data.is_processed === 0 ? true : false)
 		} else {
 			showErrorDetail.value = false;
 		}
 	});
+	function juJiaoYiChangChuanGanQi(BuildingName : string, floorId : number, SensorName : string, Warning : boolean) {
+		// 创建一个临时变量，保存 buildingName 的值 
 
+		// {
+		//     "BuildingName": "1A",
+		//     "FloorID": 0,
+		//     "SensorName": "CGQ_1A_001",
+		//     "Warning": true
+		// }
+		// warning字段用来控制是否开启报警，或是关闭报警
+		window.ue.call(
+			"juJiaoYiChangChuanGanQi",
+			{
+				"BuildingName": BuildingName,
+				"FloorID": floorId,
+				"SensorName": SensorName
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+	}
 	deviceSelectSubject.subscribe((data) => {
 		if (data !== null) {
 			deviceDetail.value = data;
 			showErrorDetail.value = false;
 			showDeviceDetail.value = true;
 			console.log(deviceDetail.value);
+			// juJiaoChuanGanQi(data.location, data.location, data.device_name)
 		} else {
 			showDeviceDetail.value = false;
 		}
 	});
 
-	parkingSubject.subscribe((data) => {
-		if (data == true) {
-			parkingShow.value = true;
-		} else {
-			parkingShow.value = false;
-		}
-	});
+
+	function juJiaoChuanGanQi(BuildingName : string, floorId : number, SensorName : string) {
+		// 创建一个临时变量，保存 buildingName 的值 
+
+		// {
+		//     "BuildingName": "1A",
+		//     "FloorID": 0,
+		//     "SensorName": "CGQ_1A_001"
+		// } juJiaoYiChangChuanGanQi
+		// yinchangXianshiChuanganqiByLeibie
+
+		window.ue.call(
+			"setChuanGanQi",
+			{
+				"BuildingName": BuildingName,
+				"FloorID": floorId,
+				"SensorName": SensorName
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+	}
+
+	// parkingSubject.subscribe((data) => {
+	// 	if (data == true) {
+	// 		parkingShow.value = true;
+	// 	} else {
+	// 		parkingShow.value = false;
+	// 	}
+	// });
 	// 在 `onMounted` 中绑定 `window.ue.interface.getInfoByName`
 	onMounted(() => {
 		try {
 			if (window.ue && window.ue.interface) {
 				window.ue.interface.setlouzuo = (building) => {
-					isShow.value = true
 					console.log(building);
+					if (building.name == "P" || building.name.length === 3) {
+						return
+					}
+					parkingShow.value = true
 					buildingName.value = building.name;
 					paringTitle.value =
 						cheJianList[building.name as keyof typeof cheJianList];
