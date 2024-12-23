@@ -136,23 +136,24 @@ import dayjs from "dayjs";
         list.value = [];
       }
       
-      // const data = await getErrorAlert({
-      //   page: currentPage.value,
-      //   pageSize: pageSize.value
-      // });
+   //    const data = await getErrorAlert({
+   //      page: currentPage.value,
+   //      pageSize: pageSize.value
+   //    });
+	  
+		// 暂时注销演示用
+      // const formattedData = chartData.value.map((item: any) => ({
+      //   raw: item,
+      //   row1: item.titleText,
+      //   row2: "正常",
+      //   row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
+      //   row4: '已处理',
+      //   row5: '查看'
+      // }));
 
-      const formattedData = chartData.value.map((item: any) => ({
-        raw: item,
-        row1: item.titleText,
-        row2: "正常",
-        row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
-        row4: '已处理',
-        row5: '查看'
-      }));
-
-      list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
+      // list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
       
-      hasMore.value = formattedData.length === pageSize.value;
+      // hasMore.value = formattedData.length === pageSize.value;
       if (hasMore.value) {
         currentPage.value++;
       }

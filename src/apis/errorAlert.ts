@@ -12,8 +12,9 @@ export interface ErrorAlert {
 }
 
 export const getErrorAlert = async (params: {
-  page: number;
-  pageSize: number;
+	device_type_name: string;
+	page: number;
+	pageSize: number;
 }): Promise<ErrorAlert[]> => {
   const res = await axiosInstance.get<any>("/park_api/alerts", {
     params: {

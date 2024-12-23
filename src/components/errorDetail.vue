@@ -62,6 +62,7 @@
 			id : string;
 			device_name : string;
 			device_type : string;
+			device_type_name : string;
 			msg_content : string;
 			create_time : string;
 			is_processed : string;
@@ -77,6 +78,7 @@
 			id: "",
 			device_name: "",
 			device_type: "",
+			device_type_name: "",
 			msg_content: "",
 			create_time: "",
 			is_processed: "",

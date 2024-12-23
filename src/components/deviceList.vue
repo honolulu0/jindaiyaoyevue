@@ -61,6 +61,7 @@
   import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 
   const searchValue = ref("");
+  const device_type_name = ref("");
   defineProps({
     top: {
       type: Number,
@@ -106,6 +107,7 @@
 
       const res = await getDeviceList({
         location: searchValue.value,
+        device_type_name: device_type_name.value,
         page: currentPage.value,
         page_size: pageSize.value,
       });

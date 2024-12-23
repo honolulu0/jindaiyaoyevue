@@ -5,6 +5,7 @@ import { getMockDeviceList } from "./mock/deviceList"
 export interface DeviceListParams {
   device_name?: string
   device_type?: string
+  device_type_name: string;
   location?: string
   is_valid?: boolean
   online_status?: boolean
