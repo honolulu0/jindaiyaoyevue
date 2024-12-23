@@ -137,11 +137,12 @@ import dayjs from "dayjs";
       }
       
    //    const data = await getErrorAlert({
+	   // device_type_name: device_type_name.value,
    //      page: currentPage.value,
    //      pageSize: pageSize.value
    //    });
 	  
-		// 暂时注销演示用
+		// 暂时注销演示用， data
       // const formattedData = chartData.value.map((item: any) => ({
       //   raw: item,
       //   row1: item.titleText,
