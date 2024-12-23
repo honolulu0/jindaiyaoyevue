@@ -55,37 +55,37 @@
   const list = ref([
     {
       row1: "1",
-      row2: "A213-KF",
+      row2: "1#1AW1",
       row3: "车间（1F）",
       row4: "正常",
     },
     {
       row1: "2",
-      row2: "A213-KF",
+      row2: "1#1AW2",
       row3: "车间（1F）",
       row4: "正常",
     },
     {
       row1: "3",
-      row2: "A213-KF",
+      row2: "1#1AW3",
       row3: "车间（1F）",
       row4: "正常",
     },
     {
       row1: "1",
-      row2: "A213-KF",
+      row2: "1#1AW4",
       row3: "车间（1F）",
       row4: "正常",
     },
     {
       row1: "2",
-      row2: "A213-KF",
+      row2: "1#1AW5",
       row3: "车间（1F）",
       row4: "正常",
     },
     {
       row1: "3",
-      row2: "A213-KF",
+      row2: "1#1AW6",
       row3: "车间（1F）",
       row4: "正常",
     },

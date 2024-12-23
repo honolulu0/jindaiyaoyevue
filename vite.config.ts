@@ -38,10 +38,12 @@ export default defineConfig({
         changeOrigin: true,
         secure: true,
       },
-      '/uploads': {
-        target: 'http://47.120.12.122:3000/uploads',
-        secure: false
-      }
+		'/uploads': {
+		  target: 'https://jindai3admin.turbo-dev.cn/uploads/',
+		  rewrite: (path) => path.replace(/^\/uploads/, ''),
+		  changeOrigin: true,
+		  secure: false
+		}
     }
   }
 })

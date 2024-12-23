@@ -106,8 +106,8 @@
     },
     yAxis: {
       type: "value",
-      name: "异常个数",
-      interval: 20,
+      name: "数量",
+      interval: 0,
       axisLine: {
         lineStyle: {
           color: "#fff",
