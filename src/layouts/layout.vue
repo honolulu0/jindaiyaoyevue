@@ -194,6 +194,7 @@
 			console.log(data, data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false);
 
 			if (data.lou == "DX") {
+				// 如果传感器位于外部,就先打开外部视角，不然看不到外部的传感器
 				jujiao("DX")
 			}
 
@@ -204,6 +205,8 @@
 				juJiaoChuanGanQi(data.lou, data.ceng, data.device_name)
 				chuanganqibianseyichang(data.lou, data.ceng, data.device_name, data.is_processed === 0 ? true : false)
 			}, 2000)
+
+
 
 		} else {
 			showErrorDetail.value = false;
@@ -282,7 +285,7 @@
 		try {
 			if (window.ue && window.ue.interface) {
 				window.ue.interface.setlouzuo = (building) => {
-					console.log(building);
+					console.log("模型传入的建筑",building);
 					if (building.name == "P" || building.name.length === 3) {
 						return
 					}
@@ -296,14 +299,19 @@
 						];
 				};
 
-				window.ue.interface.setchuanganqi = (msg) => {
-					console.log(msg);
+				window.ue.interface.setchuanganqi = (chuanganqi) => {
+					console.log("模型传入的传感器", chuanganqi);
+
+					errorDetail.value = { "device_name": chuanganqi.SensorName };
+					showDeviceDetail.value = false;
+					showErrorDetail.value = true;
+					// deviceSelectSubject.next();
 				};
 
 
-				window.ue.interface.jsfunc = (msg) => {
-					console.log("jsfunc", msg);
-				}
+				// window.ue.interface.jsfunc = (msg) => {
+				// 	console.log("jsfunc", msg);
+				// }
 
 
 			} else {
