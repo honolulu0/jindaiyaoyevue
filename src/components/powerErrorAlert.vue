@@ -144,7 +144,7 @@ import dayjs from "dayjs";
       const formattedData = chartData.value.map((item: any) => ({
         raw: item,
         row1: item.titleText,
-        row2: "电压过高",
+        row2: "正常",
         row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
         row4: '已处理',
         row5: '查看'
