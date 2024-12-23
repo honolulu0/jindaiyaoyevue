@@ -27,6 +27,8 @@
 
   const emit = defineEmits(["location-click"]);
 
+  let webRtcServer = null;
+
   const props = defineProps({
     url: {
       type: String,
@@ -34,19 +36,34 @@
     },
     webrtcUrl: {
       type: String,
-      default: "http://localhost:8000", // webrtc-streamer 服务地址
+      default: "http://localhost:8001", // webrtc-streamer 服务地址
     },
   });
 
   const videoRef = ref(null);
 
   onMounted(() => {
-    const webRtcServer = new WebRtcStreamer(videoRef.value, props.webrtcUrl);
+    webRtcServer = new WebRtcStreamer(videoRef.value, props.webrtcUrl);
     const videoUrl = props.url;
     const audioUrl = "";
     const options = "rtptransport=tcp&timeout=60";
-    webRtcServer.connect(videoUrl, audioUrl, options);
+    // webRtcServer.connect(videoUrl, audioUrl, options);
   });
+
+  onUnmounted(() => {
+    webRtcServer.disconnect();
+  });
+
+  watch(
+    () => props.url,
+    (newUrl) => {
+      if (newUrl && webRtcServer !== null) {
+        const audioUrl = "";
+        const options = "rtptransport=tcp&timeout=60";
+        webRtcServer.connect(newUrl, audioUrl, options);
+      }
+    }
+  );
 
   const toggleFullscreen = () => {
     const videoContainer = videoRef.value.parentElement;
