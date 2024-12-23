@@ -1,43 +1,36 @@
-import instance from "./axios"
+import {jindai3adminInstance} from "./axios"
 
 // DTO 接口定义
 export interface EmployeeListDTO {
-  code: number
-  msg: string
-  page: number
-  limit: number
-  total: number
-  data: {
-    id: number
-    name: string
-    age: number
-    phone: string
-    position: string
-    dept_name: string
-    company_name: string
-    photo_url: string | null
-    description: string | null
-    create_datetime: string
-  }[]
+    id: string;
+    name: string;
+    company: string;
+    title: string;
+    phone: string;
+    category: string;
+    imgUrl: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 // VO 接口定义
 export interface EmployeeListVO {
   name: string
-  age: number
+  phone: string
   job: string
   img: string
   description: string
 }
 
 // DTO 转 VO 的转换函数
-const convertToVO = (dto: EmployeeListDTO): EmployeeListVO[] => {
-  return dto.data.map(item => ({
+const convertToVO = (dto: EmployeeListDTO[]): EmployeeListVO[] => {
+  return dto.map(item => ({
     name: item.name,
-    age: item.age,
-    job: item.position,
-    img: item.photo_url || '',
-    description: item.description || `${item.name}是一名${item.position},在${item.dept_name}工作。`
+    phone: item.phone,
+    job: item.title,
+    img: item.imgUrl || '',
+    description: item.description || `${item.name}是一名${item.title},在${item.company}工作。`
   }))
 }
 
@@ -52,22 +45,10 @@ export const getEmployeeList = async (params: {
   company_id?: number
   dept_id?: number
 } = {}) => {
-  const defaultParams = {
-    page: 1,
-    limit: 10000,
-    ...params
-  }
 
   try {
-    const res = await instance.get<EmployeeListDTO>('/api/system/employee/employee_list/', {
-      params: defaultParams
-    }) as any
-
-    if (res.code !== 2000) {
-      throw new Error(res.msg || '获取员工列表失败')
-    }
-
-    return convertToVO(res)
+    const res = await jindai3adminInstance.get<EmployeeListDTO>('/employee/all') as any
+    return convertToVO(res.data)
   } catch (error) {
     console.error('获取员工列表失败:', error)
     return []
