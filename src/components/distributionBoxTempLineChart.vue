@@ -51,7 +51,7 @@
     },
     yAxis: {
       type: "value",
-      max: 300,
+      max: 100,
       splitLine: {
         lineStyle: {
           color: "rgba(255,255,255,0.1)",
@@ -98,7 +98,7 @@
               type: "max",
               label: {
                 show: true,
-                formatter: "{c}V",
+                formatter: "{c}℃",
                 color: "#00ffff",
                 fontSize: 5,
                 fontWeight: "bold",
@@ -120,7 +120,7 @@
           silent: true,
           data: [
             {
-              yAxis: 250,
+              yAxis: 50,
               label: {
                 formatter: "警戒线",
                 color: "#E4F3FF",

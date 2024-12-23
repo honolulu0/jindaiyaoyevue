@@ -107,6 +107,7 @@
     yAxis: {
       type: "value",
       name: "数量",
+	  // interval 异常总数量
       interval: 0,
       axisLine: {
         lineStyle: {
@@ -206,6 +207,7 @@
   watch(
     () => [props.currentYearData, props.lastYearData],
     () => {
+		console.log(props.lastYearData);
       const chart = echarts.init(chartRef.value, null, {
         renderer: 'svg'  // 使用SVG渲染器
       });
