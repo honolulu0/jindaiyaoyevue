@@ -334,7 +334,7 @@
 		background-image: url("@/assets/bg_left.png");
 		width: 280px;
 		height: 579px;
-		background-size: 100%;
+		background-size: 280px 579px;
 		z-index: 0;
 		position: absolute;
 		top: 0;
@@ -345,7 +345,7 @@
 		background-image: url("@/assets/bg_right.png");
 		width: 280px;
 		height: 579px;
-		background-size: 100%;
+		background-size: 280px 579px;
 		z-index: 0;
 		position: absolute;
 		top: 0;
