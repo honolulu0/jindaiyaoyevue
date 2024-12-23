@@ -332,7 +332,7 @@
 <style scoped>
 	.bg_left {
 		background-image: url("@/assets/bg_left.png");
-		width: 377px;
+		width: 280px;
 		height: 579px;
 		background-size: 100%;
 		z-index: 0;
@@ -343,7 +343,7 @@
 
 	.bg_right {
 		background-image: url("@/assets/bg_right.png");
-		width: 377px;
+		width: 280px;
 		height: 579px;
 		background-size: 100%;
 		z-index: 0;
