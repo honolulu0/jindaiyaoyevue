@@ -46,7 +46,7 @@
   import { ref } from "vue";
 
   const titleMap = ref({
-    row1: "序号",
+    row1: "表格编号",
     row2: "设备型号",
     row3: "定位",
     row4: "设备状态",
@@ -81,7 +81,7 @@
       row1: "2",
       row2: "A213-KF",
       row3: "车间（1F）",
-      row4: "异常",
+      row4: "正常",
     },
     {
       row1: "3",

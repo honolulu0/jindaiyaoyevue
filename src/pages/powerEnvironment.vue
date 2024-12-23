@@ -34,34 +34,61 @@ import { errorAlertSubject } from "@/utils/errorAlertSubject";
   const currentYearData = ref([10, 12, 15, 20, 15, 12, 10, 8, 12, 15, 10, 1]);
   const lastYearData = ref([30, 20, 10, 30, 25, 10, 8, 15, 20, 25, 30, 10]);
   const chartData = ref([
-    { titleText: "A102-GB", value: 100 },
-    { titleText: "A103-GB", value: 20 },
-    { titleText: "A104-GB", value: 10 },
-    { titleText: "A105-GB", value: 63 },
-    { titleText: "A106-GB", value: 270 },
-    { titleText: "A107-GB", value: 270 },
-    { titleText: "A108-GB", value: 270 },
-    { titleText: "A109-GB", value: 270 },
-    { titleText: "A110-GB", value: 270 },
-    { titleText: "A111-GB", value: 270 },
-    { titleText: "A112-GB", value: 270 },
-    { titleText: "A113-GB", value: 270 },
-    { titleText: "A114-GB", value: 270 },
-    { titleText: "A115-GB", value: 270 },
-    { titleText: "A116-GB", value: 270 },
-    { titleText: "A117-GB", value: 270 },
-    { titleText: "A118-GB", value: 270 },
-    { titleText: "A119-GB", value: 270 },
-    { titleText: "A120-GB", value: 270 },
+    { titleText: "2#1AW1", value: 100 },
+    { titleText: "2#1AW2", value: 20 },
+    { titleText: "2#1AW3", value: 10 },
+    { titleText: "2#1AW4", value: 63 },
+    { titleText: "2#1AW5", value: 270 },
+    { titleText: "2#1AW6", value: 270 },
+    { titleText: "2#1AW7", value: 270 },
+    { titleText: "2#1AW8", value: 270 },
+    { titleText: "1#1AW1", value: 270 },
+    { titleText: "1#1AW2", value: 270 },
+    { titleText: "1#1AW3", value: 270 },
+    { titleText: "1#1AW4", value: 270 },
+    { titleText: "1#1AW5", value: 270 },
+    { titleText: "1#1AW6", value: 270 },
+    { titleText: "1#1AW7", value: 270 },
+    { titleText: "1#1AW8", value: 270 },
+    { titleText: "2#-1ALZ4", value: 270 },
+    { titleText: "2#-1ALZ3", value: 270 },
+    { titleText: "-1AB2", value: 270 },
+    { titleText: "2#-1APZ2", value: 270 },
+    { titleText: "2#-1AP2", value: 270 },
+    { titleText: "2#-1AB2", value: 270 },
+    { titleText: "1#-1AP2", value: 270 },
+    { titleText: "1#1AB2", value: 270 },
+    { titleText: "1#-1APZ1", value: 270 },
+    { titleText: "1#-1APZ2", value: 270 },
+    { titleText: "1#-1AZE1", value: 270 },
+    { titleText: "1#-1ALE2", value: 270 },
+    { titleText: "1#-1APZ2", value: 270 },
+    { titleText: "-1AB2", value: 270 },
+    { titleText: "-1AB1", value: 270 },
+    { titleText: "1#-1ALZ4", value: 270 },
+    { titleText: "1#-1ALZ3", value: 270 },
+    { titleText: "1#-1ALZ2", value: 270 },
+    { titleText: "1#-1ALZ1", value: 270 },
+    { titleText: "-1AB1", value: 270 },
+    { titleText: "2#-1APZ1", value: 270 },
+    { titleText: "2#-1ALZ1", value: 270 },
+    { titleText: "2#-1ALE1", value: 270 },
+    { titleText: "-1ALG1", value: 270 },
+    { titleText: "2#-1ALZ2", value: 270 },
+    { titleText: "apxf", value: 270 },
+    { titleText: "ALZ2", value: 270 },
+    { titleText: "ALZ1", value: 270 },
+    { titleText: "APCD", value: 270 },
+    { titleText: "-1ALE", value: 270 }
   ]);
   const voltageOption = ref({
     xAxisData: chartData.value.map((item) => item.titleText).slice(0, 12),
     seriesData: chartData.value.map((item) => item.value).slice(0, 12),
   });
   const tempData = ref<{ titleText: string; value: number }[]>([]);
-  // 生成随机数据的函数
+  // 生成随机数据的���数
   const generateRandomData = (length = 12) => {
-    return Array.from({ length }, () => Math.floor(Math.random() * 30) + 1);
+    return Array.from({ length }, () => Number((14 + Math.random() * 2).toFixed(1)));
   };
 
   const isShow = ref(true);
@@ -93,8 +120,8 @@ import { errorAlertSubject } from "@/utils/errorAlertSubject";
       (item) => item * 10
     );
     tempData.value = generateRandomData(36).map((item, index) => ({
-      titleText: `A${index + 1}`,
-      value: item * 10,
+      titleText: chartData.value[index].titleText,
+      value: item,
     }));
   }, 3000);
 </script>

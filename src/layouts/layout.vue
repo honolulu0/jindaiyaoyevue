@@ -51,7 +51,7 @@
 	import { errorAlertSubject } from "@/utils/errorAlertSubject";
 	import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 	import DeviceDetail from "@/components/deviceDetail.vue";
-	// import { parkingSubject } from "@/event";
+	import { parkingSubject } from "@/event";
 	const isShow = ref(true);
 	const parkingShow = ref(true);
 	const cheJianList = {
@@ -273,13 +273,13 @@
 		);
 	}
 
-	// parkingSubject.subscribe((data) => {
-	// 	if (data == true) {
-	// 		parkingShow.value = true;
-	// 	} else {
-	// 		parkingShow.value = false;
-	// 	}
-	// });
+	parkingSubject.subscribe((data) => {
+		if (data == true) {
+			parkingShow.value = true;
+		} else {
+			parkingShow.value = false;
+		}
+	});
 	// 在 `onMounted` 中绑定 `window.ue.interface.getInfoByName`
 	onMounted(() => {
 		try {

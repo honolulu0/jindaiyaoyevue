@@ -25,15 +25,16 @@
             style="width: max-content; height: max-content"
             :data="deviceDetail.realtime_data"
           /> -->
+          
         </div>
       </div>
       <TitleComponent
         titleText="监控视频"
         style="margin-top: 10px"
-        v-if="deviceDetail.url"
+        v-if="deviceDetail.url && isReady"
       />
       <div class="device-realtime-status">
-        <WebRTCStream :url="deviceDetail.url" />
+        <WebRTCStream :url="deviceDetail.url" v-if="isReady" />
       </div>
     </div>
     <div class="back-btn">
@@ -78,6 +79,8 @@
     title: string;
   }
 
+  const isReady = ref(false);
+
   const props = withDefaults(defineProps<ErrorDetailType>(), {
     item: () => ({
       device_name: "",
@@ -99,7 +102,7 @@
   onMounted(async () => {
     const res = await getDeviceInfo(props.item.device_name);
     deviceDetail.value = res[0];
-    console.log(deviceDetail.value);
+    isReady.value = true;
   });
 </script>
 

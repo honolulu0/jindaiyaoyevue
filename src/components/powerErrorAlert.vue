@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from "vue";
+  import { ref, onMounted, onUnmounted, defineProps } from "vue";
   import TitleComponent from "./titleComponent.vue";
   import { getErrorAlert } from "@/apis/errorAlert";
   import type { ErrorAlert } from "@/apis/errorAlert";
@@ -60,6 +60,55 @@ import dayjs from "dayjs";
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
+
+  const chartData = ref([
+    { titleText: "2#1AW1", value: 100 },
+    { titleText: "2#1AW2", value: 20 },
+    { titleText: "2#1AW3", value: 10 },
+    { titleText: "2#1AW4", value: 63 },
+    { titleText: "2#1AW5", value: 270 },
+    { titleText: "2#1AW6", value: 270 },
+    { titleText: "2#1AW7", value: 270 },
+    { titleText: "2#1AW8", value: 270 },
+    { titleText: "1#1AW1", value: 270 },
+    { titleText: "1#1AW2", value: 270 },
+    { titleText: "1#1AW3", value: 270 },
+    { titleText: "1#1AW4", value: 270 },
+    { titleText: "1#1AW5", value: 270 },
+    { titleText: "1#1AW6", value: 270 },
+    { titleText: "1#1AW7", value: 270 },
+    { titleText: "1#1AW8", value: 270 },
+    { titleText: "2#-1ALZ4", value: 270 },
+    { titleText: "2#-1ALZ3", value: 270 },
+    { titleText: "-1AB2", value: 270 },
+    { titleText: "2#-1APZ2", value: 270 },
+    { titleText: "2#-1AP2", value: 270 },
+    { titleText: "2#-1AB2", value: 270 },
+    { titleText: "1#-1AP2", value: 270 },
+    { titleText: "1#1AB2", value: 270 },
+    { titleText: "1#-1APZ1", value: 270 },
+    { titleText: "1#-1APZ2", value: 270 },
+    { titleText: "1#-1AZE1", value: 270 },
+    { titleText: "1#-1ALE2", value: 270 },
+    { titleText: "1#-1APZ2", value: 270 },
+    { titleText: "-1AB2", value: 270 },
+    { titleText: "-1AB1", value: 270 },
+    { titleText: "1#-1ALZ4", value: 270 },
+    { titleText: "1#-1ALZ3", value: 270 },
+    { titleText: "1#-1ALZ2", value: 270 },
+    { titleText: "1#-1ALZ1", value: 270 },
+    { titleText: "-1AB1", value: 270 },
+    { titleText: "2#-1APZ1", value: 270 },
+    { titleText: "2#-1ALZ1", value: 270 },
+    { titleText: "2#-1ALE1", value: 270 },
+    { titleText: "-1ALG1", value: 270 },
+    { titleText: "2#-1ALZ2", value: 270 },
+    { titleText: "apxf", value: 270 },
+    { titleText: "ALZ2", value: 270 },
+    { titleText: "ALZ1", value: 270 },
+    { titleText: "APCD", value: 270 },
+    { titleText: "-1ALE", value: 270 }
+  ]);
 
   const getDisplayData = (item: any) => {
     const { raw, ...displayData } = item;
@@ -87,17 +136,17 @@ import dayjs from "dayjs";
         list.value = [];
       }
       
-      const data = await getErrorAlert({
-        page: currentPage.value,
-        pageSize: pageSize.value
-      });
-      
-      const formattedData = data.map(item => ({
+      // const data = await getErrorAlert({
+      //   page: currentPage.value,
+      //   pageSize: pageSize.value
+      // });
+
+      const formattedData = chartData.value.map((item: any) => ({
         raw: item,
-        row1: item.location,
-        row2: item.msg_content,
-        row3: dayjs(item.create_time).format("YYYY/MM/DD HH:mm"),
-        row4: item.is_processed ? '已处理' : '未处理',
+        row1: item.titleText,
+        row2: "电压过高",
+        row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
+        row4: '已处理',
         row5: '查看'
       }));
 

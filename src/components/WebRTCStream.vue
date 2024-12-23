@@ -43,11 +43,12 @@
   const videoRef = ref(null);
 
   onMounted(() => {
+    console.log("onMounted", props);
     webRtcServer = new WebRtcStreamer(videoRef.value, props.webrtcUrl);
     const videoUrl = props.url;
     const audioUrl = "";
     const options = "rtptransport=tcp&timeout=60";
-    // webRtcServer.connect(videoUrl, audioUrl, options);
+    webRtcServer.connect(videoUrl, audioUrl, options);
   });
 
   onUnmounted(() => {
@@ -57,10 +58,17 @@
   watch(
     () => props.url,
     (newUrl) => {
-      if (newUrl && webRtcServer !== null) {
-        const audioUrl = "";
-        const options = "rtptransport=tcp&timeout=60";
-        webRtcServer.connect(newUrl, audioUrl, options);
+      console.log("watch", newUrl);
+      if (webRtcServer !== null) {
+        // 先断开现有连接
+        webRtcServer.disconnect();
+        
+        if (newUrl) {
+          // 建立新连接
+          const audioUrl = "";
+          const options = "rtptransport=tcp&timeout=60";
+          webRtcServer.connect(newUrl, audioUrl, options);
+        }
       }
     }
   );
