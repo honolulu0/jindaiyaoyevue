@@ -7,7 +7,7 @@
           年度用电总耗能
         </span>
         <span class="annualElectricityConsumption-content-total-value">
-          {{ formattedElectricityConsumption }}Kwh
+          {{ formattedElectricityConsumption }}KWh
         </span>
       </div>
       <div class="annualElectricityConsumption-content-history">
@@ -57,7 +57,7 @@
   import { ref, computed, onMounted } from "vue";
   import * as echarts from "echarts";
 
-  const totalElectricityConsumption = ref(1000000);
+  const totalElectricityConsumption = ref(277);
 
   const formattedElectricityConsumption = computed(() => {
     return Math.floor(totalElectricityConsumption.value).toLocaleString();

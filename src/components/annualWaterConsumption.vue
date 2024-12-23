@@ -7,7 +7,7 @@
           年度用水总耗能
         </span>
         <span class="annualWaterConsumption-content-total-value">
-          {{ formattedWaterConsumption }}吨
+          {{ formattedWaterConsumption }}m³
         </span>
       </div>
       <div class="annualWaterConsumption-content-history">
@@ -57,7 +57,7 @@
   import { ref, computed, onMounted } from "vue";
   import * as echarts from "echarts";
 
-  const totalWaterConsumption = ref(1000000);
+  const totalWaterConsumption = ref(30);
 
   const formattedWaterConsumption = computed(() => {
     return Math.floor(totalWaterConsumption.value).toLocaleString();

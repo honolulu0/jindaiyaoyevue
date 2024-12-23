@@ -171,7 +171,7 @@
       },
     },
   ]);
-  const temperature = ref("20°C");
+  const temperature = ref("-4~7°C");
   const time = ref("");
   const date = ref("");
 

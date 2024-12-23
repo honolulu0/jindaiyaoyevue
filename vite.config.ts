@@ -34,12 +34,12 @@ export default defineConfig({
         secure: false
       },
       '/jindai3admin': {
-        target: 'https://jindai3admin.turbo-dev.cn/',
+        target: 'http://47.120.12.122:3000/',
         changeOrigin: true,
         secure: true,
       },
       '/uploads': {
-        target: 'https://jindai3admin.turbo-dev.cn/uploads',
+        target: 'http://47.120.12.122:3000/uploads',
         secure: false
       }
     }

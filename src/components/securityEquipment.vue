@@ -1,6 +1,6 @@
 <template>
   <div class="security_equipment">
-    <TitleComponent titleText="安全设备" />
+    <TitleComponent titleText="安防设备" />
     <div class="content">
       <div
         class="content_item"
@@ -35,13 +35,14 @@
       unit: item.unit,
       url: item.url,
     }));
-    contentItem.value = data;
+	//todo 验收暂时不用接口
+    // contentItem.value = data;
   });
 
   const contentItem = ref([
     {
       title: "入侵报警",
-      number: 0,
+      number: 40,
       unit: "台",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/入侵报警+底座.png`
@@ -49,15 +50,15 @@
     },
     {
       title: "电子围栏",
-      number: 0,
-      unit: "台",
+      number: 12,
+      unit: "防区",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/电子围栏+底座.png`
       )})`,
     },
     {
       title: "视频监控",
-      number: 0,
+      number: 218,
       unit: "台",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/监控+底座.png`
@@ -65,8 +66,8 @@
     },
     {
       title: "车牌识别",
-      number: 0,
-      unit: "台",
+      number: 2,
+      unit: "组",
       url: `url(${encodeURI(
         `${baseUrl}/../assets/securityEquipment/车牌识别+底座.png`
       )})`,
