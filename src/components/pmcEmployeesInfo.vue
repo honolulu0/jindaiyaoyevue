@@ -9,7 +9,7 @@
       >
         <div
           class="employee_img"
-          :style="{ backgroundImage: `url(${item.img})` }"
+          :style="{ backgroundImage: `url(${item.img || defaultImg})` }"
         ></div>
         <div class="employee_info">
           <div class="flex pl-2 gap-3">
@@ -51,6 +51,7 @@
   //   },
   // ]);
 
+  const defaultImg = "https://s21.ax1x.com/2024/12/23/pAXgRKI.png";
   const list = ref<EmployeeListVO[]>([]);
   const currentIndex = ref(0);
   const displayedEmployees = computed(() => {
