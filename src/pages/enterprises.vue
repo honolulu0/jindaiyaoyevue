@@ -1,10 +1,10 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
-    <PMCInfo />
-    <WaiterInfo />
-    <PMCEmployeesInfo />
+    <PMCInfo v-show="isShow" />
+    <WaiterInfo v-show="isShow" />
+    <PMCEmployeesInfo v-show="isShow" />
     <RepairEventList @rowClick="handleRowClick" />
-    <PMCServiceInfo />
+    <PMCServiceInfo/>
   </div>
   <Transition name="fade">
     <div
@@ -90,7 +90,10 @@
   import RepairEventList from "@/components/repairEventList.vue";
   import PMCServiceInfo from "@/components/pmcServiceInfo.vue";
   import { ref } from "vue";
+  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+  import { errorAlertSubject } from "@/utils/errorAlertSubject";
 
+  const isShow = ref(true);
   const showModel = ref(false);
 
   const handleRowClick = (rowData: any) => {
@@ -114,6 +117,22 @@
   const closeModel = () => {
     showModel.value = false;
   };
+
+  deviceSelectSubject.subscribe((item) => {
+    if (item !== null) {
+      isShow.value = false;
+    } else {
+      isShow.value = true;
+    }
+  });
+
+  errorAlertSubject.subscribe((item) => {
+    if (item !== null) {
+      isShow.value = false;
+    } else {
+      isShow.value = true;
+    }
+  });
 </script>
 
 <style scoped>

@@ -302,10 +302,12 @@
 				window.ue.interface.setchuanganqi = (chuanganqi) => {
 					console.log("模型传入的传感器", chuanganqi);
 
-					errorDetail.value = { "device_name": chuanganqi.SensorName };
-					showDeviceDetail.value = false;
-					showErrorDetail.value = true;
-					// deviceSelectSubject.next();
+					// errorDetail.value = { "device_name": chuanganqi.SensorName };
+					// showDeviceDetail.value = false;
+					// showErrorDetail.value = true;
+					deviceSelectSubject.next({
+						device_name: chuanganqi.SensorName,
+					});
 				};
 
 
