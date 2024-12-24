@@ -15,7 +15,6 @@
           <div class="flex pl-2 gap-3">
             <div class="employee_job">职业：{{ item.job }}</div>
             <div class="employee_name">姓名：{{ item.name }}</div>
-            <div class="employee_age">年龄：{{ item.age }}</div>
           </div>
           <div class="px-2">{{ truncateDescription(item.description) }}</div>
         </div>

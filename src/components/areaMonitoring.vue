@@ -9,12 +9,17 @@
         <WebRTCStream :url="item.value" />
       </div>
     </div>
+    <DeviceList
+      style="position: absolute; top: 122px; left: 0px; z-index: 100; height: 200px;"
+      :deviceType="['视频监控', '入侵报警', '车辆道闸', '电子围栏']"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
   import TitleComponent from "./titleComponent.vue";
   import WebRTCStream from "./WebRTCStream.vue";
+  import DeviceList from "./deviceList.vue";
   import { getAreaMonitoringData } from "../apis/getAreaMonitoringData";
   import { ref, onMounted } from "vue";
 
@@ -29,7 +34,7 @@
       title: ``,
       value: item.url,
     }));
-    contentList.value = data;
+    contentList.value = [data[0]];
   });
 
   const contentList = ref<{ title: string; value: string }[]>([
@@ -60,7 +65,7 @@
 <style scoped>
   .area_monitoring {
     width: 206px;
-    height: 322px;
+    height: 122px;
     position: absolute;
     top: 232px;
     left: 20px;

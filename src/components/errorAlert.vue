@@ -128,7 +128,7 @@
     }
   };
 
-  errorAlertSubject.subscribe((item) => {
+  const errorAlertSubjectSub = errorAlertSubject.subscribe((item) => {
     if (item === null) {
       loadData();
     }
@@ -155,6 +155,7 @@
     if (timer) {
       clearInterval(timer);
     }
+    errorAlertSubjectSub.unsubscribe();
   });
 
   const handleItemClick = (item: any) => {

@@ -32,13 +32,35 @@
         </div>
       </div>
     </div>
+    <TitleComponent title-text="维修事件处置率" />
+    <div class="repair_stats">
+      <div class="stats_item">
+        <div class="stats_icon completed"></div>
+        <div class="stats_bg"></div>
+        <div class="stats_info">
+          <div class="stats_title">处置率</div>
+          <div class="stats_value">{{ rate.rate }}</div>
+          <div class="stats_unit">%</div>
+        </div>
+      </div>
+      <div class="stats_item">
+        <div class="stats_icon processing"></div>
+        <div class="stats_bg"></div>
+        <div class="stats_info">
+          <div class="stats_title">评分</div>
+          <div class="stats_value">{{ rate.score }}</div>
+          <div class="stats_unit">分</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { getRepairList, RepairListVO } from "@/apis/getRepairList";
+  import { getRepairRateData, RepairRateData } from "@/apis/getRepairRateData";
   import TitleComponent from "@/components/titleComponent.vue";
-  import { onMounted, ref } from "vue";
+  import { onMounted, ref, computed } from "vue";
 
   // 定义emit
   const emit = defineEmits(["rowClick"]);
@@ -204,7 +226,7 @@
   //     id: 18,
   //     row1: "其他类型",
   //     row2: "12栋394号房间",
-  //     row3: "设备��常设备异常",
+  //     row3: "设备异常设备异常",
   //     row4: "12/02",
   //     row5: "未解决",
   //   },
@@ -218,8 +240,11 @@
     row5: "事件进度",
   });
 
-
   const list = ref<RepairListVO[]>([]);
+  const rate = ref<Pick<RepairRateData, "rate" | "score">>({
+    rate: "0%",
+    score: "0",
+  });
 
   // 获取数据
   const fetchRepairList = async () => {
@@ -231,8 +256,14 @@
     }
   };
 
+  const fetchRepairRateData = async () => {
+    const data = await getRepairRateData();
+    rate.value = data;
+  };
+
   onMounted(() => {
     fetchRepairList();
+    fetchRepairRateData();
   });
 </script>
 
@@ -248,7 +279,7 @@
   .list_content {
     margin-top: 7px;
     width: 207px;
-    height: 207px;
+    height: 107px;
     overflow: hidden;
   }
 
@@ -258,7 +289,7 @@
 
   .list_body {
     width: 207px;
-    height: calc(207px - 30px - 7px);
+    height: calc(207px - 30px - 7px - 100px);
     overflow-y: hidden;
     overflow-x: hidden;
   }
@@ -349,7 +380,7 @@
   }
 
   /* 修改状态点的样式 */
-  .col.status-完成::before {
+  .col.status-已完成::before {
     content: "";
     display: inline-block;
     width: 3px;
@@ -360,7 +391,7 @@
     background-color: #4caf50;
   }
 
-  .col.status-进行中::before {
+  .col.status-处理中::before {
     content: "";
     display: inline-block;
     width: 3px;
@@ -371,7 +402,7 @@
     background-color: #2196f3;
   }
 
-  .col.status-未解决::before {
+  .col.status-待处理::before {
     content: "";
     display: inline-block;
     width: 3px;
@@ -380,5 +411,97 @@
     margin-right: 4px;
     vertical-align: middle;
     background-color: #f44336;
+  }
+
+  .repair_stats {
+    margin-top: 7px;
+    width: 207px;
+    display: flex;
+    gap: 40px;
+    padding: 0 10px;
+  }
+
+  .stats_item {
+    position: relative;
+    width: 55px;
+    height: 33px;
+  }
+
+  .stats_icon {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 25px;
+    height: 28px;
+    background-size: cover;
+    margin-top: 3px;
+  }
+
+  .stats_icon.completed {
+    background-image: url("@/assets/异常事件.png");
+    background-size: 100% 100%;
+    background-position: bottom;
+  }
+
+  .stats_icon.processing {
+    background-image: url("@/assets/异常事件.png");
+    background-size: 100% 100%;
+    background-position: bottom;
+  }
+
+  .stats_icon.pending {
+    background-image: url("@/assets/异常事件.png");
+    background-size: 100% 100%;
+    background-position: bottom;
+  }
+
+  .stats_bg {
+    position: absolute;
+    left: 26px;
+    top: 10px;
+    width: 62px;
+    height: 23px;
+    background-image: url("@/assets/park_supporting_item_bg.png");
+    background-size: cover;
+  }
+
+  .stats_info {
+    position: absolute;
+    left: 37px;
+    top: 0;
+  }
+
+  .stats_title {
+    height: 8px;
+    font-family: YouSheBiaoTiHei;
+    font-size: 6px;
+    color: #e4f3ff;
+    line-height: 8px;
+    text-align: left;
+    font-style: normal;
+  }
+
+  .stats_value {
+    margin-top: 2px;
+    height: 13px;
+    font-family: YouSheBiaoTiHei;
+    font-size: 10px;
+    color: #d9f1fd;
+    line-height: 13px;
+    text-align: left;
+    font-style: normal;
+  }
+
+  .stats_unit {
+    position: absolute;
+    top: 13px;
+    left: 21px;
+    height: 8px;
+    font-family: YouSheBiaoTiHei;
+    font-size: 6px;
+    color: #e4f3ff;
+    line-height: 8px;
+    text-align: left;
+    font-style: normal;
   }
 </style>

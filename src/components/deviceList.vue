@@ -28,7 +28,10 @@
           </template>
         </div>
       </div>
-      <div class="device_list_body" @scroll="handleScroll">
+      <div
+        class="device_list_body"
+        @scroll="handleScroll"
+      >
         <div
           v-for="(item, index) in deviceList"
           :key="index"
@@ -48,8 +51,18 @@
             </div>
           </template>
         </div>
-        <div v-if="loading" class="loading">加载中...</div>
-        <div v-if="!hasMore && deviceList.length > 0" class="no-more">没有更多数据</div>
+        <div
+          v-if="loading"
+          class="loading"
+        >
+          加载中...
+        </div>
+        <div
+          v-if="!hasMore && deviceList.length > 0"
+          class="no-more"
+        >
+          没有更多数据
+        </div>
       </div>
     </div>
   </div>
@@ -61,8 +74,7 @@
   import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 
   const searchValue = ref("");
-  const device_type_name = ref("");
-  defineProps({
+  const props = defineProps({
     top: {
       type: Number,
       default: 305,
@@ -76,8 +88,8 @@
       default: 250,
     },
     deviceType: {
-      type: String,
-      default: "",
+      type: Array,
+      default: [],
     },
   });
 
@@ -107,7 +119,7 @@
 
       const res = await getDeviceList({
         location: searchValue.value,
-        device_type_name: device_type_name.value,
+        device_type_names: props.deviceType as string[],
         page: currentPage.value,
         page_size: pageSize.value,
       });
@@ -115,10 +127,12 @@
       listTitleMap.value = res.headers;
       const formattedData = res.items.map((item, index) => ({
         ...item,
-        raw: res.rawItems[index]
+        raw: res.rawItems[index],
       }));
 
-      deviceList.value = isRefresh ? formattedData : [...deviceList.value, ...formattedData];
+      deviceList.value = isRefresh
+        ? formattedData
+        : [...deviceList.value, ...formattedData];
       total.value = res.total;
 
       // 判断是否还有更多数据
@@ -139,7 +153,7 @@
     const scrollHeight = target.scrollHeight;
     const scrollTop = target.scrollTop;
     const clientHeight = target.clientHeight;
-    
+
     if (scrollHeight - scrollTop - clientHeight < 20) {
       fetchDeviceList(false);
     }

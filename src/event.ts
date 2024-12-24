@@ -20,3 +20,11 @@ export const modelSubject = new BehaviorSubject<ModelSubjectType>({
 export const parkingSubject = new BehaviorSubject<boolean>(true);
 
 export const topTabsSubject = new BehaviorSubject<number>(0);
+
+// 设备类型中控台显示
+export const deviceTypeSubject = new BehaviorSubject<{
+  isClick?: boolean;
+  text?: string;
+  icon: string;
+}[]>([]);
+

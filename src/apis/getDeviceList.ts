@@ -5,7 +5,7 @@ import { getMockDeviceList } from "./mock/deviceList"
 export interface DeviceListParams {
   device_name?: string
   device_type?: string
-  device_type_name: string;
+  device_type_names?: string[]
   location?: string
   is_valid?: boolean
   online_status?: boolean
@@ -75,9 +75,25 @@ export const getDeviceList = async (params: DeviceListParams = {}) => {
     ...params
   }
   
+  // 创建 URLSearchParams 对象来处理数组参数
+  const searchParams = new URLSearchParams();
+  
+  // 处理所有参数
+  Object.entries(defaultParams).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      // 如果是数组，为每个值添加同名参数
+      value.forEach(item => {
+        searchParams.append(key, item);
+      });
+    } else if (value !== undefined) {
+      // 非数组且非空的参数正常添加
+      searchParams.append(key, String(value));
+    }
+  });
+  
   try {
     const res = await instance.get<DeviceListDTO>(url, {
-      params: defaultParams
+      params: searchParams
     })
 
     return convertToVO(res.data)
