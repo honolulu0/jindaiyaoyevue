@@ -4,7 +4,8 @@
     <DeviceList v-show="isShow" />
     <SecurityOpMenu @onButtonClick="handleButtonClick" />
     <ErrorAlert />
-    <CarEnterRecord />
+    <ParkChart />
+    <!-- <CarEnterRecord /> -->
     <div
       class="model_container"
       v-if="isShowModel"
@@ -20,7 +21,10 @@
           关闭
         </div>
         <div class="model_content">
-          <span>一键{{ modelData.content }}{{ modelData.err ? "失败" : "成功" }}！</span>
+          <span
+            >一键{{ modelData.content
+            }}{{ modelData.err ? "失败" : "成功" }}！</span
+          >
         </div>
       </div>
     </div>
@@ -32,11 +36,10 @@
   import DeviceList from "@/components/deviceList.vue";
   import SecurityOpMenu from "@/components/securityOpMenu.vue";
   import ErrorAlert from "@/components/errorAlert.vue";
-  import CarEnterRecord from "@/components/carEnterRecord.vue";
-
+  import ParkChart from "@/components/parkChart.vue";
   import { ref } from "vue";
-import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
-import { errorAlertSubject } from "@/utils/errorAlertSubject";
+  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+  import { errorAlertSubject } from "@/utils/errorAlertSubject";
 
   const isShowModel = ref(false);
   const modelData = ref({
@@ -48,7 +51,7 @@ import { errorAlertSubject } from "@/utils/errorAlertSubject";
   const isShow = ref(true);
 
   deviceSelectSubject.subscribe((item) => {
-    if (item !== null) { 
+    if (item !== null) {
       isShow.value = false;
     } else {
       isShow.value = true;

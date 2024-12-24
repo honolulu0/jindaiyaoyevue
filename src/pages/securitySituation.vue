@@ -48,6 +48,8 @@ import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
     content: "",
   });
 
+  const isShowModel = ref(false);
+
   const errorDetailData = ref({
     deviceName: "E04-3001(线路断路器重合闸)",
     deviceType: "类型名称",

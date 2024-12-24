@@ -23,6 +23,7 @@ export const topTabsSubject = new BehaviorSubject<number>(0);
 
 // 设备类型中控台显示
 export const deviceTypeSubject = new BehaviorSubject<{
+  id: number;
   isClick?: boolean;
   text?: string;
   icon: string;

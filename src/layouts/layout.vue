@@ -392,13 +392,24 @@
     }
   });
 
-	// 点击设备中控操作
-  function handleDeviceTypeClick(item: any) {
-    if (item.isClick === true) {
-      item.isClick = false;
-      return;
-    }
-    item.isClick = true;
+  // 点击设备中控操作
+  function handleDeviceTypeClick(item: {
+    isClick: boolean;
+    icon: string;
+    name: string;
+    id: number;
+  }) {
+    item.isClick = !item.isClick;
+    window.ue.call(
+      "yincangxianshichuanganqibyleibie",
+      {
+        SensorType: item.id,
+        Hidden: !item.isClick,
+      },
+      function (rv) {
+        console.log("ue callback:" + rv);
+      }
+    );
   }
 
   errorAlertSubject.subscribe((data) => {
@@ -819,7 +830,7 @@
     background-size: 100%;
     display: flex;
     align-items: center;
-		justify-content: center;
+    justify-content: center;
     padding: 0 80px;
     gap: 10px;
   }

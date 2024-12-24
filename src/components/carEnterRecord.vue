@@ -5,11 +5,10 @@
       class="car_enter_record_list"
       v-for="item in list"
     >
-      <div>
-        <img
+      <div class="car-image">
+        <Image
           :src="item.img"
-          style="margin-top: 2px"
-          class="car-image"
+          style="width: 100%; height: 100%"
         />
       </div>
       <div class="car_enter_record_info">
@@ -28,6 +27,7 @@
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from "vue";
   import titleComponent from "./titleComponent.vue";
+  import { Image } from 'ant-design-vue'
   import { getCarInOutRecords, type CarInOutRecordVO } from '@/apis/parking'
 
   const list = ref<CarInOutRecordVO[]>([])
@@ -44,7 +44,7 @@
 
   onMounted(() => {
     fetchCarRecords()
-    timer = setInterval(fetchCarRecords, 60000)
+    timer = setInterval(fetchCarRecords, 10000)
   })
 
   onUnmounted(() => {
@@ -134,5 +134,7 @@
     object-fit: cover;
     background-image: url("@/assets/car.jpg");
     background-size: 100% 100%;
+    overflow: hidden;
+    margin-top: 2px;
   }
 </style>
