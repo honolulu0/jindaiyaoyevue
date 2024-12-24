@@ -6,12 +6,12 @@
       muted
     ></video>
     <div class="control-buttons">
-      <div
+      <!-- <div
         class="control-btn location-btn"
         @click="handleLocationClick"
       >
         <i class="location-icon"></i>
-      </div>
+      </div> -->
       <div
         class="control-btn fullscreen-btn"
         @click="toggleFullscreen"
@@ -36,7 +36,7 @@
     },
     webrtcUrl: {
       type: String,
-      default: "http://localhost:8001", // webrtc-streamer 服务地址
+      default: "http://localhost:8000", // webrtc-streamer 服务地址
     },
   });
 
