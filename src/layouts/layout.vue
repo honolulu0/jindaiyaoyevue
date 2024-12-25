@@ -383,6 +383,7 @@
     if (data !== null) {
       deviceType.value = data.map((item) => {
         return {
+          id: item.id,
           name: item.text ?? item.icon,
           icon: `${baseUrl}/../assets/${item.icon}.png`,
           icon_hover: `${baseUrl}/../assets/${item.icon}-hover.png`,
@@ -400,6 +401,7 @@
     id: number;
   }) {
     item.isClick = !item.isClick;
+
     window.ue.call(
       "yincangxianshichuanganqibyleibie",
       {

@@ -122,7 +122,7 @@
   const deviceData = ref<any>({});
 
   onMounted(async () => {
-    const res = await getDeviceInfo(props.data.location);
+    const res = await getDeviceInfo(props.data.device_name);
     if (res && res.length > 0) {
       deviceData.value = res[0];
     }
