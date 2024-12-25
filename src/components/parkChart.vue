@@ -99,12 +99,6 @@
         series: [
           {
             data: chartData,
-            label: {
-              show: true,
-              formatter: "{b}: {d}%",
-              fontSize: 12,
-              color: "#FFFFFF",
-            },
           },
         ],
       });
