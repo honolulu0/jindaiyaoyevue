@@ -288,7 +288,7 @@
 		},
 	};
 
-	let yinchanglouhao = true;
+	let yinchanglouhao = ref(true);
 
 	// 默认使用的当前楼层
 	let buildingName = ref("请点击楼号");
@@ -322,15 +322,15 @@
 			return;
 		} else if (key == "楼号") {
 			// 取反赋值
-			yinchanglouhao = !yinchanglouhao
+			yinchanglouhao.value = !yinchanglouhao.value
 
-			if (yinchanglouhao === true) {
+			if (yinchanglouhao.value === true) {
 				buildingName.value = "请点击楼号"
 			}
 
 			window.ue.call(
 				"yincangxianshilouhao",
-				{ "Hidden": yinchanglouhao },
+				{ "Hidden": yinchanglouhao.value },
 				function (rv) {
 					console.log("ue callback:" + rv);
 				}
