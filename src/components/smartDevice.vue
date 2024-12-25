@@ -27,7 +27,7 @@
   const contentItem = ref<DeviceCountVO[]>([]);
 
   onMounted(async () => {
-	  // 测试注销
+    // 测试注销
     // const { smartDevices } = await getDeviceCount();
     // contentItem.value = smartDevices;
   });
@@ -39,46 +39,12 @@
 
   contentItem.value = [
     {
-      key: 1,
-      title: "监控",
-      img: `${encodeURI(`${baseUrl}/../assets/parkFacilities/监控icon.png`)}`,
-      number: 218,
-      unit: "台",
-    },
-    {
-      key: 2,
-      title: "入侵报警",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/入侵报警icon.png`
-      )}`,
-      number: 40,
-      unit: "台",
-    },
-    {
-      key: 3,
-      title: "电子围栏",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/电子围栏icon.png`
-      )}`,
-      number: 12,
-      unit: "台",
-    },
-    {
       key: 4,
       title: "烟感报警",
       img: `${encodeURI(
         `${baseUrl}/../assets/parkFacilities/烟感报警icon.png`
       )}`,
       number: 79,
-      unit: "台",
-    },
-    {
-      key: 5,
-      title: "车辆道闸",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/车牌识别icon.png`
-      )}`,
-      number: 2,
       unit: "台",
     },
     {
@@ -92,7 +58,7 @@
     },
     {
       key: 7,
-      title: "智能水节点",
+      title: "消防管廊",
       img: `${encodeURI(
         `${baseUrl}/../assets/parkFacilities/水节点监测icon.png`
       )}`,
@@ -100,35 +66,8 @@
       unit: "台",
     },
     {
-      key: 8,
-      title: "水表",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/水表数据icon.png`
-      )}`,
-      number: 58,
-      unit: "台",
-    },
-    {
-      key: 9,
-      title: "配电房",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/配电房状态icon.png`
-      )}`,
-      number: 5,
-      unit: "处",
-    },
-    {
-      key: 10,
-      title: "电表",
-      img: `${encodeURI(
-        `${baseUrl}/../assets/parkFacilities/电表数据icon.png`
-      )}`,
-      number: 58,
-      unit: "台",
-    },
-    {
       key: 11,
-      title: "车位识别",
+      title: "车位引导",
       img: `${encodeURI(
         `${baseUrl}/../assets/parkFacilities/车位识别icon.png`
       )}`,
@@ -179,9 +118,9 @@
     top: 30px;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(3, 81px);
+    grid-template-columns: repeat(2, 100px);
     gap: 4px;
-    justify-content: start;
+    justify-content: center;
   }
 
   .content_item {
