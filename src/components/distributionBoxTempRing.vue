@@ -7,7 +7,7 @@
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
   >
-    <TitleComponent titleText="配电箱湿度" />
+    <TitleComponent titleText="配电箱温湿度" />
     <div class="distributionBoxTempRing-content">
       <div
         :class="`distributionBoxTempRing_item ${
@@ -17,7 +17,7 @@
         :key="index"
       >
         <span class="distributionBoxTempRing_item_value"
-          >{{ item.value }}度</span
+          >{{ item.value }}°C<br />{{ item.value }}%</span
         >
         <span class="distributionBoxTempRing_item_title">{{
           item.titleText
@@ -177,6 +177,7 @@
 
   .distributionBoxTempRing_item_value {
     font-size: 9px;
+    text-align: center;
   }
 
   .distributionBoxTempRing_item_title {

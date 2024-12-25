@@ -3,8 +3,11 @@
     <TitleComponent titleText="年度用水量" />
     <div class="annualWaterConsumption-content">
       <div class="annualWaterConsumption-content-total">
+
         <span class="annualWaterConsumption-content-total-title">
+          <WaterPath />
           年度用水总量
+          <WaterPath style="left: -20px;" />
         </span>
         <span class="annualWaterConsumption-content-total-value">
           {{ formattedWaterConsumption }}m³
@@ -54,6 +57,7 @@
 
 <script setup lang="ts">
   import TitleComponent from "@/components/titleComponent.vue";
+  import WaterPath from "@/components/waterPath.vue";
   import { ref, computed, onMounted } from "vue";
   import * as echarts from "echarts";
 
@@ -209,12 +213,19 @@
   .annualWaterConsumption-content-total-title {
     margin-bottom: 7px;
     font-size: 13px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: start;
-    margin-left: 45px;
+    margin-left: 5px;
     margin-top: 10px;
     font-family: YouSheBiaoTiHei;
+    font-size: 13px;
+    color: #b8fbfd;
+    line-height: 20px;
+    text-shadow: 2px 2px 0px rgba(19, 52, 42, 0.5);
+    text-align: left;
+    font-style: normal;
   }
 
   .annualWaterConsumption-content-total-value {
@@ -223,8 +234,15 @@
     justify-content: start;
     margin-top: 7px;
     margin-bottom: 14px;
+    margin-left: 75px;
+    width: 88px;
     font-family: YouSheBiaoTiHei;
-    margin-left: 45px;
+    font-size: 13px;
+    color: #b8fbfd;
+    line-height: 20px;
+    text-shadow: 2px 2px 0px rgba(19, 52, 42, 0.5);
+    text-align: left;
+    font-style: normal;
   }
 
   .annualWaterConsumption-content-history {

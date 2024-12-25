@@ -4,7 +4,9 @@
     <div class="annualElectricityConsumption-content">
       <div class="annualElectricityConsumption-content-total">
         <span class="annualElectricityConsumption-content-total-title">
+          <ElectricPath style="left: 3px;" />
           年度用电总量
+          <ElectricPath style="left: -20px;" />
         </span>
         <span class="annualElectricityConsumption-content-total-value">
           {{ formattedElectricityConsumption }}KWh
@@ -56,6 +58,7 @@
   import TitleComponent from "@/components/titleComponent.vue";
   import { ref, computed, onMounted } from "vue";
   import * as echarts from "echarts";
+  import ElectricPath from "@/components/electricPath.vue";
 
   const totalElectricityConsumption = ref(277);
 
@@ -208,13 +211,19 @@
 
   .annualElectricityConsumption-content-total-title {
     margin-bottom: 7px;
-    font-size: 13px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: start;
-    margin-left: 96px;
+    margin-left: 60px;
     margin-top: 10px;
     font-family: YouSheBiaoTiHei;
+    font-size: 13px;
+    color: #b8fbfd;
+    line-height: 20px;
+    text-shadow: 2px 2px 0px rgba(19, 52, 42, 0.5);
+    text-align: left;
+    font-style: normal;
   }
 
   .annualElectricityConsumption-content-total-value {
@@ -223,8 +232,15 @@
     justify-content: start;
     margin-top: 7px;
     margin-bottom: 14px;
-    margin-left: 96px;
+    margin-left: 120px;
+    width: 88px;
     font-family: YouSheBiaoTiHei;
+    font-size: 13px;
+    color: #b8fbfd;
+    line-height: 20px;
+    text-shadow: 2px 2px 0px rgba(19, 52, 42, 0.5);
+    text-align: left;
+    font-style: normal;
   }
 
   .annualElectricityConsumption-content-history {

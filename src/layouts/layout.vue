@@ -826,7 +826,7 @@
     z-index: 100;
     height: 65px;
     width: 359px;
-    background-image: url("@/assets/中控背景.png");
+    /* background-image: url("@/assets/中控背景.png"); */
     background-size: 100%;
     display: flex;
     align-items: center;

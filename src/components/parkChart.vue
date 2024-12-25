@@ -127,7 +127,7 @@
       legend: {
         orient: "vertical",
         right: "10%",
-        top: "center",
+        top: "5%",
         textStyle: {
           fontFamily: "SourceHanSansSC-Normal",
           fontSize: 7,
@@ -143,8 +143,8 @@
         {
           name: "车位状态",
           type: "pie",
-          radius: ["35%", "60%"],
-          center: ["55%", "65%"],
+          radius: ["40%", "90%"],
+          center: ["40%", "50%"],
           startAngle: 180,
           endAngle: 0,
           avoidLabelOverlap: false,
@@ -155,15 +155,15 @@
           label: {
             show: false,
             formatter: "{b}: {d}%",
-            fontSize: 8,
+            fontSize: 14,
             color: "#FFFFFF",
             position: "outer",
             distanceToLabelLine: 5,
           },
           labelLine: {
             show: true,
-            length: 10,
-            length2: 5,
+            length: 15,
+            length2: 10,
           },
           emphasis: {
             label: {
@@ -215,10 +215,10 @@
 
   .chart {
     position: absolute;
-    left: -70px;
-    width: 150%;
-    height: calc(100% - 80px);
-    margin-top: -10px;
+    left: -40px;
+    width: 130%;
+    height: calc(100% - 60px);
+    margin-top: 0px;
   }
 
   .text-container {
