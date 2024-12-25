@@ -6,32 +6,38 @@
           <div class="model_title">设备详情</div>
           <div class="close_btn" @click="handleClose">关闭</div>
           <div class="model_content">
-            <!-- 左侧基本信息 -->
-            <div class="model_content_text">
-              <div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
-                <div class="model_content_item_title">{{ item.label }}</div>
-                <div class="model_content_item_value">
-                  <p :style="{ color: getValueColor(item.key, mappedData[item.key]) }">
-                    {{ mappedData[item.key] || "无" }}
-                  </p>
+            <!-- 当没有视频时显示左侧基本信息 -->
+            <template v-if="!deviceData.url">
+              <div class="model_content_text">
+                <div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
+                  <div class="model_content_item_title">{{ item.label }}</div>
+                  <div class="model_content_item_value">
+                    <p :style="{ color: getValueColor(item.key, mappedData[item.key]) }">
+                      {{ mappedData[item.key] || "无" }}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- 右侧内容：根据是否有 url 显示视频或实时数据 -->
-            <div class="model_content_realtime">
-              <template v-if="deviceData.url">
-                <div class="realtime-title">实时监控</div>
-                <div class="video-container">
-                  <WebRTCStream :url="deviceData.url" />
-                </div>
-              </template>
-              <template v-else>
+              <!-- 右侧实时数据 -->
+              <div class="model_content_realtime">
                 <div class="realtime-title">实时数据</div>
                 <div class="realtime-content">
                   <VueJsonPretty :data="deviceData.realtime_data" />
                 </div>
-              </template>
-            </div>
+              </div>
+            </template>
+            
+            <!-- 当有视频时全屏显示视频 -->
+            <template v-else>
+              <div class="model_content_realtime full-width">
+                <div class="realtime-title">
+                  实时监控 - {{ deviceData.location || '' }}
+                </div>
+                <div class="video-container">
+                  <WebRTCStream :url="deviceData.url" />
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </Transition>
@@ -110,7 +116,7 @@ const displayItems = [
   width: 1080px;
   height: 579px;
   position: absolute;
-  z-index: 100;
+  z-index: 10000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -283,5 +289,12 @@ p {
 .video-container {
   height: calc(100% - 30px);
   overflow: hidden;
+  aspect-ratio: 4/3;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100% !important;
+  grid-column: 1 / -1;
 }
 </style> 

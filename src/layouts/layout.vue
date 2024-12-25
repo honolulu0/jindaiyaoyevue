@@ -11,7 +11,7 @@
 					<div class="parking_content">
 						<div class="parking_content_item" v-for="(value, key) in parkingData" :key="key"
 							@click="handleJujiaoLouceng(key, value)">
-							<div class="parking_content_item_bg">
+							<div class="parking_content_item_bg" :class="key === '楼号' && yinchanglouhao === false ? 'active' : ''">
 								<div class="parking_content_item_value">
 									<span>{{ key }}</span>
 								</div>
@@ -807,6 +807,13 @@
 	}
 
 	.parking_content_item_bg:hover {
+		background-image: url("@/assets/选中框.png");
+		background-size: 53px 50px;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.parking_content_item_bg.active {
 		background-image: url("@/assets/选中框.png");
 		background-size: 53px 50px;
 		background-position: center;

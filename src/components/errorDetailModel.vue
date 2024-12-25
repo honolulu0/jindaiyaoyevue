@@ -134,7 +134,7 @@
     width: 1080px;
     height: 579px;
     position: absolute;
-    z-index: 100;
+    z-index: 10000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -354,6 +354,13 @@
     height: calc(100% - 30px);
     overflow: auto;
     color: #71f3ff;
+    -ms-overflow-style: none;  /* IE 和 Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+
+  /* 隐藏 Webkit 浏览器的滚动条 */
+  .realtime-content::-webkit-scrollbar {
+    display: none;
   }
 
   .video-container {
@@ -366,23 +373,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .realtime-content::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .realtime-content::-webkit-scrollbar-track {
-    background: rgba(113, 243, 255, 0.1);
-    border-radius: 3px;
-  }
-
-  .realtime-content::-webkit-scrollbar-thumb {
-    background: rgba(113, 243, 255, 0.3);
-    border-radius: 3px;
-  }
-
-  .realtime-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(113, 243, 255, 0.5);
   }
 </style>
