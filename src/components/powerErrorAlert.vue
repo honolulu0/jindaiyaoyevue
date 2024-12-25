@@ -56,7 +56,7 @@
   import { getErrorAlert } from "@/apis/errorAlert";
   import type { ErrorAlert } from "@/apis/errorAlert";
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
-import dayjs from "dayjs";
+  import dayjs from "dayjs";
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
@@ -215,7 +215,7 @@ import dayjs from "dayjs";
     right: 20px;
     z-index: 1000;
     width: 236px;
-    height: 204px;
+    height: 134px;
   }
 
   .list_content {

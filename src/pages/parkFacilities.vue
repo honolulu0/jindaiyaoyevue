@@ -2,7 +2,8 @@
   <div class="w-full h-full absolute top-0 left-0 z-0">
     <SmartDevice v-show="isShow" />
     <DeviceList v-show="isShow" />
-    <SecurityOpMenu @onButtonClick="handleButtonClick" />
+    <!-- <SecurityOpMenu @onButtonClick="handleButtonClick" /> -->
+    <DeviceErrorMonthChart />
     <ErrorAlert />
     <ParkChart />
     <!-- <CarEnterRecord /> -->
@@ -34,12 +35,10 @@
 <script setup lang="ts">
   import SmartDevice from "@/components/smartDevice.vue";
   import DeviceList from "@/components/deviceList.vue";
-  import SecurityOpMenu from "@/components/securityOpMenu.vue";
   import ErrorAlert from "@/components/errorAlert.vue";
   import ParkChart from "@/components/parkChart.vue";
+  import DeviceErrorMonthChart from "@/components/deviceErrorMonthChart.vue";
   import { ref } from "vue";
-  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
-  import { errorAlertSubject } from "@/utils/errorAlertSubject";
 
   const isShowModel = ref(false);
   const modelData = ref({
@@ -49,22 +48,6 @@
   });
 
   const isShow = ref(true);
-
-  deviceSelectSubject.subscribe((item) => {
-    if (item !== null) {
-      isShow.value = false;
-    } else {
-      isShow.value = true;
-    }
-  });
-
-  errorAlertSubject.subscribe((item) => {
-    if (item !== null) {
-      isShow.value = false;
-    } else {
-      isShow.value = true;
-    }
-  });
 
   const handleButtonClick = (
     value: "布防" | "撤防",

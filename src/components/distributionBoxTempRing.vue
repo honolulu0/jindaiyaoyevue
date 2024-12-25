@@ -7,7 +7,7 @@
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
   >
-    <TitleComponent titleText="配电箱温度" />
+    <TitleComponent titleText="配电箱湿度" />
     <div class="distributionBoxTempRing-content">
       <div
         :class="`distributionBoxTempRing_item ${
@@ -128,7 +128,7 @@
 <style scoped>
   .distributionBoxTempRing {
     position: absolute;
-    top: 71px;
+    top: 151px;
     right: 41px;
     width: 214px;
     height: 142px;

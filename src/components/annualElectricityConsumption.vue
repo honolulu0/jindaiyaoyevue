@@ -4,7 +4,7 @@
     <div class="annualElectricityConsumption-content">
       <div class="annualElectricityConsumption-content-total">
         <span class="annualElectricityConsumption-content-total-title">
-          年度用电总耗能
+          年度用电总量
         </span>
         <span class="annualElectricityConsumption-content-total-value">
           {{ formattedElectricityConsumption }}KWh
@@ -214,6 +214,7 @@
     justify-content: start;
     margin-left: 96px;
     margin-top: 10px;
+    font-family: YouSheBiaoTiHei;
   }
 
   .annualElectricityConsumption-content-total-value {
@@ -223,6 +224,7 @@
     margin-top: 7px;
     margin-bottom: 14px;
     margin-left: 96px;
+    font-family: YouSheBiaoTiHei;
   }
 
   .annualElectricityConsumption-content-history {
@@ -247,7 +249,7 @@
     position: absolute;
     top: 156px;
     left: 0px;
-    font-family: SourceHanSansSC-Normal;
+    font-family: YouSheBiaoTiHei;
     font-weight: 600;
     font-size: 6px;
     color: #e4f3ff;

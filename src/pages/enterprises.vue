@@ -90,8 +90,6 @@
   import RepairEventList from "@/components/repairEventList.vue";
   import PMCServiceInfo from "@/components/pmcServiceInfo.vue";
   import { ref } from "vue";
-  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
-  import { errorAlertSubject } from "@/utils/errorAlertSubject";
 
   const isShow = ref(true);
   const showModel = ref(false);
@@ -118,21 +116,6 @@
     showModel.value = false;
   };
 
-  deviceSelectSubject.subscribe((item) => {
-    if (item !== null) {
-      isShow.value = false;
-    } else {
-      isShow.value = true;
-    }
-  });
-
-  errorAlertSubject.subscribe((item) => {
-    if (item !== null) {
-      isShow.value = false;
-    } else {
-      isShow.value = true;
-    }
-  });
 </script>
 
 <style scoped>

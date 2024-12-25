@@ -40,8 +40,6 @@
   import AreaMonitoring from "@/components/areaMonitoring.vue";
   import ErrorDetail from "@/components/errorDetail.vue";
   import { ref } from "vue";
-  import { errorAlertSubject } from "@/utils/errorAlertSubject";
-import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
 
   const modelData = ref({
     title: "",
@@ -66,22 +64,6 @@ import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
   };
 
   const isShowDetail = ref(false);
-
-  errorAlertSubject.subscribe((item) => {
-    if (item !== null) {
-      isShowDetail.value = true;
-    } else {
-      isShowDetail.value = false;
-    }
-  });
-
-  deviceSelectSubject.subscribe((item) => {
-    if (item !== null) {
-      isShowDetail.value = true;
-    } else {
-      isShowDetail.value = false;
-    }
-  });
 
   const handleButtonClick = (
     value: "布防" | "撤防",

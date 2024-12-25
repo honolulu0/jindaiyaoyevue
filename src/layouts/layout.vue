@@ -41,15 +41,13 @@
       </div>
     </Transition>
 
-    <ErrorDetail
-      :item="errorDetail"
-      :title="errorDetail.device_type_name"
+    <ErrorDetailModel
+      :data="errorDetail"
       v-if="showErrorDetail"
     />
 
-    <DeviceDetail
-      :item="deviceDetail"
-      :title="'设备详情'"
+    <DeviceDetailModel
+      :data="deviceDetail"
       v-if="showDeviceDetail"
     />
 
@@ -99,6 +97,8 @@
   import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
   import DeviceDetail from "@/components/deviceDetail.vue";
   import { parkingSubject, deviceTypeSubject } from "@/event";
+  import ErrorDetailModel from "@/components/errorDetailModel.vue";
+  import DeviceDetailModel from "@/components/deviceDetailModel.vue";
   const isShow = ref(true);
   const parkingShow = ref(true);
   const cheJianList = {

@@ -144,18 +144,20 @@
           name: "车位状态",
           type: "pie",
           radius: ["35%", "60%"],
-          center: ["55%", "50%"],
+          center: ["55%", "65%"],
+          startAngle: 180,
+          endAngle: 0,
           avoidLabelOverlap: false,
           itemStyle: {
             borderColor: "rgba(255, 255, 255, 0.3)",
             borderWidth: 2,
           },
           label: {
-            show: true,
+            show: false,
             formatter: "{b}: {d}%",
             fontSize: 8,
             color: "#FFFFFF",
-            position: "outside",
+            position: "outer",
             distanceToLabelLine: 5,
           },
           labelLine: {
@@ -165,7 +167,7 @@
           },
           emphasis: {
             label: {
-              show: true,
+              show: false,
               fontSize: 10,
               fontWeight: 400,
               fontFamily: "SourceHanSansSC-Normal",

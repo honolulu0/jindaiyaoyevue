@@ -17,8 +17,11 @@
       :option="voltageOption"
       v-show="isShow"
     />
+
+	<!-- 配电房统计 -->
+    <DistributionBoxCount />
 	
-	<!-- 温度饼 -->
+	<!-- 湿度饼 -->
     <DistributionBoxTempRing :data="tempData" />
 	<!-- 温度线 -->
     <DistributionBoxTempLineChart :option="tempOption" />
@@ -34,9 +37,9 @@
   import DistributionBoxTempRing from "@/components/distributionBoxTempRing.vue";
   import DistributionBoxTempLineChart from "@/components/distributionBoxTempLineChart.vue";
   import PowerErrorAlert from "@/components/powerErrorAlert.vue";
+  import DistributionBoxCount from "@/components/distributionBoxCount.vue";
   import { ref } from "vue";
-import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
-import { errorAlertSubject } from "@/utils/errorAlertSubject";
+
   const currentYearData = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const lastYearData = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   // 电流
@@ -103,22 +106,6 @@ import { errorAlertSubject } from "@/utils/errorAlertSubject";
   };
 
   const isShow = ref(true);
-
-  deviceSelectSubject.subscribe((item) => {
-    if (item !== null) {
-      isShow.value = false;
-    } else {
-      isShow.value = true;
-    }
-  });
-
-  errorAlertSubject.subscribe((item) => {
-    if (item !== null) {
-      isShow.value = false;
-    } else {
-      isShow.value = true;
-    }
-  });
 
   // 生成随机数据
   const randomData = generateRandomData();

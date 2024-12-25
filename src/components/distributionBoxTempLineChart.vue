@@ -168,7 +168,7 @@
 <style scoped>
   .distribution-box-temp {
     position: absolute;
-    top: 232px;
+    top: 302px;
     right: 21px;
     width: 236px;
     height: 123px;

@@ -22,27 +22,9 @@
   import ParkingData from "@/components/parkingData.vue";
   import DistributionBoxTemp from "@/components/distributionBoxTemp.vue";
   import StarNew from "@/components/starNew.vue";
-  import { errorAlertSubject } from "@/utils/errorAlertSubject";
-  import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
   import { ref } from "vue";
 
   const isShow = ref(true);
-
-  errorAlertSubject.subscribe((item) => {
-    if (item === null) {
-      isShow.value = true;
-    } else {
-      isShow.value = false;
-    }
-  });
-
-  deviceSelectSubject.subscribe((item) => {
-    if (item === null) {
-      isShow.value = true;
-    } else {
-      isShow.value = false;
-    }
-  });
 </script>
 
 <style scoped></style>

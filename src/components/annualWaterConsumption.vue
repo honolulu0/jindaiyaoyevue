@@ -4,7 +4,7 @@
     <div class="annualWaterConsumption-content">
       <div class="annualWaterConsumption-content-total">
         <span class="annualWaterConsumption-content-total-title">
-          年度用水总耗能
+          年度用水总量
         </span>
         <span class="annualWaterConsumption-content-total-value">
           {{ formattedWaterConsumption }}m³
@@ -197,7 +197,7 @@
     background-image: url("@/assets/powerConsumption/年度用水总能耗背景.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    font-family: SourceHanSansSC-Normal;
+    font-family: YouSheBiaoTiHei;
     font-weight: 600;
     font-size: 14px;
     color: #ffffff;
@@ -214,6 +214,7 @@
     justify-content: start;
     margin-left: 45px;
     margin-top: 10px;
+    font-family: YouSheBiaoTiHei;
   }
 
   .annualWaterConsumption-content-total-value {
@@ -222,6 +223,7 @@
     justify-content: start;
     margin-top: 7px;
     margin-bottom: 14px;
+    font-family: YouSheBiaoTiHei;
     margin-left: 45px;
   }
 
@@ -247,7 +249,7 @@
     position: absolute;
     top: 156px;
     left: 0px;
-    font-family: SourceHanSansSC-Normal;
+    font-family: YouSheBiaoTiHei;
     font-weight: 600;
     font-size: 6px;
     color: #e4f3ff;
