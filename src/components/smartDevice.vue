@@ -1,7 +1,6 @@
 <template>
   <div class="smart_device">
-    <div class="title_bg"></div>
-    <div class="title">智能设备</div>
+    <TitleComponent titleText="智能设备" />
     <div class="content">
       <div
         class="content_item"
@@ -10,18 +9,21 @@
       >
         <div
           class="content_item_img"
-          :style="{ backgroundImage: `url(${item.img})` }"
+          :style="{
+            backgroundImage: `url(${item.img})`,
+            left: `${item.left}px`,
+            top: `${item.top}px`,
+          }"
         ></div>
-        <div class="content_item_title_number">
-          <div class="content_item_title">{{ item.title }}</div>
-          <div class="content_item_number">{{ item.number + item.unit }}</div>
-        </div>
+        <div class="content_item_title">{{ item.title }}</div>
+        <div class="content_item_number">{{ item.number }}{{ item.unit }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import TitleComponent from "./titleComponent.vue";
   import { getDeviceCount, DeviceCountVO } from "@/apis/deviceCount";
   import { onMounted, ref } from "vue";
   const contentItem = ref<DeviceCountVO[]>([]);
@@ -46,6 +48,8 @@
       )}`,
       number: 79,
       unit: "台",
+      left: 15,
+      top: 40,
     },
     {
       key: 6,
@@ -55,6 +59,8 @@
       )}`,
       number: 112,
       unit: "台",
+      left: 120,
+      top: 40,
     },
     {
       key: 7,
@@ -64,6 +70,8 @@
       )}`,
       number: 618,
       unit: "台",
+      left: 15,
+      top: 90,
     },
     {
       key: 11,
@@ -73,98 +81,67 @@
       )}`,
       number: 6,
       unit: "台",
+      left: 120,
+      top: 90,
     },
   ];
 </script>
 
 <style scoped>
   .smart_device {
-    width: 211px;
-    height: 203px;
+    width: 206px;
+    height: 132px;
     position: absolute;
     top: 84px;
     left: 20px;
   }
 
-  .title {
-    width: 39px;
-    height: 13px;
-    font-family: YouSheBiaoTiHei;
-    font-weight: 100;
-    font-size: 10px;
-    color: #a5d8fc;
-    line-height: 13px;
-    text-align: left;
-    font-style: normal;
-    position: absolute;
-    top: 0;
-    left: 22px;
-  }
-
-  .title_bg {
-    width: 201px;
-    height: 12px;
-    background-size: cover;
-    background-image: url("@/assets/title_bg.png");
-    position: absolute;
-    top: 7px;
-    left: 0;
-  }
-
   .content {
-    width: 251px;
-    height: 172px;
-    position: absolute;
-    top: 30px;
-    left: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 100px);
-    gap: 4px;
-    justify-content: center;
-  }
-
-  .content_item {
-    width: 81px;
-    height: 36px;
-    background-size: cover;
-    background-image: url("@/assets/parkFacilities/智能设备背景icon.png");
-    display: grid;
-    grid-template-columns: 1.5fr 2fr;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: calc(100% - 35px);
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
   }
 
   .content_item_img {
-    width: 18px;
-    height: 18px;
-    background-size: contain;
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-position: center;
-    align-self: center;
-    justify-self: center;
+  }
+
+  .content_item {
+    width: calc(50% - 10px);
+    height: calc(50% - 10px);
+    margin: 5px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("@/assets/parkFacilities/智能设备背景icon.png");
   }
 
   .content_item_title {
-    width: 40px;
-    height: 12px;
-    font-family: SourceHanSansSC-Normal;
-    font-weight: 400;
+    font-family: "SourceHanSansSC-Normal";
+    font-weight: 600;
     font-size: 8px;
     color: #e4f3ff;
     line-height: 12px;
     text-align: left;
     font-style: normal;
+    margin-left: 45px;
+    margin-top: 2px;
   }
 
   .content_item_number {
-    width: max-content;
-    height: 16px;
+    height: 17px;
     font-family: SourceHanSansSC-Normal;
     font-weight: 600;
     font-size: 12px;
     color: #00f8f4;
-    line-height: 16px;
+    line-height: 17px;
     text-align: left;
     font-style: normal;
+    margin-left: 45px;
   }
 </style>

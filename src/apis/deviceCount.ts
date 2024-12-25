@@ -17,6 +17,8 @@ export interface DeviceCountVO {
   img: string
   number: number
   unit: string
+  left?: number
+  top?: number
 }
 
 // 安全设备 VO 类型

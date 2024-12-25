@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
     <SmartDevice v-show="isShow" />
-    <DeviceList v-show="isShow" />
+    <DeviceList v-show="isShow" style="top: 230px" :height="350" />
     <!-- <SecurityOpMenu @onButtonClick="handleButtonClick" /> -->
     <DeviceErrorMonthChart />
     <ErrorAlert />
