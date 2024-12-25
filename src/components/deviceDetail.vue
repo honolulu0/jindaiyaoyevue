@@ -5,7 +5,7 @@
       <TitleComponent titleText="设备信息" />
       <div class="device-info-content">
         <div>设备名称:</div>
-        <div class="device-name">{{ item.device_name }}</div>
+        <div class="device-name">{{ item.location }}</div>
         <div>设备类型:</div>
         <div class="device-type">{{ getDeviceTypeName(item.device_type) }}</div>
       </div>

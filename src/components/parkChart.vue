@@ -161,7 +161,7 @@
             distanceToLabelLine: 5,
           },
           labelLine: {
-            show: true,
+            show: false,
             length: 15,
             length2: 10,
           },
