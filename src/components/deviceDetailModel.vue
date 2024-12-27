@@ -22,7 +22,12 @@
               <div class="model_content_realtime">
                 <div class="realtime-title">实时数据</div>
                 <div class="realtime-content">
-                  <VueJsonPretty :data="deviceData.realtime_data" />
+                  <div class="model_content_item" v-for="(value, key) in deviceData.realtime_data" :key="key">
+                    <div class="model_content_item_title">{{ key }}</div>
+                    <div class="model_content_item_value">
+                      <p>{{ value }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </template>
@@ -64,7 +69,7 @@ const DEVICE_TYPE_MAP = {
     "7": "视频监控",
     "8": "烟感报警",
     "9": "入侵报警",
-    "10": "智能水节点",
+    "10": "智��水节点",
     "11": "智能配电柜",
   };
 
@@ -211,10 +216,12 @@ const displayItems = [
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 80px;
   background: rgba(255, 255, 255, 0.1);
   border-top: 1px solid transparent;
   border-right: 1px solid #2b9daa;
   border-bottom: 1px solid #2b9daa;
+  overflow: hidden;
 }
 
 .model_content_item_value {
@@ -225,6 +232,8 @@ const displayItems = [
   background: rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid #2b9daa;
   text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   overflow: hidden;
 }
 
@@ -245,7 +254,6 @@ const displayItems = [
 }
 
 .realtime-content {
-  padding: 10px;
   height: calc(100% - 30px);
   overflow: auto;
   color: #71f3ff;

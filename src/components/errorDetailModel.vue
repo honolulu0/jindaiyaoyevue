@@ -67,7 +67,12 @@
               <template v-else>
                 <div class="realtime-title">实时数据</div>
                 <div class="realtime-content">
-                  <VueJsonPretty :data="deviceData?.realtime_data" />
+                  <div class="model_content_item" v-for="(value, key) in deviceData?.realtime_data" :key="key">
+                    <div class="model_content_item_title" style="min-width: 100px;">{{ key }}</div>
+                    <div class="model_content_item_value">
+                      <p>{{ value == "" ? "无" : value }}</p>
+                    </div>
+                  </div>
                 </div>
               </template>
             </div>
@@ -351,7 +356,6 @@
   }
 
   .realtime-content {
-    padding: 10px;
     height: calc(100% - 30px);
     overflow: auto;
     color: #71f3ff;
