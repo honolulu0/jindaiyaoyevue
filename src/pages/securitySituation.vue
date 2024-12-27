@@ -3,7 +3,10 @@
     <SecurityEquipment v-show="!isShowDetail" />
     <AreaMonitoring v-show="!isShowDetail" />
     <SecurityOpMenu @onButtonClick="handleButtonClick" />
-    <ErrorAlert @itemClick="handleItemClick" />
+    <ErrorAlert
+      @itemClick="handleItemClick"
+      :device_type="['9', '6', '7', '4']"
+    />
     <CarEnterRecord />
   </div>
   <div

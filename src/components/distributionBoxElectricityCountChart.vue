@@ -25,7 +25,7 @@
 
   const valueData = computed(() => {
     const value = props.value;
-    if (value <= 60) {
+    if (value <= 6) {
       return [
         {
           value: value,
@@ -35,10 +35,10 @@
         },
       ];
     }
-    if (value <= 120) {
+    if (value <= 12) {
       return [
         {
-          value: 60,
+          value: 6,
           itemStyle: {
             color: "#5470c6",
           },
@@ -53,13 +53,13 @@
     }
     return [
       {
-        value: 60,
+        value: 6,
         itemStyle: {
           color: "#5470c6",
         },
       },
       {
-        value: 120,
+        value: 12,
         itemStyle: {
           color: "#fac858",
         },
@@ -75,8 +75,8 @@
 
   // 根据数值获取指针颜色
   const getPointerColor = (value: number) => {
-    if (value <= 60) return "#5470c6";
-    if (value <= 120) return "#fac858";
+    if (value <= 6) return "#5470c6";
+    if (value <= 12) return "#fac858";
     return "#ee6666";
   };
 
@@ -94,7 +94,7 @@
           startAngle: 200,
           endAngle: -20,
           min: 0,
-          max: 300,
+          max: 30,
           splitNumber: 10,
           axisLine: {
             roundCap: true,
@@ -163,7 +163,7 @@
           startAngle: 200,
           endAngle: -20,
           min: 0,
-          max: 300,
+          max: 30,
           splitNumber: 10,
           axisLine: {
             show: false,

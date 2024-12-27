@@ -22,7 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { getDeviceCount } from "@/apis/deviceCount";
 
 const baseUrl = import.meta.url.substring(
   0,
@@ -45,6 +46,12 @@ const contentItem = ref([
     unit: "个",
   },
 ]);
+
+onMounted(async () => {
+  const res = await getDeviceCount()
+  console.log(res)
+});
+
 </script>
 
 <style scoped>

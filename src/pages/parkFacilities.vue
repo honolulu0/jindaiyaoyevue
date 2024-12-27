@@ -4,7 +4,7 @@
     <DeviceList v-show="isShow" style="top: 230px" :height="350" />
     <!-- <SecurityOpMenu @onButtonClick="handleButtonClick" /> -->
     <DeviceErrorMonthChart />
-    <ErrorAlert />
+    <ErrorAlert :device_type="['8', '5', '10', '4']" />
     <ParkChart />
     <!-- <CarEnterRecord /> -->
     <div

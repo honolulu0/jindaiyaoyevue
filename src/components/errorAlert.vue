@@ -64,11 +64,14 @@
 
   let timer: number;
 
-  const device_type_name = ref("电表,水表");
   const pageSize = ref(10);
   const currentPage = ref(1);
   const loading = ref(false);
   const hasMore = ref(true);
+
+  const props = defineProps<{
+    device_type: string[];
+  }>();
 
   const errorMessage = ref('');
   const retryCountdown = ref(0);
@@ -93,7 +96,8 @@
       
       const data = await getErrorAlert({
         page: currentPage.value,
-        pageSize: pageSize.value
+        pageSize: pageSize.value,
+        device_type: props.device_type.join(","),
       });
       
       const formattedData = data.map((item) => ({

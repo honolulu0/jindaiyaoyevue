@@ -19,6 +19,7 @@ class WebSocketService {
       this.ws.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
+          console.log('收到WebSocket消息:', data);
           this.handleMessage(data);
         } catch (error) {
           console.error('WebSocket消息解析错误:', error);
@@ -49,6 +50,7 @@ class WebSocketService {
   }
 
   subscribe(type: string, handler: Function) {
+    console.log('订阅消息:', type);
     if (!this.messageHandlers.has(type)) {
       this.messageHandlers.set(type, []);
     }
@@ -56,6 +58,7 @@ class WebSocketService {
   }
 
   unsubscribe(type: string, handler: Function) {
+    console.log('取消订阅消息:', type);
     const handlers = this.messageHandlers.get(type);
     if (handlers) {
       const index = handlers.indexOf(handler);
