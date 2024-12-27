@@ -25,7 +25,7 @@
     <DistributionBoxTempRing :data="tempData" />
 	<!-- 温度线 -->
     <DistributionBoxTempLineChart :option="tempOption" />
-    <PowerErrorAlert />
+    <PowerErrorAlert :deviceType="['2','11']" />
   </div>
 </template>
 
@@ -40,12 +40,15 @@
   import DistributionBoxCount from "@/components/distributionBoxCount.vue";
   import { ref, onMounted, computed, onUnmounted } from "vue";
   import { getDistributionBoxData } from "@/apis/getDistributionBoxData";
-
+  import { getAlertDistributionBoxSummary } from "@/apis/alertSummary";
   const distributionBoxData = ref<any[]>([]);
 
   onMounted(async () => {
     const data = await getDistributionBoxData();
+    const alertSummary = await getAlertDistributionBoxSummary();
     distributionBoxData.value = data;
+    currentYearData.value = alertSummary.thisYear;
+    lastYearData.value = alertSummary.lastYear;
   });
   
   const electricityCountChartData = computed(() => {

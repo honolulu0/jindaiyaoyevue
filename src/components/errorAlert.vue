@@ -64,7 +64,7 @@
 
   let timer: number;
 
-  const device_type_name = ref("");
+  const device_type_name = ref("电表,水表");
   const pageSize = ref(10);
   const currentPage = ref(1);
   const loading = ref(false);
@@ -92,7 +92,6 @@
       }
       
       const data = await getErrorAlert({
-        device_type_name: device_type_name.value,
         page: currentPage.value,
         pageSize: pageSize.value
       });

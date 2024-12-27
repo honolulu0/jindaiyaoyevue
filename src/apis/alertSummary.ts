@@ -60,3 +60,22 @@ export const getAlertSummaryMonth = async () => {
     "车辆道闸": thisYear4.data.stats
   };
 };
+
+export const getAlertDistributionBoxSummary= async () => {
+  const thisYear = await axiosInstance.get("/park_api/alerts/alert_summary", {
+    params: {
+      device_type_id: 11
+    }
+  });
+  const lastYear = await axiosInstance.get("/park_api/alerts/alert_summary", {
+    params: {
+      device_type_id: 11,
+      start_time: `${new Date().getFullYear() - 1}-01-01T00:00:00.000Z`,
+      end_time: `${new Date().getFullYear() - 1}-12-31T23:59:59.999Z`
+    }
+  });
+  return {
+    thisYear: thisYear.data.stats.map((item: any) => item.total_count),
+    lastYear: lastYear.data.stats.map((item: any) => item.total_count)
+  };
+};

@@ -62,6 +62,13 @@
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
 
+  const props = defineProps({
+    deviceType: {
+      type: Array,
+      default: () => ["1", "2", "11"]
+    }
+  });
+
   const chartData = ref([
     { titleText: "2#1AW1", value: 100 },
     { titleText: "2#1AW2", value: 20 },
@@ -139,25 +146,24 @@
         list.value = [];
       }
       
-   //    const data = await getErrorAlert({
-	   // device_type_name: device_type_name.value,
-   //      page: currentPage.value,
-   //      pageSize: pageSize.value
-   //    });
-	  
-		// 暂时注销演示用， data
-      // const formattedData = chartData.value.map((item: any) => ({
-      //   raw: item,
-      //   row1: item.titleText,
-      //   row2: "正常",
-      //   row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
-      //   row4: '已处理',
-      //   row5: '查看'
-      // }));
+      const data = await getErrorAlert({
+        device_type: props.deviceType.join(","),
+        page: currentPage.value,
+        pageSize: pageSize.value
+      });
 
-      // list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
+      const formattedData = data.map((item: any) => ({
+        raw: item,
+        row1: item.titleText,
+        row2: "正常",
+        row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
+        row4: '已处理',
+        row5: '查看'
+      }));
+
+      list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
       
-      // hasMore.value = formattedData.length === pageSize.value;
+      hasMore.value = formattedData.length === pageSize.value;
       if (hasMore.value) {
         currentPage.value++;
       }

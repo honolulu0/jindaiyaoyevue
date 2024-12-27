@@ -90,7 +90,8 @@
       
       const data = await getErrorAlert({
         page: currentPage.value,
-        pageSize: pageSize.value
+        pageSize: pageSize.value,
+        device_type: "1,2"
       });
       
       const formattedData = data.map(item => ({

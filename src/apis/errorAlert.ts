@@ -12,7 +12,7 @@ export interface ErrorAlert {
 }
 
 export const getErrorAlert = async (params: {
-	device_type_name: string;
+  device_type?: string;
 	page: number;
 	pageSize: number;
 }): Promise<ErrorAlert[]> => {
@@ -20,6 +20,7 @@ export const getErrorAlert = async (params: {
     params: {
       page: params.page ?? 1,
       pageSize: params.pageSize ?? 10000,
+      device_type: params.device_type ?? "",
     },
   });
   return res.data.items;
