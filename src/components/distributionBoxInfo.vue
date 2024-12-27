@@ -43,53 +43,18 @@
 
 <script setup lang="ts">
   import TitleComponent from "./titleComponent.vue";
-  import { ref } from "vue";
+  import {ref} from "vue";
 
   const titleMap = ref({
-    row1: "表格编号",
-    row2: "设备型号",
-    row3: "定位",
-    row4: "设备状态",
+    row1: "位置",
+    row2: "A相电流（A）",
+    row3: "A相电压（V）",
+    // row4: "设备状态",
   });
 
-  const list = ref([
-    {
-      row1: "1",
-      row2: "1#1AW1",
-      row3: "车间（1F）",
-      row4: "正常",
-    },
-    {
-      row1: "2",
-      row2: "1#1AW2",
-      row3: "车间（1F）",
-      row4: "正常",
-    },
-    {
-      row1: "3",
-      row2: "1#1AW3",
-      row3: "车间（1F）",
-      row4: "正常",
-    },
-    {
-      row1: "1",
-      row2: "1#1AW4",
-      row3: "车间（1F）",
-      row4: "正常",
-    },
-    {
-      row1: "2",
-      row2: "1#1AW5",
-      row3: "车间（1F）",
-      row4: "正常",
-    },
-    {
-      row1: "3",
-      row2: "1#1AW6",
-      row3: "车间（1F）",
-      row4: "正常",
-    },
-  ]);
+  defineProps<{
+    list: any[];
+  }>();
 </script>
 
 <style scoped>
@@ -149,7 +114,11 @@
 
   .list_content {
     width: 100%;
-    height: 100;
+    height: 100px;
+  }
+
+  .list_content::-webkit-scrollbar {
+    display: none;
   }
 
   .list_header {
@@ -158,9 +127,10 @@
 
   .list_body {
     width: 100%;
-    height: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    height: 85%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   .list_content_item {

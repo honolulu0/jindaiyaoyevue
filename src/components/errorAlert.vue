@@ -57,6 +57,7 @@
   import { getErrorAlert } from "@/apis/errorAlert";
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
   import dayjs from "dayjs";
+  import { wsService } from '@/utils/websocket'
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
@@ -71,6 +72,8 @@
 
   const errorMessage = ref('');
   const retryCountdown = ref(0);
+
+  const unprocessedAlertCount = ref(0);
 
   const getDisplayData = (item: any) => {
     const { raw, ...displayData } = item;
@@ -147,7 +150,18 @@
 
   onMounted(() => {
     loadData(true);
-    // 每30秒刷新一次数据
+    
+    // 订阅告警消息
+    wsService.subscribe('unprocessed_alert_count', (count: number) => {
+      console.log('收到未处理告警数:', count);
+      // 如果未处理告警数发生变化，重新加载数据
+      if (unprocessedAlertCount.value !== count) {
+        unprocessedAlertCount.value = count;
+        loadData(true);
+      }
+    });
+    
+    // 保留原有的定时刷新作为备份机制
     timer = setInterval(() => loadData(true), 30000);
   });
 
@@ -155,6 +169,8 @@
     if (timer) {
       clearInterval(timer);
     }
+    // 取消 WebSocket 订阅
+    wsService.unsubscribe('unprocessed_alert_count', loadData);
     errorAlertSubjectSub.unsubscribe();
   });
 

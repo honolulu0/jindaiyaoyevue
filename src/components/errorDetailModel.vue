@@ -57,7 +57,7 @@
               </div>
             </div>
             </div>
-            <div class="model_content_realtime">
+            <div class="model_content_realtime"> 
               <template v-if="deviceData?.url">
                 <div class="realtime-title">实时监控</div>
                 <div class="video-container">

@@ -58,23 +58,31 @@
 <script setup lang="ts">
   import TitleComponent from "@/components/titleComponent.vue";
   import WaterPath from "@/components/waterPath.vue";
-  import { ref, computed, onMounted } from "vue";
+  import { ref, computed, onMounted, watch, onUnmounted } from "vue";
   import * as echarts from "echarts";
 
-  const totalWaterConsumption = ref(30);
+  const chartRef = ref();
+  const chart = ref();
+
+  interface Props {
+    totalConsumption: number
+    chartData: number[]
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    totalConsumption: 0,
+    chartData: () => [10, 15, 18, 23, 23, 25, 20, 28, 30, 35, 38, 40]
+  })
 
   const formattedWaterConsumption = computed(() => {
-    return Math.floor(totalWaterConsumption.value).toLocaleString();
+    return Math.floor(props.totalConsumption).toLocaleString();
   });
-
-  const chartRef = ref();
 
   const activeUnit = ref("month");
 
-  onMounted(() => {
-    const chart = echarts.init(chartRef.value, null, {
-      renderer: "svg",
-    });
+  const updateChart = () => {
+    if (!chart.value) return;
+    
     const option = {
       grid: {
         top: "30%",
@@ -145,7 +153,7 @@
       },
       series: [
         {
-          data: [10, 15, 18, 23, 23, 25, 20, 28, 30, 35, 38, 40],
+          data: props.chartData,
           type: "line",
           smooth: true,
           symbol: "none",
@@ -171,11 +179,31 @@
         },
       ],
     };
-    chart.setOption(option);
+    
+    chart.value.setOption(option);
+  };
 
-    // 监听窗口大小变化
+  onMounted(() => {
+    chart.value = echarts.init(chartRef.value, null, {
+      renderer: "svg",
+    });
+    updateChart();
+    
     window.addEventListener("resize", () => {
-      chart.resize();
+      chart.value?.resize();
+    });
+  });
+
+  // 监听数据变化
+  watch(() => props.chartData, () => {
+    updateChart();
+  }, { deep: true });
+
+  // 组件卸载时清理
+  onUnmounted(() => {
+    chart.value?.dispose();
+    window.removeEventListener("resize", () => {
+      chart.value?.resize();
     });
   });
 </script>

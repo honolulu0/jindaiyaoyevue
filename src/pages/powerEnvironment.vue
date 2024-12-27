@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
-    <DistributionBoxInfo v-show="isShow" />
+    <DistributionBoxInfo :list="distributionBoxInfoList" v-show="isShow" />
     <DistributionBoxWarning
       :currentYearData="currentYearData"
       :lastYearData="lastYearData"
@@ -8,13 +8,13 @@
     />
 	<!-- 电流 -->
     <DistributionBoxElectricityCount
-      :chartData="chartData"
+      :chartData="electricityCountChartData"
       v-show="isShow"
     />
 	
 	<!-- 电压 -->
     <DistributionBoxVoltage
-      :option="voltageOption"
+      :option="distributionBoxVoltageChartData"
       v-show="isShow"
     />
 
@@ -38,7 +38,38 @@
   import DistributionBoxTempLineChart from "@/components/distributionBoxTempLineChart.vue";
   import PowerErrorAlert from "@/components/powerErrorAlert.vue";
   import DistributionBoxCount from "@/components/distributionBoxCount.vue";
-  import { ref } from "vue";
+  import { ref, onMounted, computed, onUnmounted } from "vue";
+  import { getDistributionBoxData } from "@/apis/getDistributionBoxData";
+
+  const distributionBoxData = ref<any[]>([]);
+
+  onMounted(async () => {
+    const data = await getDistributionBoxData();
+    distributionBoxData.value = data;
+  });
+  
+  const electricityCountChartData = computed(() => {
+    const data = distributionBoxData.value.map((item) => ({
+      titleText: item["位置"].split("(")[0],
+      value: Number(item["A相电流"])
+    }));
+    return data;
+  });
+
+  const distributionBoxVoltageChartData = computed(() => {
+    return {
+      xAxisData: distributionBoxData.value.map(item => item["位置"].split("(")[0]).slice(0, 12),
+      seriesData: distributionBoxData.value.map(item => Number(item["A相电压"]))
+    };
+  });
+
+  const distributionBoxInfoList = computed(() => {
+    return distributionBoxData.value.map((item,index) => ({
+      row1: item["位置"],
+      row2: item["A相电流"],
+      row3: item["A相电压"],
+    }));
+  });
 
   const currentYearData = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const lastYearData = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -100,7 +131,7 @@
     seriesData: chartData.value.map((item) => item.value).slice(0, 12),
   });
   const tempData = ref<{ titleText: string; value: number }[]>([]);
-  // 生成随机数据的���数
+  // 生成随机数据的数
   const generateRandomData = (length = 12) => {
     return Array.from({ length }, () => Number((10 + Math.random() * 3).toFixed(1)));
   };
@@ -110,18 +141,10 @@
   // 生成随机数据
   const randomData = generateRandomData();
 
-  // 设置定时器,每5秒更新一次数据
-  setInterval(() => {
-	  // 测试注销 异常
-    // currentYearData.value = generateRandomData();
-    // lastYearData.value = generateRandomData();
-	// 电压
- //    voltageOption.value.seriesData = generateRandomData(36).map(
- //      (item) => item
- //    );
- 
- 	// 电压
-	voltageOption.value.seriesData = Array(36).fill(250);
+  // 设置定时器,每30秒更新一次数据
+  const interval = setInterval(async () => {
+
+    distributionBoxData.value = await getDistributionBoxData();
 	
 	var temp = generateRandomData(36)
 	
@@ -133,7 +156,11 @@
       value: item,
     }));
 	
-  }, 3000);
+  }, 30000);
+
+  onUnmounted(() => {
+    clearInterval(interval);
+  });
 </script>
 
 <style scoped></style>

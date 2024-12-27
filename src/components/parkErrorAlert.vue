@@ -56,7 +56,8 @@
   import { getErrorAlert } from "@/apis/errorAlert";
   import type { ErrorAlert } from "@/apis/errorAlert";
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
-import dayjs from "dayjs";
+  import dayjs from "dayjs";
+  import { wsService } from "@/utils/websocket";
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
@@ -143,9 +144,20 @@ import dayjs from "dayjs";
     }
   });
 
+  const unprocessedAlertCount = ref(0);
+
   onMounted(() => {
     loadData(true);
     timer = setInterval(() => loadData(true), 30000);
+
+    wsService.subscribe('unprocessed_alert_count', (count: number) => {
+      console.log('收到未处理告警数:', count);
+      // 如果未处理告警数发生变化，重新加载数据
+      if (unprocessedAlertCount.value !== count) {
+        unprocessedAlertCount.value = count;
+        loadData(true);
+      }
+    });
   });
 
   onUnmounted(() => {

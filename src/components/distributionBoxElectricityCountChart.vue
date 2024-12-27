@@ -307,6 +307,7 @@
     color: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
+    text-wrap: nowrap;
     flex-direction: column;
     justify-content: end;
     font-family: SourceHanSansSC-Normal;

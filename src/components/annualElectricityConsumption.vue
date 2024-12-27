@@ -56,24 +56,39 @@
 
 <script setup lang="ts">
   import TitleComponent from "@/components/titleComponent.vue";
-  import { ref, computed, onMounted } from "vue";
+  import { ref, computed, onMounted, watch, onUnmounted } from "vue";
   import * as echarts from "echarts";
   import ElectricPath from "@/components/electricPath.vue";
 
-  const totalElectricityConsumption = ref(277);
+  interface Props {
+    totalConsumption: number
+    chartData: number[]
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    totalConsumption: 0,
+    chartData: () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  })
 
   const formattedElectricityConsumption = computed(() => {
-    return Math.floor(totalElectricityConsumption.value).toLocaleString();
+    return Math.floor(props.totalConsumption).toLocaleString();
   });
 
   const chartRef = ref();
+  const chart = ref();
 
   const activeUnit = ref("month");
 
   onMounted(() => {
-    const chart = echarts.init(chartRef.value, null, {
+    chart.value = echarts.init(chartRef.value, null, {
       renderer: "svg",
     });
+    updateChart();
+  });
+
+  const updateChart = () => {
+    if (!chart.value) return;
+    
     const option = {
       grid: {
         top: "30%",
@@ -126,7 +141,7 @@
       },
       yAxis: {
         type: "value",
-        interval: 10,
+        interval: 50,
         axisLabel: {
           fontFamily: "SourceHanSansSC-Normal",
           fontSize: 6,
@@ -144,7 +159,7 @@
       },
       series: [
         {
-          data: [10, 15, 18, 23, 23, 25, 20, 28, 30, 35, 38, 40],
+          data: props.chartData,
           type: "line",
           smooth: true,
           symbol: "none",
@@ -170,11 +185,24 @@
         },
       ],
     };
-    chart.setOption(option);
+    
+    chart.value.setOption(option);
+  };
 
-    // 监听窗口大小变化
+  watch(() => props.chartData, () => {
+    updateChart();
+  }, { deep: true });
+
+  onMounted(() => {
     window.addEventListener("resize", () => {
-      chart.resize();
+      chart.value?.resize();
+    });
+  });
+
+  onUnmounted(() => {
+    chart.value?.dispose();
+    window.removeEventListener("resize", () => {
+      chart.value?.resize();
     });
   });
 </script>

@@ -11,7 +11,6 @@
     <div class="distributionBoxElectricityCountChart_container">
       <DistributionBoxElectricityCountChart
         v-for="item in currentPageData"
-        :key="item.titleText"
         :titleText="item.titleText"
         :value="item.value"
         class="item"
