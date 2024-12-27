@@ -2,12 +2,12 @@
   <Transition name="fade">
     <div class="model_container">
       <Transition name="slide-fade">
-        <div class="model">
-          <div class="model_title">设备详情</div>
-          <div class="close_btn" @click="handleClose">关闭</div>
-          <div class="model_content">
+        <div class="model" :class="{'video-model': props.data.device_type === 7}">
+          <div class="model_title" :style="{ top: props.data.device_type === 7 ? '45px' : '40px' }">{{ props.data.device_type === 7 ? `实时监控 - ${props.data.location}` : '设备详情' }}</div>
+          <div class="close_btn" :style="{ right: props.data.device_type === 7 ? '55px' : '40px', top: props.data.device_type === 7 ? '55px' : '40px' }" @click="handleClose">关闭</div>
+          <div class="model_content" :style="{ height: props.data.device_type === 7 ? '75%' : '190px', width: props.data.device_type === 7 ? '84.3%' : '80%', display: props.data.device_type === 7 ? 'flex' : 'grid' }">
             <!-- 当没有视频时显示左侧基本信息 -->
-            <template v-if="!deviceData.url">
+            <template v-if="props.data.device_type !== 7">
               <div class="model_content_text">
                 <div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
                   <div class="model_content_item_title">{{ item.label }}</div>
@@ -29,10 +29,7 @@
             
             <!-- 当有视频时全屏显示视频 -->
             <template v-else>
-              <div class="model_content_realtime full-width">
-                <div class="realtime-title">
-                  实时监控 - {{ deviceData.location || '' }}
-                </div>
+              <div class="model_content_realtime full-width " :style="{ border: props.data.device_type === 7 ? 'none' : '1px solid #2b9daa' }">
                 <div class="video-container">
                   <WebRTCStream :url="deviceData.url" />
                 </div>
@@ -88,11 +85,10 @@ const handleClose = () => {
 };
 
 const mappedData = computed(() => {
+  const data = deviceData.value;
   return {
-    device_name: props.data.device_name,
-    device_type: DEVICE_TYPE_MAP[props.data.device_type as keyof typeof DEVICE_TYPE_MAP],
-    status: props.data.status,
-    location: props.data.location
+    ...data,
+    device_type: data.device_type_name,
   };
 });
 
@@ -131,12 +127,21 @@ const displayItems = [
   background-size: 100% 100%;
 }
 
+.video-model {
+  width: 755px;
+  height: 470px;
+  background: url("@/assets/弹窗背景4-5.png") no-repeat center center;
+  background-size: 100% 100%;
+}
+
 .model_title {
   position: absolute;
   top: 40px;
-  left: 255px;
-  width: 126px;
+  width: 100%;
   height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: YouSheBiaoTiHei;
   font-size: 18px;
   color: #71f3ff;
@@ -172,6 +177,12 @@ const displayItems = [
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.model_content::-webkit-scrollbar {
+  display: none;
 }
 
 .model_content_text {
@@ -219,7 +230,7 @@ const displayItems = [
 
 .model_content_realtime {
   width: 100%;
-  height: 190px;
+  height: 100%;
   border: 1px solid #2b9daa;
   border-radius: 10px;
   overflow: hidden;
@@ -238,6 +249,8 @@ const displayItems = [
   height: calc(100% - 30px);
   overflow: auto;
   color: #71f3ff;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 p {
@@ -267,34 +280,25 @@ p {
   opacity: 0;
 }
 
-/* 自定义滚动条样式 */
+/* 隐藏 Webkit 浏览器的滚动条 */
 .realtime-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.realtime-content::-webkit-scrollbar-track {
-  background: rgba(113, 243, 255, 0.1);
-  border-radius: 3px;
-}
-
-.realtime-content::-webkit-scrollbar-thumb {
-  background: rgba(113, 243, 255, 0.3);
-  border-radius: 3px;
-}
-
-.realtime-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(113, 243, 255, 0.5);
+  display: none;
 }
 
 .video-container {
   height: calc(100% - 30px);
   overflow: hidden;
-  aspect-ratio: 4/3;
+  /* 修改视频的宽高比 */
+  aspect-ratio: 16/9;
   margin: 0 auto;
 }
 
 .full-width {
-  width: 100% !important;
+  width: max-content !important;
+  margin: 0 auto;
   grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style> 

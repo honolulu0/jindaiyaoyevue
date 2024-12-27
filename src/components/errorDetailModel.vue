@@ -99,6 +99,7 @@
   const mappedData = computed(() => {
     return {
       ...props.data,
+      ...deviceData.value,
       create_time: dayjs(props.data.create_time).format(
         "YYYY年MM月DD日 HH:mm:ss"
       ),
