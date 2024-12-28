@@ -20,6 +20,21 @@
 							</div>
 						</div>
 					</div>
+<!-- 					<button @click="dianziweilanyincang(false,2)">显示</button>
+					<button @click="dianziweilanyincang(true,2)">隐藏</button>
+					<button @click="dianziweilanbaojing('2',1)">异常2</button>
+					<button @click="dianziweilanbaojing('2',0)">正常2</button>
+					<button @click="dianziweilanjujiao('1')">聚焦1</button>
+					<button @click="dianziweilanjujiao('10')">聚焦10</button>
+
+					----------------
+
+					<button @click="dianziweilanyincang(false,1)">显示</button>
+					<button @click="dianziweilanyincang(true,1)">隐藏</button>
+					<button @click="dianziweilanbaojing('RQ_1C_B1',1)">异常2</button>
+					<button @click="dianziweilanbaojing('RQ_1C_B1',0)">正常2</button>
+					<button @click="dianziweilanjujiao('RQ_1C_B1')">聚焦1</button>
+					<button @click="dianziweilanjujiao('RQ_1C_B3')">聚焦10</button> -->
 				</div>
 				<div class="bg_right"></div>
 				<slot></slot>
@@ -33,12 +48,7 @@
 		<ErrorDetailModel :data="errorDetail" v-if="showErrorDetail" />
 
 		<DeviceDetailModel :data="deviceDetail" v-if="showDeviceDetail" />
-		<button @click="dianziweilanyincang(false)">显示</button>
-		<button @click="dianziweilanyincang(true)">隐藏</button>
-		<button @click="dianziweilanbaojing('2',false)">异常2</button>
-		<button @click="dianziweilanbaojing('2',false)">正常2</button>
-		<button @click="dianziweilanjujiao('1')">聚焦1</button>
-		<button @click="dianziweilanjujiao('10')">聚焦10</button>
+
 		<Transition name="fade">
 			<div v-if="!isShow">
 				<div class="open_btn" @click="open">
@@ -124,7 +134,7 @@
 			"1F": 0,
 			P: 1,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间B座": {
@@ -135,7 +145,7 @@
 			"1F": 1,
 			P: 0,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间C座": {
@@ -146,7 +156,7 @@
 			"1F": 2,
 			P: 0,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间D座": {
@@ -157,7 +167,7 @@
 			"1F": 3,
 			P: 0,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间E座": {
@@ -168,7 +178,7 @@
 			"1F": 4,
 			P: 0,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间F座": {
@@ -179,7 +189,7 @@
 			"1F": 5,
 			P: 3,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间G座": {
@@ -190,7 +200,7 @@
 			"1F": 6,
 			P: 3,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号车间H座": {
@@ -201,7 +211,7 @@
 			"1F": 7,
 			P: 3,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间A座": {
@@ -212,7 +222,7 @@
 			"1F": 0,
 			P: 1,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间B座": {
@@ -223,7 +233,7 @@
 			"1F": 1,
 			P: 2,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间C座": {
@@ -234,7 +244,7 @@
 			"1F": 2,
 			P: 2,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间D座": {
@@ -245,7 +255,7 @@
 			"1F": 3,
 			P: 2,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间E座": {
@@ -256,7 +266,7 @@
 			"1F": 4,
 			P: 2,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间F座": {
@@ -267,7 +277,7 @@
 			"1F": 5,
 			P: 3,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间G座": {
@@ -278,7 +288,7 @@
 			"1F": 6,
 			P: 3,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号车间H座": {
@@ -289,12 +299,12 @@
 			"1F": 7,
 			P: 1,
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 		请点击楼号: {
 			主视图: 0,
-			全部: "DX",
+			//全部: "DX",
 			楼号: "LH",
 		},
 	};
@@ -311,7 +321,7 @@
 		cheJianLouCengList[paringTitle.value as keyof typeof cheJianLouCengList]
 	); // 初始化为楼层列表
 	// 点击楼层的操作
-	async function handleJujiaoLouceng(key : string, floorId : number) {
+	function handleJujiaoLouceng(key : string, floorId : number) {
 		// 创建一个临时变量，保存 buildingName 的值
 
 		console.log(buildingName.value, key, floorId);
@@ -319,23 +329,29 @@
 
 		if (key == "P") {
 			tempName = key; // 将临时变量 tempName 修改为 'P'
-			const allSpaceStatus = await getAllSpaceStatus();
-			for (const k in allSpaceStatus["空闲车位"]) {
-				console.log("隐藏汽车", k);
-				// window.ue.call(
-				// 	"yincangxianshilouhao",
-				// 	{ Hidden: yinchanglouhao.value },
-				// 	function (rv) {
-				// 		console.log("ue callback:" + rv);
-				// 	}
-				// );
-			}
+			// const allSpaceStatus = await getAllSpaceStatus();
+			// for (const k in allSpaceStatus["空闲车位"]) {
+			// 	console.log("隐藏汽车", k);
+			// window.ue.call(
+			// 	"yincangxianshilouhao",
+			// 	{ Hidden: yinchanglouhao.value },
+			// 	function (rv) {
+			// 		console.log("ue callback:" + rv);
+			// 	}
+			// );
+			// }
 
 		} else if (key == "1F") {
 			tempName =
 				diCengList[buildingName.value as keyof typeof diCengList] + "1";
 		} else if (key == "主视图") {
-			jujiao("DX");
+			buildingName.value = "请点击楼号";
+			parkingData.value = cheJianLouCengList[buildingName.value]
+			// jujiao("DX");
+			window.ue.call("reback", {}, function (rv) {
+				console.log("ue callback:" + rv);
+			});
+			// parkingShow.value = false
 			return;
 		} else if (key == "楼号") {
 			// 取反赋值
@@ -355,18 +371,16 @@
 			return;
 		}
 
-		if (diCengList[tempName] != undefined) {
-			window.ue.call(
-				"kanlouceng",
-				{
-					BuildingName: tempName,
-					FloorID: floorId,
-				},
-				function (rv) {
-					console.log("ue callback:" + rv);
-				}
-			);
-		}
+		window.ue.call(
+			"kanlouceng",
+			{
+				BuildingName: tempName,
+				FloorID: floorId,
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
 
 
 	}
@@ -383,13 +397,14 @@
 		);
 	}
 
-	function dianziweilanyincang(hidden : boolean) {
+	function dianziweilanyincang(hidden : boolean, alarmType : number) {
 		// 一键布防 显示 ，撤防 隐藏
+		// D:/VueProject/jindaiyaoyevue/src/pages/securitySituation.vue
 		console.log("电子围栏隐藏/显示" + hidden);
 		window.ue.call(
 			"dianziweilanyincang",
 			{
-				"AlarmType": 2,
+				"AlarmType": alarmType,
 				"Hidden": hidden
 			},
 			function (rv) {
@@ -413,14 +428,15 @@
 	}
 
 
-	function dianziweilanbaojing(alarmName : string, warning : boolean) {
+	function dianziweilanbaojing(alarmName : string, State : number) {
 		// 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
-		console.log("电子围报警" + hidden);
+		// D:/VueProject/jindaiyaoyevue/src/pages/securitySituation.vue
+		console.log("电子围报警" + alarmName + State);
 		window.ue.call(
 			"dianziweilanbaojing",
 			{
 				"AlarmName": alarmName,
-				"Warning": warning
+				"State": State
 			},
 			function (rv) {
 				console.log("ue callback:" + rv);
