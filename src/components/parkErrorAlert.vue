@@ -83,13 +83,9 @@
     try {
       loading.value = true;
       errorMessage.value = '';
-      if (isRefresh) {
-        currentPage.value = 1;
-        list.value = [];
-      }
-      
+
       const data = await getErrorAlert({
-        page: currentPage.value,
+        page: isRefresh ? 1 : currentPage.value,
         pageSize: pageSize.value,
         device_type: "1,2"
       });
@@ -103,12 +99,19 @@
         row5: '查看'
       }));
 
-      list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
-      
-      hasMore.value = formattedData.length === pageSize.value;
-      if (hasMore.value) {
-        currentPage.value++;
+      if (isRefresh) {
+        if (formattedData.length > 0) {
+          list.value = formattedData;
+          currentPage.value = 2;
+        }
+      } else {
+        list.value = [...list.value, ...formattedData];
+        if (formattedData.length === pageSize.value) {
+          currentPage.value++;
+        }
       }
+
+      hasMore.value = formattedData.length === pageSize.value;
     } catch (error) {
       console.error('加载异常告警数据失败:', error);
       hasMore.value = false;
@@ -291,5 +294,13 @@
     padding: 5px 0;
     font-size: 12px;
     color: #ff6b6b;
+  }
+
+  .col:last-child {
+    cursor: pointer;
+  }
+
+  .col:last-child:hover {
+    text-decoration: underline;
   }
 </style>

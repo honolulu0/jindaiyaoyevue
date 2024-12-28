@@ -16,6 +16,7 @@
             ></div>
             {{ item }}
           </div>
+          <div></div>
         </div>
       </div>
       <div class="list_body" @scroll="handleScroll">
@@ -23,7 +24,6 @@
           class="list_body_content"
           v-for="(item, index) in list"
           :key="index"
-          @click="errorAlertSubject.next(item.raw)"
         >
           <div class="list_content_item data_row">
             <div
@@ -31,6 +31,7 @@
               :key="key"
               class="col"
               :class="{ error: item.row4 === '未处理' && key === 'row2' }"
+              @click="key === 'row5' && errorAlertSubject.next(item.raw)"
             >
               <div
                 :class="{
@@ -141,14 +142,10 @@
     try {
       loading.value = true;
       errorMessage.value = '';
-      if (isRefresh) {
-        currentPage.value = 1;
-        list.value = [];
-      }
       
       const data = await getErrorAlert({
         device_type: props.deviceType.join(","),
-        page: currentPage.value,
+        page: isRefresh ? 1 : currentPage.value,
         pageSize: pageSize.value
       });
 
@@ -161,12 +158,19 @@
         row5: '查看'
       }));
 
-      list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
-      
-      hasMore.value = formattedData.length === pageSize.value;
-      if (hasMore.value) {
-        currentPage.value++;
+      if (isRefresh) {
+        if (formattedData.length > 0) {
+          list.value = formattedData;
+          currentPage.value = 2;
+        }
+      } else {
+        list.value = [...list.value, ...formattedData];
+        if (formattedData.length === pageSize.value) {
+          currentPage.value++;
+        }
       }
+
+      hasMore.value = formattedData.length === pageSize.value;
     } catch (error) {
       console.error('加载异常告警数据失败:', error);
       hasMore.value = false;
@@ -209,7 +213,7 @@
     // 订阅告警消息
     wsService.subscribe('unprocessed_alert_count', (count: number) => {
       console.log('收到未处理告警数:', count);
-      // 如果未处理告警数发生变化，重新加载数据
+      // 如果未处理告警数发生化，重新加载数据
       if (unprocessedAlertCount.value !== count) {
         unprocessedAlertCount.value = count;
         loadData(true);
@@ -328,11 +332,11 @@
     width: 0;
   }
 
-  .list_body_icon {
+  /* .list_body_icon {
     width: 14px;
     height: 14px;
     background-size: 100% 100%;
-  }
+  } */
 
   .list_body_icon_img {
     margin-top: 4px;
@@ -352,5 +356,13 @@
     padding: 5px 0;
     font-size: 12px;
     color: #ff6b6b;
+  }
+
+  .col:last-child {
+    cursor: pointer;
+  }
+
+  .col:last-child:hover {
+    text-decoration: underline;
   }
 </style>

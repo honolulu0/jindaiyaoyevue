@@ -26,6 +26,9 @@
               {{ item }}
             </div>
           </template>
+          <div class="col title_col">
+            查看
+          </div>
         </div>
       </div>
       <div
@@ -37,7 +40,6 @@
           :key="index"
           class="device_list_content_item data_row"
           :class="{ error: hasError(item) }"
-          @click="handleItemClick(item.raw)"
         >
           <template
             v-for="(value, key) in item"
@@ -50,6 +52,12 @@
               {{ value }}
             </div>
           </template>
+          <div 
+            class="col action-col"
+            @click="handleItemClick(item.raw)"
+          >
+            查看
+          </div>
         </div>
         <div
           v-if="loading"
@@ -306,7 +314,6 @@
 
   .data_row {
     border-bottom: 1px solid rgba(97, 119, 138, 0.4);
-    cursor: pointer;
   }
 
   .data_row:hover {
@@ -351,5 +358,13 @@
     font-size: 12px;
     color: #94dcef;
     width: 100%;
+  }
+
+  .action-col {
+    cursor: pointer;
+  }
+
+  .action-col:hover {
+    color: #ffffff;
   }
 </style>
