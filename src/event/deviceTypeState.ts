@@ -63,18 +63,6 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
       isClick: false
     },
     {
-      id: 3,
-      icon: "电表数据",
-      text: "电表",
-      isClick: false
-    },
-    {
-      id: 10,
-      text: "消费管廊",
-      icon: "水节点监测",
-      isClick: false
-    },
-    {
       id: 9,
       text: "水表",
       icon: "水表数据",
