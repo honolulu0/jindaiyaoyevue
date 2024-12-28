@@ -172,17 +172,6 @@
           console.log("ue callback:" + rv);
         }
       );
-      // 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
-      window.ue.call(
-        "dianziweilanbaojing",
-        {
-          AlarmName: res[0].realtime_data.Channel,
-          Warning: true,
-        },
-        function (rv) {
-          console.log("ue callback:" + rv);
-        }
-      );
     }
   });
 </script>
