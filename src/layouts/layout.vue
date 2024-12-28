@@ -33,7 +33,12 @@
 		<ErrorDetailModel :data="errorDetail" v-if="showErrorDetail" />
 
 		<DeviceDetailModel :data="deviceDetail" v-if="showDeviceDetail" />
-
+		<button @click="dianziweilanyincang(false)">显示</button>
+		<button @click="dianziweilanyincang(true)">隐藏</button>
+		<button @click="dianziweilanbaojing('2',false)">异常2</button>
+		<button @click="dianziweilanbaojing('2',false)">正常2</button>
+		<button @click="dianziweilanjujiao('1')">聚焦1</button>
+		<button @click="dianziweilanjujiao('10')">聚焦10</button>
 		<Transition name="fade">
 			<div v-if="!isShow">
 				<div class="open_btn" @click="open">
@@ -330,12 +335,6 @@
 			tempName =
 				diCengList[buildingName.value as keyof typeof diCengList] + "1";
 		} else if (key == "主视图") {
-			window.ue.call("reback", {}, function (rv) {
-				console.log("ue callback:" + rv);
-			});
-			// parkingShow.value = false
-			return;
-		} else if (key == "全部") {
 			jujiao("DX");
 			return;
 		} else if (key == "楼号") {
@@ -356,16 +355,20 @@
 			return;
 		}
 
-		window.ue.call(
-			"kanlouceng",
-			{
-				BuildingName: tempName,
-				FloorID: floorId,
-			},
-			function (rv) {
-				console.log("ue callback:" + rv);
-			}
-		);
+		if (diCengList[tempName] != undefined) {
+			window.ue.call(
+				"kanlouceng",
+				{
+					BuildingName: tempName,
+					FloorID: floorId,
+				},
+				function (rv) {
+					console.log("ue callback:" + rv);
+				}
+			);
+		}
+
+
 	}
 	function jujiao(bName) {
 		console.log("bName" + bName);
