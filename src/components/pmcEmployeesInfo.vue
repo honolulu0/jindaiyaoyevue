@@ -50,7 +50,7 @@
   //   },
   // ]);
 
-  const defaultImg = "https://s21.ax1x.com/2024/12/23/pAXgRKI.png";
+  const defaultImg = "https://picsum.photos/200/300";
   const list = ref<EmployeeListVO[]>([]);
   const currentIndex = ref(0);
   const displayedEmployees = computed(() => {

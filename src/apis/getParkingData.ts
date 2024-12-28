@@ -13,3 +13,8 @@ export const getParkingData = async (): Promise<ParkingData["状态统计"]> => 
   const res = await axiosInstance.get("/park_api/device/tingchewei/getAllSpaceStatus") as any;
   return res["状态统计"] ;
 };
+
+export const getAllSpaceStatus = async (): Promise<ParkingData["车位详情"]> => {
+  const res = await axiosInstance.get("/park_api/device/tingchewei/getAllSpaceStatus") as any;
+  return res["车位详情"] ;
+};
