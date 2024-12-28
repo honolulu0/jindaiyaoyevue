@@ -83,6 +83,19 @@ onMounted(async () => {
   const res = await getDeviceInfo(props.data.device_name);
   deviceData.value = res[0];
   isReady.value = true;
+
+  if (res[0].device_type_name === "电子围栏" && res[0].realtime_data.Channel) {
+      console.log("电子围聚焦" + res[0].realtime_data.Channel);
+      window.ue.call(
+        "dianziweilanjujiao",
+        {
+          AlarmName: res[0].realtime_data.Channel,
+        },
+        function (rv) {
+          console.log("ue callback:" + rv);
+        }
+      );
+    }
 });
 
 const handleClose = () => {

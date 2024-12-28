@@ -30,34 +30,37 @@
                 </div>
               </div>
               <div
-              class="process-btn-container"
-              :class="{
-                'error-bg':
-                  mappedData.is_processed === 0 ||
-                  mappedData.is_processed === '0',
-                'success-bg':
-                  mappedData.is_processed === 1 ||
-                  mappedData.is_processed === '1',
-              }"
-            >
-              <div class="device-error-info-btn">
-                <div
-                  class="device-error-info-btn-processed"
-                  v-if="mappedData.is_processed === 1 || mappedData.is_processed === '1'"
-                >
-                  已处理
-                </div>
-                <div
-                  class="device-error-info-btn-unprocessed"
-                  v-else
-                  @click="handleProcessedBtnClick(mappedData.id)"
-                >
-                  未处理
+                class="process-btn-container"
+                :class="{
+                  'error-bg':
+                    mappedData.is_processed === 0 ||
+                    mappedData.is_processed === '0',
+                  'success-bg':
+                    mappedData.is_processed === 1 ||
+                    mappedData.is_processed === '1',
+                }"
+              >
+                <div class="device-error-info-btn">
+                  <div
+                    class="device-error-info-btn-processed"
+                    v-if="
+                      mappedData.is_processed === 1 ||
+                      mappedData.is_processed === '1'
+                    "
+                  >
+                    已处理
+                  </div>
+                  <div
+                    class="device-error-info-btn-unprocessed"
+                    v-else
+                    @click="handleProcessedBtnClick(mappedData.id)"
+                  >
+                    未处理
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
-            <div class="model_content_realtime"> 
+            <div class="model_content_realtime">
               <template v-if="deviceData?.url">
                 <div class="realtime-title">实时监控</div>
                 <div class="video-container">
@@ -67,10 +70,19 @@
               <template v-else>
                 <div class="realtime-title">实时数据</div>
                 <div class="realtime-content">
-                  <div class="model_content_item" v-for="(value, key) in deviceData?.realtime_data" :key="key">
-                    <div class="model_content_item_title" style="min-width: 100px;">{{ key }}</div>
+                  <div
+                    class="model_content_item"
+                    v-for="(value, key) in deviceData?.realtime_data"
+                    :key="key"
+                  >
+                    <div
+                      class="model_content_item_title"
+                      style="min-width: 100px"
+                    >
+                      {{ key }}
+                    </div>
                     <div class="model_content_item_value">
-                      <p>{{ value == "" ? "无" : value }}</p>
+                      <p>{{ value == "" || value == null ? "无" : value }}</p>
                     </div>
                   </div>
                 </div>
@@ -115,6 +127,22 @@
     const res = await processError(id);
     if (res) {
       props.data.is_processed = "1";
+      // 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
+      if (
+        deviceData.value.device_type_name === "电子围栏" &&
+        deviceData.value.realtime_data.Channel
+      ) {
+        window.ue.call(
+          "dianziweilanbaojing",
+          {
+            AlarmName: deviceData.value.realtime_data.Channel,
+            Warning: false,
+          },
+          function (rv) {
+            console.log("ue callback:" + rv);
+          }
+        );
+      }
     }
   };
 
@@ -129,8 +157,32 @@
 
   onMounted(async () => {
     const res = await getDeviceInfo(props.data.device_name);
+    console.log(res);
     if (res && res.length > 0) {
       deviceData.value = res[0];
+    }
+    if (res[0].device_type_name === "电子围栏") {
+      console.log("电子围聚焦" + res[0].realtime_data.Channel);
+      window.ue.call(
+        "dianziweilanjujiao",
+        {
+          AlarmName: res[0].realtime_data.Channel,
+        },
+        function (rv) {
+          console.log("ue callback:" + rv);
+        }
+      );
+      // 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
+      window.ue.call(
+        "dianziweilanbaojing",
+        {
+          AlarmName: res[0].realtime_data.Channel,
+          Warning: true,
+        },
+        function (rv) {
+          console.log("ue callback:" + rv);
+        }
+      );
     }
   });
 </script>
@@ -359,8 +411,8 @@
     height: calc(100% - 30px);
     overflow: auto;
     color: #71f3ff;
-    -ms-overflow-style: none;  /* IE 和 Edge */
-    scrollbar-width: none;     /* Firefox */
+    -ms-overflow-style: none; /* IE 和 Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   /* 隐藏 Webkit 浏览器的滚动条 */

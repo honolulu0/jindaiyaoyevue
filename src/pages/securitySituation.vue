@@ -28,11 +28,6 @@
       </div>
     </div>
   </div>
-  <ErrorDetail
-    v-if="isShowDetail"
-    :item="errorDetailData"
-    :title="modelData.title"
-  />
 </template>
 
 <script setup lang="ts">
@@ -41,7 +36,6 @@
   import CarEnterRecord from "@/components/carEnterRecord.vue";
   import SecurityEquipment from "@/components/securityEquipment.vue";
   import AreaMonitoring from "@/components/areaMonitoring.vue";
-  import ErrorDetail from "@/components/errorDetail.vue";
   import { ref } from "vue";
 
   const modelData = ref({
@@ -50,16 +44,6 @@
   });
 
   const isShowModel = ref(false);
-
-  const errorDetailData = ref({
-    deviceName: "E04-3001(线路断路器重合闸)",
-    deviceType: "类型名称",
-    errorInfo: "异常描述",
-    errorTime: "2024-12-12 12:12:12",
-    errorStatus: "状态",
-    rtspUrl:
-      "rtsp://admin:admin12345@192.168.4.6:554/cam/realmonitor?channel=1&subtype=0",
-  });
 
   const handleItemClick = (item: any) => {
     // errorDetailData.value = item;
@@ -78,6 +62,19 @@
     };
     isShowModel.value = true;
     console.log(modelData.value);
+    // 一键布防 显示 ，撤防 隐藏
+    const hidden = value === "布防" ? false : true;
+    console.log("电子围栏隐藏/显示" + hidden);
+    window.ue.call(
+      "dianziweilanyincang",
+      {
+        AlarmType: 2,
+        Hidden: hidden,
+      },
+      function (rv) {
+        console.log("ue callback:" + rv);
+      }
+    );
   };
 </script>
 

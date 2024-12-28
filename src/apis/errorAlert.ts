@@ -8,7 +8,7 @@ export interface ErrorAlert {
   device_type_name: string;
   msg_content: string;
   create_time: string;
-  is_processed: boolean;
+  is_processed: number;
 }
 
 export const getErrorAlert = async (params: {

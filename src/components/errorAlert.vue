@@ -18,7 +18,10 @@
           </div>
         </div>
       </div>
-      <div class="list_body" @scroll="handleScroll">
+      <div
+        class="list_body"
+        @scroll="handleScroll"
+      >
         <div
           class="list_body_content"
           v-for="(item, index) in list"
@@ -43,9 +46,24 @@
             </div>
           </div>
         </div>
-        <div v-if="loading" class="loading">加载中...</div>
-        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <div v-if="!hasMore && list.length > 0 && !errorMessage" class="no-more">没有更多数据</div>
+        <div
+          v-if="loading"
+          class="loading"
+        >
+          加载中...
+        </div>
+        <div
+          v-if="errorMessage"
+          class="error-message"
+        >
+          {{ errorMessage }}
+        </div>
+        <div
+          v-if="!hasMore && list.length > 0 && !errorMessage"
+          class="no-more"
+        >
+          没有更多数据
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +75,8 @@
   import { getErrorAlert } from "@/apis/errorAlert";
   import { errorAlertSubject } from "@/utils/errorAlertSubject";
   import dayjs from "dayjs";
-  import { wsService } from '@/utils/websocket'
+  import { wsService } from "@/utils/websocket";
+import { getDeviceInfo } from "@/apis/getDeviceInfo";
 
   const titleMap = ref(["设备", "异常描述", "发生时间", "状态", "操作"]);
   const list = ref<any[]>([]);
@@ -73,7 +92,7 @@
     device_type: string[];
   }>();
 
-  const errorMessage = ref('');
+  const errorMessage = ref("");
   const retryCountdown = ref(0);
 
   const unprocessedAlertCount = ref(0);
@@ -85,21 +104,21 @@
 
   const loadData = async (isRefresh = true) => {
     if (loading.value || (!hasMore.value && !isRefresh)) return;
-    
+
     try {
       loading.value = true;
-      errorMessage.value = '';
+      errorMessage.value = "";
       if (isRefresh) {
         currentPage.value = 1;
         list.value = [];
       }
-      
+
       const data = await getErrorAlert({
         page: currentPage.value,
         pageSize: pageSize.value,
         device_type: props.device_type.join(","),
       });
-      
+
       const formattedData = data.map((item) => ({
         row1: item.location,
         row2: item.msg_content?.substring(0, 15) || "",
@@ -109,18 +128,42 @@
         raw: item,
       }));
 
-      list.value = isRefresh ? formattedData : [...list.value, ...formattedData];
-      
+      list.value = isRefresh
+        ? formattedData
+        : [...list.value, ...formattedData];
+
       hasMore.value = formattedData.length === pageSize.value;
       if (hasMore.value) {
         currentPage.value++;
+      }
+
+      function dianziweilanbaojing(alarmName: string, warning: boolean) {
+        // 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
+        console.log("电子围报警" + warning);
+        window.ue.call(
+          "dianziweilanbaojing",
+          {
+            AlarmName: alarmName,
+            Warning: warning,
+          },
+          function (rv) {
+            console.log("ue callback:" + rv);
+          }
+        );
+      }
+
+      for (const item of data) {
+        if (item.device_type_name === "电子围栏" && item.is_processed === 0) {
+          const deviceData = await getDeviceInfo(item.device_name);
+          dianziweilanbaojing(deviceData[0].realtime_data.Channel, true);
+        }
       }
     } catch (error) {
       console.error("加载异常告警数据失败:", error);
       hasMore.value = false;
       list.value = isRefresh ? [] : list.value;
-      errorMessage.value = '数据加载失败，30秒后重试';
-      
+      errorMessage.value = "数据加载失败，30秒后重试";
+
       retryCountdown.value = 30;
       const countdownTimer = setInterval(() => {
         retryCountdown.value--;
@@ -145,7 +188,7 @@
     const scrollHeight = target.scrollHeight;
     const scrollTop = target.scrollTop;
     const clientHeight = target.clientHeight;
-    
+
     if (scrollHeight - scrollTop - clientHeight < 20) {
       loadData(false);
     }
@@ -153,17 +196,17 @@
 
   onMounted(() => {
     loadData(true);
-    
+
     // 订阅告警消息
-    wsService.subscribe('unprocessed_alert_count', (count: number) => {
-      console.log('收到未处理告警数:', count);
+    wsService.subscribe("unprocessed_alert_count", (count: number) => {
+      console.log("收到未处理告警数:", count);
       // 如果未处理告警数发生变化，重新加载数据
       if (unprocessedAlertCount.value !== count) {
         unprocessedAlertCount.value = count;
         loadData(true);
       }
     });
-    
+
     // 保留原有的定时刷新作为备份机制
     timer = setInterval(() => loadData(true), 30000);
   });
@@ -173,7 +216,7 @@
       clearInterval(timer);
     }
     // 取消 WebSocket 订阅
-    wsService.unsubscribe('unprocessed_alert_count', loadData);
+    wsService.unsubscribe("unprocessed_alert_count", loadData);
     errorAlertSubjectSub.unsubscribe();
   });
 
