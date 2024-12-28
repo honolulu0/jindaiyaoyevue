@@ -26,7 +26,6 @@
           class="list_body_content"
           v-for="(item, index) in list"
           :key="index"
-          @click="handleItemClick(item.raw)"
         >
           <div class="list_content_item data_row">
             <div
@@ -34,6 +33,7 @@
               :key="key"
               class="col"
               :class="{ error: item.row4 === '未处理' && key === 'row2' }"
+              @click="key === 'row5' && handleItemClick(item.raw)"
             >
               <div
                 v-if="key === 'row1'"
