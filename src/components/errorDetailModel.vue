@@ -9,7 +9,8 @@
 					</div>
 					<div class="model_content">
 						<div class="mr-1">
-							<div class="model_content_text">
+							<div class="model_content_text"
+								:style="['视频监控', '智能配电柜', '水表'].includes(mappedData['device_type_name'])  ? 'width: 100%;' : 'width: 460px;'">
 								<div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
 									<div class="model_content_item_title">
 										{{ item.label }}
@@ -42,7 +43,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="model_content_realtime">
+						<!-- <div class="model_content_realtime">
 							<template v-if="deviceData?.url">
 								<div class="realtime-title">实时监控</div>
 								<div class="video-container">
@@ -63,7 +64,7 @@
 									</div>
 								</div>
 							</template>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</Transition>
@@ -102,6 +103,7 @@
 	const handleProcessedBtnClick = async (id : string) => {
 		const res = await processError(id);
 		if (res) {
+			// 解除异常
 			props.data.is_processed = "1";
 			// 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
 			if (
@@ -111,7 +113,31 @@
 				window.ue.call(
 					"dianziweilanbaojing",
 					{
-						AlarmName: deviceData.value.realtime_data.Channel,
+						"AlarmName": deviceData.value.realtime_data.Channel,
+						"State": 0
+					},
+					function (rv) {
+						console.log("ue callback:" + rv);
+					}
+				);
+			} else if (deviceData.value.device_type_name === "入侵报警" && deviceData.value.device_name) {
+				window.ue.call(
+					"dianziweilanbaojing",
+					{
+						"AlarmName": deviceData.value.device_name,
+						"State": 0
+					},
+					function (rv) {
+						console.log("ue callback:" + rv);
+					}
+				);
+			} else {
+				window.ue.call(
+					"jujiaoyichangchuanganqi",
+					{
+						BuildingName: props.data.lou,
+						FloorID: props.data.ceng,
+						SensorName: props.data.device_name,
 						Warning: false,
 					},
 					function (rv) {
@@ -133,10 +159,11 @@
 
 	onMounted(async () => {
 		const res = await getDeviceInfo(props.data.device_name);
-		console.log(res);
 		if (res && res.length > 0) {
 			deviceData.value = res[0];
 		}
+
+		console.log(deviceData.value);
 		if (res[0].device_type_name === "电子围栏" && res[0].realtime_data.Channel) {
 			console.log("电子围报警" + res[0].realtime_data.Channel);
 			window.ue.call(
@@ -156,6 +183,17 @@
 					{
 						"AlarmName": res[0].realtime_data.Channel,
 						"State": 1
+					},
+					function (rv) {
+						console.log("ue callback:" + rv);
+					}
+				);
+			} else {
+				window.ue.call(
+					"dianziweilanbaojing",
+					{
+						"AlarmName": res[0].realtime_data.Channel,
+						"State": 0
 					},
 					function (rv) {
 						console.log("ue callback:" + rv);
@@ -182,6 +220,17 @@
 					{
 						"AlarmName": res[0].device_name,
 						"State": 1
+					},
+					function (rv) {
+						console.log("ue callback:" + rv);
+					}
+				);
+			} else {
+				window.ue.call(
+					"dianziweilanbaojing",
+					{
+						"AlarmName": res[0].device_name,
+						"State": 0
 					},
 					function (rv) {
 						console.log("ue callback:" + rv);
@@ -264,7 +313,6 @@
 	}
 
 	.model_content_text {
-		width: 100%;
 		height: max-content;
 		border: 1px solid #2b9daa;
 		border-radius: 10px;

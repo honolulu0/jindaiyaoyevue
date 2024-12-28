@@ -100,6 +100,8 @@ router.afterEach((to, from) => {
     if (to.path === "/parkFacilities" || 
         to.path === "/comprehensiveSituation" || 
         to.path === "/parkInvestmentPromotion" || 
+        to.path === "/powerEnvironment" || 
+        to.path === "/energyConsumptionSituation" || 
         to.path === "/securitySituation") {
       parkingSubject.next(true);
     } else {

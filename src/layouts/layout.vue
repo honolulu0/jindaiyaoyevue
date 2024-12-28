@@ -356,10 +356,10 @@
 		} else if (key == "主视图") {
 			buildingName.value = "请点击楼号";
 			parkingData.value = cheJianLouCengList[buildingName.value]
-			jujiao("DX");
-			// window.ue.call("reback", {}, function (rv) {
-			// 	console.log("ue callback:" + rv);
-			// });
+			// jujiao("DX");
+			window.ue.call("reback", {}, function (rv) {
+				console.log("ue callback:" + rv);
+			});
 			// parkingShow.value = false
 			return;
 		} else if (key == "楼号") {
