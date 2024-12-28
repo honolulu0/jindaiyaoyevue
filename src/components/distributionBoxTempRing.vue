@@ -11,13 +11,13 @@
     <div class="distributionBoxTempRing-content">
       <div
         :class="`distributionBoxTempRing_item ${
-          item.value > alarmValue ? 'alarm' : 'normal'
+          Number(item.tempValue) > alarmValue ? 'alarm' : 'normal'
         }`"
         v-for="(item, index) in currentPageValue"
         :key="index"
       >
         <span class="distributionBoxTempRing_item_value"
-          >{{ item.value }}°C<br />{{ item.value }}%</span
+          >{{ item.tempValue }}°C<br />{{ item.humValue }}%RH</span
         >
         <span class="distributionBoxTempRing_item_title">{{
           item.titleText
@@ -104,17 +104,18 @@
   });
 
   const props = defineProps<{
-    data: { titleText: string; value: number }[];
+    data: { titleText: string; tempValue: string; humValue: string }[];
   }>();
 
-  const currentPageValue = ref<{ titleText: string; value: number }[]>(
+  const currentPageValue = ref<{ titleText: string; tempValue: string; humValue: string }[]>(
     props.data?.slice(0, 6)
   );
 
   const handlePaginationChange = (
     data: {
       titleText: string;
-      value: number;
+      tempValue: string;
+      humValue: string;
     }[]
   ) => {
     currentPageValue.value = data;

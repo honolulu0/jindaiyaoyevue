@@ -18,29 +18,6 @@
             历史趋势
           </div>
           <div class="flex-1"></div>
-          <div class="flex justify-between gap-x-1 mr-5">
-            <div
-              class="time-unit"
-              :class="{ active: activeUnit === 'year' }"
-              @click="activeUnit = 'year'"
-            >
-              年
-            </div>
-            <div
-              class="time-unit"
-              :class="{ active: activeUnit === 'month' }"
-              @click="activeUnit = 'month'"
-            >
-              月
-            </div>
-            <div
-              class="time-unit"
-              :class="{ active: activeUnit === 'day' }"
-              @click="activeUnit = 'day'"
-            >
-              日
-            </div>
-          </div>
           <div class="annualElectricityConsumption-content-history-text-value">
             历史记录
           </div>

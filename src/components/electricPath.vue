@@ -25,8 +25,8 @@
         <animateMotion
           dur="3s"
           repeatCount="indefinite"
-          keyPoints="0;1;0"
-          keyTimes="0;0.5;1"
+          keyPoints="0;1"
+          keyTimes="0;1"
           calcMode="linear"
         >
           <mpath xlink:href="#motion-path" />

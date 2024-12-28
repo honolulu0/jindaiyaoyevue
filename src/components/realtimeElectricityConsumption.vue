@@ -14,10 +14,15 @@
   import TitleComponent from "./titleComponent.vue";
   import * as echarts from "echarts";
   import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
+  import { getConsumptionData } from "@/apis/getConsumption";
 
-  const data = reactive({
-    powerData: [10, 20, 30, 10, 0, 24, 70, 80, 90, 100, 110, 120],
-    waterData: [5, 15, 25, 35, 45, 24, 65, 75, 85, 95, 105, 115],
+
+  const data = reactive<{
+    powerData: number[];
+    waterData: number[];
+  }>({
+    powerData: [],
+    waterData: [],
   });
 
   const chartRef = ref<HTMLDivElement | null>();
@@ -56,18 +61,18 @@
       type: "category",
       boundaryGap: false,
       data: [
-        "1:00",
-        "2:00",
-        "3:00",
-        "4:00",
-        "5:00",
-        "6:00",
-        "7:00",
-        "8:00",
-        "9:00",
-        "10:00",
-        "11:00",
-        "12:00",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
       ],
       axisLabel: {
         fontSize: 5,
@@ -85,7 +90,6 @@
           lineHeight: -10,
           verticalAlign: "bottom",
         },
-        interval: 20,
         axisLabel: {
           fontSize: 5,
           color: "rgba(172, 192, 216, 0.5)",
@@ -106,7 +110,6 @@
           lineHeight: -10,
           verticalAlign: "bottom",
         },
-        interval: 20,
         axisLabel: {
           fontSize: 5,
           color: "rgba(172, 192, 216, 0.5)",
@@ -156,6 +159,10 @@
     if (chartRef.value) {
       const chart = echarts.init(chartRef.value, null, {
         renderer: "svg",
+      });
+      getConsumptionData().then((res) => {
+        data.powerData = Object.values(res.电表);
+        data.waterData = Object.values(res.水表);
       });
       chart.setOption(option.value);
       window.addEventListener("resize", () => {

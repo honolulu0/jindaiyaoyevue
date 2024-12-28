@@ -19,29 +19,7 @@
             历史趋势
           </div>
           <div class="flex-1"></div>
-          <div class="flex justify-between gap-x-1 mr-5">
-            <div
-              class="time-unit"
-              :class="{ active: activeUnit === 'year' }"
-              @click="activeUnit = 'year'"
-            >
-              年
-            </div>
-            <div
-              class="time-unit"
-              :class="{ active: activeUnit === 'month' }"
-              @click="activeUnit = 'month'"
-            >
-              月
-            </div>
-            <div
-              class="time-unit"
-              :class="{ active: activeUnit === 'day' }"
-              @click="activeUnit = 'day'"
-            >
-              日
-            </div>
-          </div>
+
           <div class="annualWaterConsumption-content-history-text-value">
             历史记录
           </div>
@@ -86,7 +64,7 @@
     const option = {
       grid: {
         top: "30%",
-        left: "15%",
+        left: "20%",
         right: "12%",
         bottom: "23%",
       },
@@ -135,7 +113,7 @@
       },
       yAxis: {
         type: "value",
-        interval: 10,
+        // interval: 10,
         axisLabel: {
           fontFamily: "SourceHanSansSC-Normal",
           fontSize: 6,
@@ -262,8 +240,10 @@
     justify-content: start;
     margin-top: 7px;
     margin-bottom: 14px;
-    margin-left: 75px;
-    width: 88px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
     font-family: YouSheBiaoTiHei;
     font-size: 13px;
     color: #b8fbfd;
