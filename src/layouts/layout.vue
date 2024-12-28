@@ -379,6 +379,54 @@
 			}
 		);
 	}
+
+	function dianziweilanyincang(hidden : boolean) {
+		// 一键布防 显示 ，撤防 隐藏
+		console.log("电子围栏隐藏/显示" + hidden);
+		window.ue.call(
+			"dianziweilanyincang",
+			{
+				"AlarmType": 2,
+				"Hidden": hidden
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+	}
+
+	function dianziweilanjujiao(alarmName : string) {
+		// 点击列表和异常列表的时候调用这个，如果从异常列表切异常没解决点这个需要同时调用下面的异常
+		console.log("电子围聚焦" + alarmName);
+		window.ue.call(
+			"dianziweilanjujiao",
+			{
+				"AlarmName": alarmName
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+	}
+
+
+	function dianziweilanbaojing(alarmName : string, warning : boolean) {
+		// 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
+		console.log("电子围报警" + hidden);
+		window.ue.call(
+			"dianziweilanbaojing",
+			{
+				"AlarmName": alarmName,
+				"Warning": warning
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+	}
+
+
+
 	function close() {
 		isShow.value = false;
 	}
