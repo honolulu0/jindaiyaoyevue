@@ -25,22 +25,6 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
       icon: "安防监控",
       isClick: false
     },
-    {
-      id: 4,
-      icon: "电子围栏",
-      isClick: false
-    },
-    {
-      id: 1,
-      text: "车辆道闸",
-      icon: "车牌识别",
-      isClick: false
-    },
-    {
-      id: 7,
-      icon: "入侵报警",
-      isClick: false
-    }
   ]),
   
   parkFacilities: new BehaviorSubject<DeviceType[]>([
@@ -60,12 +44,6 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
       icon: "水节点监测",
       isClick: false
     },
-    {
-      id: 2,
-      text: "车位引导",
-      icon: "车牌识别",
-      isClick: false
-    }
   ]),
   
   powerEnvironment: new BehaviorSubject<DeviceType[]>([
@@ -75,12 +53,6 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
       text: "配电房",
       isClick: false
     },
-    {
-      id: 3,
-      icon: "电表数据",
-      text: "电表",
-      isClick: false
-    }
   ]),
   
   energyConsumptionSituation: new BehaviorSubject<DeviceType[]>([
