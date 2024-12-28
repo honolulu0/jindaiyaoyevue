@@ -154,10 +154,10 @@
 
       const formattedData = data.map((item: any) => ({
         raw: item,
-        row1: item.titleText,
-        row2: "正常",
-        row3: dayjs(Date.now()).format("YYYY/MM/DD HH:mm"),
-        row4: '已处理',
+        row1: item.location,
+        row2: item.msg_content?.substring(0, 15) || "",
+        row3: dayjs(item.create_time).format("YYYY/MM/DD HH:mm"),
+        row4: item.is_processed === 0 ? '未处理' : '已处理',
         row5: '查看'
       }));
 
