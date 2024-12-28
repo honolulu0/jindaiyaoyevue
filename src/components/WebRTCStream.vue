@@ -6,12 +6,6 @@
       muted
     ></video>
     <div class="control-buttons">
-      <!-- <div
-        class="control-btn location-btn"
-        @click="handleLocationClick"
-      >
-        <i class="location-icon"></i>
-      </div> -->
       <div
         class="control-btn fullscreen-btn"
         @click="toggleFullscreen"
@@ -49,6 +43,18 @@
     const audioUrl = "";
     const options = "rtptransport=tcp&timeout=60";
     webRtcServer.connect(videoUrl, audioUrl, options);
+
+    // 监听 ESC 键退出全屏
+    const handleEscKey = (event) => {
+      if (event.key === "Escape") {
+        exitFullscreen();
+      }
+    };
+    document.addEventListener("keydown", handleEscKey);
+
+    onUnmounted(() => {
+      document.removeEventListener("keydown", handleEscKey);
+    });
   });
 
   onUnmounted(() => {
@@ -85,9 +91,19 @@
     }
   };
 
+  // 退出全屏
+  const exitFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch((err) => {
+        console.error(`退出全屏错误: ${err.message}`);
+      });
+    }
+  };
+
   const handleLocationClick = () => {
     emit("location-click");
   };
+
 </script>
 
 <style scoped>

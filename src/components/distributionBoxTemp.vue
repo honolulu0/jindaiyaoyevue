@@ -3,7 +3,7 @@
 		<TitleComponent titleText="园区配电箱热力图" />
 		<div class="chart-container">
 			<div class="chart-container-item">
-				<div class="title">电子车间楼栋配电房</div>
+				<!-- <div class="title">电子车间楼栋配电房</div> -->
 				<!-- <div class="item-container1">
           <Tooltip
             v-for="i of containerThreeData"
