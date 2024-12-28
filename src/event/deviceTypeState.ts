@@ -56,7 +56,7 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
     },
     {
       id: 10,
-      text: "智能水节点",
+      text: "消费管廊",
       icon: "水节点监测",
       isClick: false
     },
@@ -98,7 +98,7 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
     },
     {
       id: 10,
-      text: "智能水节点",
+      text: "消费管廊",
       icon: "水节点监测",
       isClick: false
     },

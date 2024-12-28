@@ -55,7 +55,7 @@ export const getAlertSummaryMonth = async () => {
   }) as AlertSummaryMonth;
   return {
     "烟感报警": thisYear1.data.stats,
-    "智能水节点": thisYear2.data.stats,
+    "消费管廊": thisYear2.data.stats,
     "智能井盖": thisYear3.data.stats,
     "车辆道闸": thisYear4.data.stats
   };

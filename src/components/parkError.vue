@@ -2,13 +2,13 @@
   <div class="park_error">
     <titleComponent title-text="年度异常事件分析" />
     <div class="tag_container">
-      <div class="tag_item">
+<!--      <div class="tag_item">
         <div class="tag_item_icon equipment"></div>
         <div class="tag_item_bg"></div>
         <div class="tag_item_title">智能设备数量</div>
         <div class="tag_item_data">148</div>
         <div class="tag_item_unit">个</div>
-      </div>
+      </div> -->
       <div class="tag_item">
         <div class="tag_item_icon warning"></div>
         <div class="tag_item_bg"></div>

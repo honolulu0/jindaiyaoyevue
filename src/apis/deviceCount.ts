@@ -51,7 +51,7 @@ const convertToSmartDeviceVO = (dto: DeviceCountDTO): DeviceCountVO[] => {
     '烟感报警': { title: '烟感报警', img: 'parkFacilities/烟感报警icon.png' },
     '车辆道闸': { title: '车辆道闸', img: 'parkFacilities/车牌识别icon.png' },
     '智能井盖': { title: '智能井盖', img: 'parkFacilities/智慧井盖icon.png' },
-    '智能水节点': { title: '智能水节点', img: 'parkFacilities/水节点监测icon.png' },
+    '消费管廊': { title: '消费管廊', img: 'parkFacilities/水节点监测icon.png' },
     '水表': { title: '水表', img: 'parkFacilities/水表数据icon.png' },
     '智能配电柜': { title: '配电房', img: 'parkFacilities/配电房状态icon.png' },
     '电表': { title: '电表', img: 'parkFacilities/电表数据icon.png' },
