@@ -149,8 +149,9 @@
 	};
 
 	const displayItems = [
-		{ label: "设备名", key: "location" },
+		{ label: "设备名称", key: "location" },
 		{ label: "设备类型", key: "device_type_name" },
+		// { label: "设备位置", key: "location" },
 		{ label: "异常信息", key: "msg_content" },
 		{ label: "发生时间", key: "create_time" },
 	];
@@ -158,89 +159,7 @@
 	const deviceData = ref<any>({});
 
 	onMounted(async () => {
-		const res = await getDeviceInfo(props.data.device_name);
-		if (res && res.length > 0) {
-			deviceData.value = res[0];
-		}
 
-		console.log(deviceData.value);
-		if (res[0].device_type_name === "电子围栏" && res[0].realtime_data.Channel) {
-			console.log("电子围报警" + res[0].realtime_data.Channel);
-			window.ue.call(
-				"dianziweilanjujiao",
-				{
-					AlarmName: res[0].realtime_data.Channel,
-				},
-				function (rv) {
-					console.log("ue callback:" + rv);
-				}
-			);
-
-			if (res[0].status == "异常") {
-				// 如果还是异常状态就报警
-				window.ue.call(
-					"dianziweilanbaojing",
-					{
-						"AlarmName": res[0].realtime_data.Channel,
-						"State": 1
-					},
-					function (rv) {
-						console.log("ue callback:" + rv);
-					}
-				);
-			} else {
-				window.ue.call(
-					"dianziweilanbaojing",
-					{
-						"AlarmName": res[0].realtime_data.Channel,
-						"State": 0
-					},
-					function (rv) {
-						console.log("ue callback:" + rv);
-					}
-				);
-			}
-
-
-		} else if (res[0].device_type_name === "入侵报警" && res[0].device_name) {
-			console.log("入侵报警报警" + res[0].device_name);
-			window.ue.call(
-				"dianziweilanjujiao",
-				{
-					AlarmName: res[0].device_name,
-				},
-				function (rv) {
-					console.log("ue callback:" + rv);
-				}
-			);
-			if (res[0].status == "异常") {
-				// 如果还是异常状态就报警
-				window.ue.call(
-					"dianziweilanbaojing",
-					{
-						"AlarmName": res[0].device_name,
-						"State": 1
-					},
-					function (rv) {
-						console.log("ue callback:" + rv);
-					}
-				);
-			} else {
-				window.ue.call(
-					"dianziweilanbaojing",
-					{
-						"AlarmName": res[0].device_name,
-						"State": 0
-					},
-					function (rv) {
-						console.log("ue callback:" + rv);
-					}
-				);
-			}
-
-		} else {
-			console.log("其他");
-		}
 	});
 </script>
 

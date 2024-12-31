@@ -41,7 +41,7 @@
       areaColor: 'rgba(255, 107, 129, 0.3)',
       areaColor2: 'rgba(255, 107, 129, 0)'
     },
-    "消费管廊": {
+    "消防管廊": {
       lineColor: '#4facfe',
       areaColor: 'rgba(79, 172, 254, 0.3)',
       areaColor2: 'rgba(79, 172, 254, 0)'

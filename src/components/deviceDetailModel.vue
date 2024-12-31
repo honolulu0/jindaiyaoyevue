@@ -3,17 +3,17 @@
 		<div class="model_container">
 			<Transition name="slide-fade">
 				<div class="model" :class="{'video-model': props.data.device_type === 7}">
-					<div class="model_title" :style="{ top: props.data.device_type === 7 ? '45px' : '40px' }">
-						{{ props.data.device_type === 7 ? `实时监控 - ${props.data.location}` : '设备详情' }}
+					<div class="model_title" :style="{ top: props.data.device_type === 'video_surveillance'? '45px' : '40px' }">
+						{{ props.data.device_type === 'video_surveillance'? `实时监控 - ${props.data.location}` : '设备详情' }}
 					</div>
 					<div class="close_btn"
-						:style="{ right: props.data.device_type === 7 ? '55px' : '40px', top: props.data.device_type === 7 ? '55px' : '40px' }"
+						:style="{ right: props.data.device_type === 'video_surveillance'? '55px' : '40px', top: props.data.device_type === 'video_surveillance'? '55px' : '40px' }"
 						@click="handleClose">关闭</div>
 					<div class="model_content"
-						:style="{ height: props.data.device_type === 7 ? '75%' : '190px', width: props.data.device_type === 7 ? '84.3%' : '80%', display: props.data.device_type === 7 ? 'flex' : 'grid' }">
+						:style="{ height: props.data.device_type === 'video_surveillance'? '75%' : '190px', width: props.data.device_type === 'video_surveillance'? '84.3%' : '80%', display: props.data.device_type === 'video_surveillance'? 'flex' : 'grid' }">
 						<!-- 当没有视频时显示左侧基本信息 -->
-						<template v-if="props.data.device_type !== 7">
-							<div class="model_content_text">
+						<template v-if="props.data.device_type !== 'video_surveillance'">
+							<div class="model_content_text" :style="['视频监控', '智能配电柜', '水表'].includes(mappedData['device_type_name'])  ? 'width: 100%;' : 'width: 460px;'">
 								<div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
 									<div class="model_content_item_title">{{ item.label }}</div>
 									<div class="model_content_item_value">
@@ -37,11 +37,10 @@
 								</div>
 							</div>
 						</template>
-
 						<!-- 当有视频时全屏显示视频 -->
 						<template v-else>
 							<div class="model_content_realtime full-width "
-								:style="{ border: props.data.device_type === 7 ? 'none' : '1px solid #2b9daa' }">
+								:style="{ border: props.data.device_type === 'video_surveillance'? 'none' : '1px solid #2b9daa' }">
 								<div class="video-container">
 									<WebRTCStream :url="deviceData.url" />
 								</div>
@@ -76,7 +75,7 @@
 		"7": "视频监控",
 		"8": "烟感报警",
 		"9": "入侵报警",
-		"10": "消费管廊",
+		"10": "消防管廊",
 		"11": "智能配电柜",
 	};
 
@@ -87,68 +86,8 @@
 
 	// 在组件挂载时获取设备详情
 	onMounted(async () => {
-		const res = await getDeviceInfo(props.data.device_name);
-		deviceData.value = res[0];
-		isReady.value = true;
-
-		if (res[0].device_type_name === "电子围栏" && res[0].realtime_data.Channel) {
-			console.log("电子围聚焦" + res[0].realtime_data.Channel);
-			window.ue.call(
-				"dianziweilanjujiao",
-				{
-					AlarmName: res[0].realtime_data.Channel,
-				},
-				function (rv) {
-					console.log("ue callback:" + rv);
-				}
-			);
-
-
-			if (res[0].status == "异常") {
-				// 如果还是异常状态就报警 "status": "异常"
-				window.ue.call(
-					"dianziweilanbaojing",
-					{
-						"AlarmName": res[0].realtime_data.Channel,
-						"State": 1
-					},
-					function (rv) {
-						console.log("ue callback:" + rv);
-					}
-				);
-			}
-
-
-		} else if (res[0].device_type_name === "入侵报警" && res[0].device_name) {
-			console.log("入侵报警聚焦" + res[0].device_name);
-			window.ue.call(
-				"dianziweilanjujiao",
-				{
-					AlarmName: res[0].device_name,
-				},
-				function (rv) {
-					console.log("ue callback:" + rv);
-				}
-			);
-
-			if (res[0].status == "异常") {
-				// 如果还是异常状态就报警
-				window.ue.call(
-					"dianziweilanbaojing",
-					{
-						"AlarmName": res[0].device_name,
-						"State": 1
-					},
-					function (rv) {
-						console.log("ue callback:" + rv);
-					}
-				);
-			}
-
-
-		} else {
-			console.log("其他");
-		}
+		// console.log("传入的设备信息1",deviceData.value);
+		// isReady.value = true;
 	});
 
 	const handleClose = () => {
@@ -156,23 +95,25 @@
 	};
 
 	const mappedData = computed(() => {
-		const data = deviceData.value;
+		const data = props.data;
+		console.log("传入的设备信息",data);
 		return {
 			...data,
-			device_type: data.device_type_name,
+			device_type: data.device_type,
+			device_type_name: data.device_type_name,
 		};
 	});
 
 	const getValueColor = (key : string, value : string) => {
 		if (key === 'status') {
-			return value === '异常' ? '#FF0000' : '#00FF00';
+			return value !== '正常' ? '#FF0000' : '#00FF00';
 		}
 		return '#71f3ff';
 	};
 
 	const displayItems = [
-		{ label: "设备名称", key: "device_name" },
-		{ label: "设备类型", key: "device_type" },
+		{ label: "设备名称", key: "location" },
+		{ label: "设备类型", key: "device_type_name" },
 		{ label: "设备状态", key: "status" },
 		{ label: "设备位置", key: "location" },
 	];
@@ -257,7 +198,7 @@
 	}
 
 	.model_content_text {
-		width: 100%;
+		/* width: 100%; */
 		height: max-content;
 		border: 1px solid #2b9daa;
 		border-radius: 10px;

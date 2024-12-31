@@ -7,8 +7,8 @@ export interface DeviceListParams {
   device_type?: string
   device_type_names?: string[]
   location?: string
-  is_valid?: boolean
-  online_status?: boolean
+  // is_valid?: boolean
+  // online_status?: boolean
   page?: number
   page_size?: number
 }

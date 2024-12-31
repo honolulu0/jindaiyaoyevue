@@ -20,7 +20,7 @@
 							</div>
 						</div>
 					</div>
-<!-- 					<button @click="dianziweilanyincang(false,2)">显示</button>
+					<!-- 					<button @click="dianziweilanyincang(false,2)">显示</button>
 					<button @click="dianziweilanyincang(true,2)">隐藏</button>
 					<button @click="dianziweilanbaojing('2',1)">异常2</button>
 					<button @click="dianziweilanbaojing('2',0)">正常2</button>
@@ -84,6 +84,7 @@
 	import ErrorDetailModel from "@/components/errorDetailModel.vue";
 	import DeviceDetailModel from "@/components/deviceDetailModel.vue";
 	import { getAllSpaceStatus } from "@/apis/getParkingData";
+	import { getDeviceInfo } from "@/apis/getDeviceInfo";
 	const isShow = ref(true);
 	const router = useRouter();
 	const parkingShow = ref(true);
@@ -330,9 +331,9 @@
 		if (key == "P") {
 			tempName = key; // 将临时变量 tempName 修改为 'P'
 			const allSpaceStatus = await getAllSpaceStatus();
-			
-			
-			
+
+
+
 			window.ue.call(
 				"shezhiyincangcheliang",
 				allSpaceStatus["空闲车位"].map(ccc => "QC_" + ccc),
@@ -340,7 +341,7 @@
 					console.log("ue callback:" + rv);
 				}
 			);
-			
+
 			window.ue.call(
 				"shezhixianshicheliang",
 				allSpaceStatus["占用车位"].map(ccc => "QC_" + ccc),
@@ -348,7 +349,7 @@
 					console.log("ue callback:" + rv);
 				}
 			);
- 
+
 
 		} else if (key == "1F") {
 			tempName =
@@ -529,32 +530,84 @@
 	}
 
 	errorAlertSubject.subscribe((data) => {
-		if (data !== null) {
+		if (data == null) {
+			showErrorDetail.value = false;
+			return
+		}
+
+		getDeviceInfo(data.device_name).then(res => {
+			if (!(res && res.length > 0)) {
+				console.log("获取传感器详情失败");
+				return
+			}
+			chuanganqijujiao_xuanze(data, res[0])
 			errorDetail.value = data;
 			showDeviceDetail.value = false;
 			showErrorDetail.value = true;
-			console.log(errorDetail.value);
-			console.log(
-				data,
-				data.lou,
-				data.ceng,
-				data.device_name,
-				data.is_processed === 0 ? true : false
-			);
+			// console.log("显示设备异常");
+			// console.log(errorDetail.value);
+			// console.log(
+			// 	data,
+			// 	data.lou,
+			// 	data.ceng,
+			// 	data.device_name,
+			// 	data.is_processed === 0 ? true : false
+			// );
 
-			if (data.lou == "DX") {
-				// 如果传感器位于外部,就先打开外部视角，不然看不到外部的传感器
-				// jujiao("DX");
+		}).catch(error => {
+			console.error('Error fetching device info:', error);
+		});
+
+
+
+
+
+		// if (data.lou == "DX") {
+		// 	// 如果传感器位于外部,就先打开外部视角，不然看不到外部的传感器
+		// 	// jujiao("DX");
+		// }
+
+		// 先变色
+		// chuanganqibianseyichang(
+		//   data.lou,
+		//   data.ceng,
+		//   data.device_name,
+		//   data.is_processed === 0 ? true : false
+		// );
+		// 再聚焦
+
+	});
+
+
+	function chuanganqijujiao_xuanze(data, errorData) {
+
+		if (errorData.device_type_name === "电子围栏" && errorData.realtime_data.Channel) {
+			console.log("电子围报警" + errorData.realtime_data.Channel);
+
+			if (errorData.status == "异常" && data.is_processed == 0) {
+				// 如果还是异常状态就报警,异常且未处理
+				dainziweilan_zhuangtaigaibian(errorData.realtime_data.Channel, 1)
+				dainziweilan_jujiao(errorData.realtime_data.Channel)
+			} else {
+				dainziweilan_zhuangtaigaibian(errorData.realtime_data.Channel, 0)
+				dainziweilan_jujiao(errorData.realtime_data.Channel)
 			}
 
-			// 先变色
-			// chuanganqibianseyichang(
-			//   data.lou,
-			//   data.ceng,
-			//   data.device_name,
-			//   data.is_processed === 0 ? true : false
-			// );
-			// 再聚焦
+
+		} else if (errorData.device_type_name === "入侵报警" && errorData.device_name) {
+			console.log("入侵报警报警" + errorData.device_name, errorData);
+			if (errorData.status == "异常" && data.is_processed == 0) {
+				// 如果还是异常状态就报警,异常且未处理
+				dainziweilan_zhuangtaigaibian(errorData.device_name, 1)
+				// dainziweilan_jujiao(errorData.device_name)
+			} else {
+				dainziweilan_zhuangtaigaibian(errorData.device_name, 0)
+				// dainziweilan_jujiao(errorData.device_name)
+				juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
+			}
+
+		} else {
+			console.log("其他设备报警");
 			setTimeout(() => {
 				juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
 				chuanganqibianseyichang(
@@ -563,11 +616,51 @@
 					data.device_name,
 					data.is_processed === 0 ? true : false
 				);
-			}, 1000);
-		} else {
-			showErrorDetail.value = false;
+			}, 500);
 		}
-	});
+
+	};
+
+
+	function dainziweilan_jujiao(
+		alarmName : string
+	) {
+		// 电子围栏聚焦   errorData.realtime_data.Channel 入侵报警传 res[0].device_name,
+		console.log("电子围栏聚焦");
+		window.ue.call(
+			"dianziweilanjujiao",
+			{
+				AlarmName: alarmName,
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+
+	};
+
+
+
+	function dainziweilan_zhuangtaigaibian(
+		alarmName : string,
+		state : number
+	) {
+		// 电子围栏传   errorData.realtime_data.Channel 入侵报警传 res[0].device_name,
+		// state 0 正常 1 报警,
+		console.log("电子围栏状态改变");
+		window.ue.call(
+			"dianziweilanbaojing",
+			{
+				"AlarmName": alarmName,
+				"State": state
+			},
+			function (rv) {
+				console.log("ue callback:" + rv);
+			}
+		);
+	};
+
+
 	function chuanganqibianseyichang(
 		BuildingName : string,
 		floorId : number,
@@ -598,16 +691,37 @@
 		);
 	}
 	deviceSelectSubject.subscribe((data) => {
-		if (data !== null) {
-			deviceDetail.value = data;
-			showErrorDetail.value = false;
-			showDeviceDetail.value = true;
-			console.log(deviceDetail.value);
-			console.log(data, data.lou, data.ceng, data.device_name);
-			juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
-		} else {
+		// { label: "设备名称", key: "device_name" },
+		// { label: "设备类型", key: "device_type" },
+		// { label: "设备状态", key: "status" },
+		// { label: "设备位置", key: "location" },
+		console.log("传入的传感器详情", data);
+		if (data == null) {
 			showDeviceDetail.value = false;
+			return
 		}
+		getDeviceInfo(data.device_name)
+			.then(res => {
+				if (!(res && res.length > 0)) {
+					console.log("获取传感器详情失败");
+					return
+				}
+				console.log("设备信息", res);
+				deviceDetail.value =res[0];
+				// chuanganqijujiao_xuanze(data, res[0])
+				showErrorDetail.value = false;
+				showDeviceDetail.value = true;
+
+				// console.log(deviceDetail.value);
+				// console.log(data, data.lou, data.ceng, data.device_name);
+				// juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
+
+
+			})
+			.catch(error => {
+				console.error('Error fetching device info:', error);
+			});
+
 	});
 
 	function juJiaoChuanGanQi(
