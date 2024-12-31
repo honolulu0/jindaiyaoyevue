@@ -16,7 +16,7 @@
 										{{ item.label }}
 									</div>
 									<div class="model_content_item_value"
-										:class="{ 'msg-content': item.key === 'msg_content' }">
+										:class="{ 'msg-content': (item.key === 'msg_content' && mappedData[item.key] != '正常') }">
 										<p>{{ mappedData[item.key] || "无" }}</p>
 									</div>
 								</div>
@@ -152,7 +152,7 @@
 		{ label: "设备名称", key: "location" },
 		{ label: "设备类型", key: "device_type_name" },
 		// { label: "设备位置", key: "location" },
-		{ label: "异常信息", key: "msg_content" },
+		{ label: "当前状态", key: "msg_content" },
 		{ label: "发生时间", key: "create_time" },
 	];
 

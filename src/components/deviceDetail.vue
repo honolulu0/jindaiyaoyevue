@@ -11,23 +11,20 @@
 			</div>
 			<TitleComponent titleText="详细信息" style="margin-top: 10px" />
 			<div class="device-info-content">
-				<!-- :style="{ color: deviceDetail.status === '异常' ? '#FF0000' : '#00FF00' }" -->
-	<!-- 			<div>设备状态:</div>
-				<div class="device-name">{{ deviceDetail.status }}</div> -->
+				:style="{ color: deviceDetail.status !== '正常' ? '#FF0000' : '#00FF00' }"
+				<div>设备状态:</div>
+				<div class="device-name">{{ deviceDetail.status }}</div>
 				<div>设备名称:</div>
 				<div class="device-type">{{ deviceDetail.location }}</div>
-				
+
 				<div>设备位置:</div>
 				<div class="device-type">{{ deviceDetail.location }}</div>
-	<!-- 			<div>设备实时状态:</div>
+				<div>设备实时状态:</div>
 				<div class="device-realtime-status">
-					<div class="device-name" style="#00FF00">正常</div> -->
-					<!--         <VueJsonPretty
-            style="width: max-content; height: max-content"
-            :data="deviceDetail.realtime_data"
-          /> -->
+					<div class="device-name" style="#00FF00">正常</div>
+					<VueJsonPretty style="width: max-content; height: max-content" :data="deviceDetail.realtime_data" />
 
-				<!-- </div> -->
+				</div>
 			</div>
 			<TitleComponent titleText="监控视频" style="margin-top: 10px" v-if="deviceDetail.url && isReady" />
 			<div class="device-realtime-status">

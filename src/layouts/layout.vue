@@ -530,6 +530,7 @@
 	}
 
 	errorAlertSubject.subscribe((data) => {
+		// 从异常列表里点击过来的
 		if (data == null) {
 			showErrorDetail.value = false;
 			return
@@ -540,8 +541,15 @@
 				console.log("获取传感器详情失败");
 				return
 			}
-			chuanganqijujiao_xuanze(data, res[0])
-			errorDetail.value = data;
+			var data_info = res[0]
+			data_info.lou = data.lou
+			data_info.ceng = data.ceng
+			data_info.id = data.id
+			data_info.msg_content = data.msg_content
+			data_info.is_processed = data.is_processed
+			console.log("设备error信息", data_info);
+			chuanganqijujiao_xuanze(data_info)
+			errorDetail.value = data_info;
 			showDeviceDetail.value = false;
 			showErrorDetail.value = true;
 			// console.log("显示设备异常");
@@ -558,63 +566,84 @@
 			console.error('Error fetching device info:', error);
 		});
 
+	});
+	deviceSelectSubject.subscribe((data) => {
+		// 从详情或者从3d模型上点击过来的，需要判断状态，异常的情况下，由于异常是对应多条的，没有准确的异常ID，所以无法在这里直接处理异常，只能看到这个设备当前是异常的
+		console.log("传入的传感器详情", data);
+		if (data == null) {
+			showDeviceDetail.value = false;
+			return
+		}
+		getDeviceInfo(data.device_name)
+			.then(res => {
+				if (!(res && res.length > 0)) {
+					console.log("获取传感器详情失败");
+					return
+				}
+				var data_info = res[0]
+				// data_info.device_type = data.device_type
+				data_info.lou = data.lou
+				data_info.ceng = data.ceng
+				console.log("设备info信息", data_info);
+
+				if (data_info.status !== "正常") {
+					data_info.is_processed = 0
+				}
+
+				chuanganqijujiao_xuanze(data_info)
+				deviceDetail.value = data_info;
+				showErrorDetail.value = false;
+				showDeviceDetail.value = true;
 
 
 
+				// console.log(deviceDetail.value);
+				// console.log(data, data.lou, data.ceng, data.device_name);
+				// juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
 
-		// if (data.lou == "DX") {
-		// 	// 如果传感器位于外部,就先打开外部视角，不然看不到外部的传感器
-		// 	// jujiao("DX");
-		// }
-
-		// 先变色
-		// chuanganqibianseyichang(
-		//   data.lou,
-		//   data.ceng,
-		//   data.device_name,
-		//   data.is_processed === 0 ? true : false
-		// );
-		// 再聚焦
+			})
+			.catch(error => {
+				console.error('Error fetching device info:', error);
+			});
 
 	});
 
+	function chuanganqijujiao_xuanze(data_info) {
 
-	function chuanganqijujiao_xuanze(data, errorData) {
+		if (data_info.device_type_name === "电子围栏" && data_info.realtime_data.Channel) {
+			console.log("电子围报警" + data_info.realtime_data.Channel);
 
-		if (errorData.device_type_name === "电子围栏" && errorData.realtime_data.Channel) {
-			console.log("电子围报警" + errorData.realtime_data.Channel);
-
-			if (errorData.status == "异常" && data.is_processed == 0) {
+			if (data_info.status != "正常" && data_info.is_processed == 0) {
 				// 如果还是异常状态就报警,异常且未处理
-				dainziweilan_zhuangtaigaibian(errorData.realtime_data.Channel, 1)
-				dainziweilan_jujiao(errorData.realtime_data.Channel)
+				dainziweilan_zhuangtaigaibian(data_info.realtime_data.Channel, 1)
+				dainziweilan_jujiao(data_info.realtime_data.Channel)
 			} else {
-				dainziweilan_zhuangtaigaibian(errorData.realtime_data.Channel, 0)
-				dainziweilan_jujiao(errorData.realtime_data.Channel)
+				dainziweilan_zhuangtaigaibian(data_info.realtime_data.Channel, 0)
+				dainziweilan_jujiao(data_info.realtime_data.Channel)
 			}
 
 
-		} else if (errorData.device_type_name === "入侵报警" && errorData.device_name) {
-			console.log("入侵报警报警" + errorData.device_name, errorData);
-			if (errorData.status == "异常" && data.is_processed == 0) {
+		} else if (data_info.device_type_name === "入侵报警" && data_info.device_name) {
+			console.log("入侵报警报警" + data_info.device_name, data_info);
+			if (data_info.status != "正常" && data_info.is_processed == 0) {
 				// 如果还是异常状态就报警,异常且未处理
-				dainziweilan_zhuangtaigaibian(errorData.device_name, 1)
+				dainziweilan_zhuangtaigaibian(data_info.device_name, 1)
 				// dainziweilan_jujiao(errorData.device_name)
 			} else {
-				dainziweilan_zhuangtaigaibian(errorData.device_name, 0)
+				dainziweilan_zhuangtaigaibian(data_info.device_name, 0)
 				// dainziweilan_jujiao(errorData.device_name)
-				juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
+				juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
 			}
 
 		} else {
 			console.log("其他设备报警");
 			setTimeout(() => {
-				juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
+				juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
 				chuanganqibianseyichang(
-					data.lou,
-					data.ceng,
-					data.device_name,
-					data.is_processed === 0 ? true : false
+					data_info.lou,
+					data_info.ceng,
+					data_info.device_name,
+					data_info.is_processed === 0 ? true : false
 				);
 			}, 500);
 		}
@@ -690,39 +719,7 @@
 			}
 		);
 	}
-	deviceSelectSubject.subscribe((data) => {
-		// { label: "设备名称", key: "device_name" },
-		// { label: "设备类型", key: "device_type" },
-		// { label: "设备状态", key: "status" },
-		// { label: "设备位置", key: "location" },
-		console.log("传入的传感器详情", data);
-		if (data == null) {
-			showDeviceDetail.value = false;
-			return
-		}
-		getDeviceInfo(data.device_name)
-			.then(res => {
-				if (!(res && res.length > 0)) {
-					console.log("获取传感器详情失败");
-					return
-				}
-				console.log("设备信息", res);
-				deviceDetail.value =res[0];
-				// chuanganqijujiao_xuanze(data, res[0])
-				showErrorDetail.value = false;
-				showDeviceDetail.value = true;
 
-				// console.log(deviceDetail.value);
-				// console.log(data, data.lou, data.ceng, data.device_name);
-				// juJiaoChuanGanQi(data.lou, data.ceng, data.device_name);
-
-
-			})
-			.catch(error => {
-				console.error('Error fetching device info:', error);
-			});
-
-	});
 
 	function juJiaoChuanGanQi(
 		BuildingName : string,
@@ -784,6 +781,8 @@
 					// showDeviceDetail.value = false;
 					// showErrorDetail.value = true;
 					deviceSelectSubject.next({
+						lou: chuanganqi.name,
+						ceng: chuanganqi.FloorID,
 						device_name: chuanganqi.SensorName,
 					});
 				};
