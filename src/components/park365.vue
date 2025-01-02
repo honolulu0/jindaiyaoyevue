@@ -275,7 +275,7 @@
     right: 0;
     width: 377px;
     height: 579px;
-    z-index: 1000;
+    z-index: 700;
   }
 
   .tab_text {

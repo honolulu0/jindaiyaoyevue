@@ -6,7 +6,7 @@
     <ParkSupporting />
     <InvestmentPromotionUnitStatistics />
     <Park365 />
-    <div style="bottom: 10px; right: 20px; position: absolute; width: 206px; height: 130px; overflow: hidden">
+    <div style="bottom: 10px; right: 20px; position: absolute; width: 206px; height: 130px; overflow: hidden; z-index: 900">
       <TitleComponent titleText="园区俯视图" />
       <Image :src="imgUrl" width="100%" height="90%" style="margin-top: 3px" />
     </div>
