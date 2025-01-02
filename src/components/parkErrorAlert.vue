@@ -87,7 +87,6 @@
       const data = await getErrorAlert({
         page: isRefresh ? 1 : currentPage.value,
         pageSize: pageSize.value,
-        device_type: "1,2"
       });
       
       const formattedData = data.map(item => ({
