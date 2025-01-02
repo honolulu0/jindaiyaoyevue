@@ -10,7 +10,7 @@
 					<div class="model_content">
 						<div class="mr-1">
 							<div class="model_content_text"
-								:style="['视频监控', '智能配电柜', '水表'].includes(mappedData['device_type_name'])  ? 'width: 100%;' : 'width: 460px;'">
+								:style="['视频监控', '配电柜', '水表'].includes(mappedData['device_type_name'])  ? 'width: 100%;' : 'width: 460px;'">
 								<div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
 									<div class="model_content_item_title">
 										{{ item.label }}
@@ -43,17 +43,17 @@
 								</div>
 							</div>
 						</div>
-						<!-- <div class="model_content_realtime">
-							<template v-if="deviceData?.url">
+						<div class="model_content_realtime">
+				<!-- 			<template v-if="deviceData?.url">
 								<div class="realtime-title">实时监控</div>
 								<div class="video-container">
 									<WebRTCStream :url="deviceData.url" />
 								</div>
-							</template>
-							<template v-else>
+							</template> -->
+							<template>
 								<div class="realtime-title">实时数据</div>
 								<div class="realtime-content">
-									<div class="model_content_item" v-for="(value, key) in deviceData?.realtime_data"
+									<div class="model_content_item" v-for="(value, key) in props.data?.realtime_data"
 										:key="key">
 										<div class="model_content_item_title" style="min-width: 100px">
 											{{ key }}
@@ -64,7 +64,7 @@
 									</div>
 								</div>
 							</template>
-						</div> -->
+						</div>
 					</div>
 				</div>
 			</Transition>
@@ -93,7 +93,6 @@
 	const mappedData = computed(() => {
 		return {
 			...props.data,
-			...deviceData.value,
 			create_time: dayjs(props.data.create_time).format(
 				"YYYY年MM月DD日 HH:mm:ss"
 			),
@@ -107,24 +106,24 @@
 			props.data.is_processed = "1";
 			// 电子围栏的异常列表里有异常的时候调用这个传true，如果异常解决了，就传false
 			if (
-				deviceData.value.device_type_name === "电子围栏" &&
-				deviceData.value.realtime_data.Channel
+				props.data.device_type_name === "电子围栏" &&
+				props.data.realtime_data.Channel
 			) {
 				window.ue.call(
 					"dianziweilanbaojing",
 					{
-						"AlarmName": deviceData.value.realtime_data.Channel,
+						"AlarmName": props.data.realtime_data.Channel,
 						"State": 0
 					},
 					function (rv) {
 						console.log("ue callback:" + rv);
 					}
 				);
-			} else if (deviceData.value.device_type_name === "入侵报警" && deviceData.value.device_name) {
+			} else if (props.data.device_type_name === "入侵报警" && props.data.device_name) {
 				window.ue.call(
 					"dianziweilanbaojing",
 					{
-						"AlarmName": deviceData.value.device_name,
+						"AlarmName": props.data.device_name,
 						"State": 0
 					},
 					function (rv) {
@@ -155,8 +154,6 @@
 		{ label: "当前状态", key: "msg_content" },
 		{ label: "发生时间", key: "create_time" },
 	];
-
-	const deviceData = ref<any>({});
 
 	onMounted(async () => {
 

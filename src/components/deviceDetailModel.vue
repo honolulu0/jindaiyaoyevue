@@ -2,7 +2,7 @@
 	<Transition name="fade">
 		<div class="model_container">
 			<Transition name="slide-fade">
-				<div class="model" :class="{'video-model': props.data.device_type === 7}">
+				<div class="model" :class="{'video-model': props.data.device_type === 'video_surveillance'}">
 					<div class="model_title" :style="{ top: props.data.device_type === 'video_surveillance'? '45px' : '40px' }">
 						{{ props.data.device_type === 'video_surveillance'? `实时监控 - ${props.data.location}` : '设备详情' }}
 					</div>
@@ -13,7 +13,7 @@
 						:style="{ height: props.data.device_type === 'video_surveillance'? '75%' : '190px', width: props.data.device_type === 'video_surveillance'? '84.3%' : '80%', display: props.data.device_type === 'video_surveillance'? 'flex' : 'grid' }">
 						<!-- 当没有视频时显示左侧基本信息 -->
 						<template v-if="props.data.device_type !== 'video_surveillance'">
-							<div class="model_content_text" :style="['视频监控', '智能配电柜', '水表'].includes(mappedData['device_type_name'])  ? 'width: 100%;' : 'width: 460px;'">
+							<div class="model_content_text" :style="['视频监控', '配电柜', '水表'].includes(mappedData['device_type_name'])  ? 'width: 100%;' : 'width: 460px;'">
 								<div class="model_content_item" v-for="(item, key) in displayItems" :key="key">
 									<div class="model_content_item_title">{{ item.label }}</div>
 									<div class="model_content_item_value">
@@ -27,7 +27,7 @@
 							<div class="model_content_realtime">
 								<div class="realtime-title">实时数据</div>
 								<div class="realtime-content">
-									<div class="model_content_item" v-for="(value, key) in deviceData.realtime_data"
+									<div class="model_content_item" v-for="(value, key) in props.data.realtime_data"
 										:key="key">
 										<div class="model_content_item_title">{{ key }}</div>
 										<div class="model_content_item_value">
@@ -42,7 +42,7 @@
 							<div class="model_content_realtime full-width "
 								:style="{ border: props.data.device_type === 'video_surveillance'? 'none' : '1px solid #2b9daa' }">
 								<div class="video-container">
-									<WebRTCStream :url="deviceData.url" />
+									<WebRTCStream :url="props.data.url" />
 								</div>
 							</div>
 						</template>
@@ -76,7 +76,7 @@
 		"8": "烟感报警",
 		"9": "入侵报警",
 		"10": "消防管廊",
-		"11": "智能配电柜",
+		"11": "配电柜",
 	};
 
 	const deviceData = ref<any>({});

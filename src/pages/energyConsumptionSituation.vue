@@ -9,14 +9,14 @@
       :top="356"
       :left="20"
       :height="209"
-      :deviceType="['电表','水表']"
+      :deviceType="['配电柜','水表']"
       v-show="isShow"
     />
     <AnnualWaterConsumption
       :chartData="waterConsumptionData"
       :totalConsumption="waterConsumptionData.reduce((a, b) => a + b, 0)"
     />
-    <PowerErrorAlert :deviceType="['1','2']" />
+    <PowerErrorAlert :deviceType="['2', '11']" />
   </div>
 </template>
 
