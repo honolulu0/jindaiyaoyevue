@@ -235,7 +235,7 @@
 
 	.type_select_box {
 		position: absolute;
-		top: 28px;
+		top: 30px;
 		left: 0;
 		width: 45px;
 		height: 18px;
@@ -246,7 +246,7 @@
 
 	.type_select {
 		position: absolute;
-		top: 28px;
+		top: 30px;
 		left: 0;
 		width: 45px;
 		height: 18px;
