@@ -44,26 +44,24 @@
 							</div>
 						</div>
 						<div class="model_content_realtime">
-				<!-- 			<template v-if="deviceData?.url">
+							<!-- 			<template v-if="deviceData?.url">
 								<div class="realtime-title">实时监控</div>
 								<div class="video-container">
 									<WebRTCStream :url="deviceData.url" />
 								</div>
 							</template> -->
-							<template>
-								<div class="realtime-title">实时数据</div>
-								<div class="realtime-content">
-									<div class="model_content_item" v-for="(value, key) in props.data?.realtime_data"
-										:key="key">
-										<div class="model_content_item_title" style="min-width: 100px">
-											{{ key }}
-										</div>
-										<div class="model_content_item_value">
-											<p>{{ value == "" || value == null ? "无" : value }}</p>
-										</div>
+							<div class="realtime-title">实时数据</div>
+							<div class="realtime-content">
+								<div class="model_content_item" v-for="(value, key) in props.data?.realtime_data"
+									:key="key">
+									<div class="model_content_item_title" style="min-width: 100px">
+										{{ key }}
+									</div>
+									<div class="model_content_item_value">
+										<p>{{ value == "" || value == null ? "无" : value }}</p>
 									</div>
 								</div>
-							</template>
+							</div>
 						</div>
 					</div>
 				</div>

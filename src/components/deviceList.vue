@@ -6,8 +6,8 @@
 		<input type="text" placeholder="请输入设备名称" class="search_input" v-model="searchValue" />
 		<div class="type_select_box"></div>
 		<select class="type_select" v-model="selectedType">
-			<option value="">全部类型</option>
-			<option v-for="type in deviceType" :key="type" :value="type">
+			<option style="font-size: 12px;" value="">全部类型</option>
+			<option style="font-size: 12px;" v-for="type in deviceType" :key="type" :value="type">
 				{{ type }}
 			</option>
 		</select>
@@ -25,8 +25,9 @@
 				</div>
 			</div>
 			<div class="device_list_body" @scroll="handleScroll">
-				<div v-for="(item, index) in deviceList" :key="index"  :class="{ error: hasError(item) }" class="device_list_content_item data_row">
-					
+				<div v-for="(item, index) in deviceList" :key="index" :class="{ error: hasError(item) }"
+					class="device_list_content_item data_row">
+
 					<template v-for="(value, key) in item" :key="key">
 						<div v-if="key !== 'raw'" class="col">
 							{{ value }}

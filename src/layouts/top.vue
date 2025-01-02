@@ -163,7 +163,9 @@
 	const time = ref("");
 	const date = ref("");
 
-	const setClick = (index : number) => { yincangxianshisuoyou() };
+	const setClick = (index : number) => { 
+		yincangxianshisuoyou() 
+		};
 
 	function yincangxianshisuoyou() {
 		// 一键布防 显示 ，撤防 隐藏
