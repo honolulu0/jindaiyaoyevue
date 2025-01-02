@@ -11,7 +11,7 @@
     </div>
     <DeviceList
       style="position: absolute; top: 122px; left: 0px; z-index: 100; height: 200px;"
-      :deviceType="['视频监控', '入侵报警', '车辆道闸', '电子围栏']"
+      :deviceType="['视频监控', '入侵报警','电子围栏']"
     />
   </div>
 </template>

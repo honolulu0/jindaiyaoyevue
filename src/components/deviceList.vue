@@ -72,7 +72,6 @@
 			default: [],
 		},
 	});
-
 	const hasError = (item : Record<string, string>) => {
 		return item.row3 !== "正常";
 	};
@@ -90,14 +89,13 @@
 	// 获取设备列表数据
 	const fetchDeviceList = async (isRefresh = true) => {
 		if (loading.value || (!hasMore.value && !isRefresh)) return;
-
 		try {
 			loading.value = true;
 			if (isRefresh) {
 				currentPage.value = 1;
 				deviceList.value = [];
 			}
-
+			console.log("selectedType.value",selectedType);
 			const res = await getDeviceList({
 				location: searchValue.value,
 				device_type_names: selectedType.value ? [selectedType.value] : (props.deviceType as string[]),

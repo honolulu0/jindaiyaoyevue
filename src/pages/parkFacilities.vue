@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full absolute top-0 left-0 z-0">
     <SmartDevice v-show="isShow" />
-    <DeviceList v-show="isShow" style="top: 230px" :height="350" :deviceType="['烟感报警','智能井盖','消防管廊','车位引导']" />
+    <DeviceList v-show="isShow" style="top: 230px" :height="350" :deviceType="['烟感报警','智能井盖','消防管廊']" />
     <!-- <SecurityOpMenu @onButtonClick="handleButtonClick" /> -->
     <DeviceErrorMonthChart />
     <ErrorAlert :device_type="['8', '5', '10', '3']" />
