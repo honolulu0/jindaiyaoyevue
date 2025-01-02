@@ -4,6 +4,13 @@
 		<div class="title">设备列表</div>
 		<div class="search_box"></div>
 		<input type="text" placeholder="请输入设备名称" class="search_input" v-model="searchValue" />
+		<div class="type_select_box"></div>
+		<select class="type_select" v-model="selectedType">
+			<option value="">全部类型</option>
+			<option v-for="type in deviceType" :key="type" :value="type">
+				{{ type }}
+			</option>
+		</select>
 		<div class="device_list_content">
 			<div class="device_list_header">
 				<div class="device_list_content_item title_row">
@@ -77,6 +84,7 @@
 	const omit = ref(["device_name"]);
 	const loading = ref(false);
 	const hasMore = ref(true);
+	const selectedType = ref("");
 
 	// 获取设备列表数据
 	const fetchDeviceList = async (isRefresh = true) => {
@@ -91,7 +99,7 @@
 
 			const res = await getDeviceList({
 				location: searchValue.value,
-				device_type_names: props.deviceType as string[],
+				device_type_names: selectedType.value ? [selectedType.value] : (props.deviceType as string[]),
 				page: currentPage.value,
 				page_size: pageSize.value,
 			});
@@ -140,6 +148,11 @@
 		searchTimer = setTimeout(() => {
 			fetchDeviceList(true);
 		}, 300);
+	});
+
+	// 监听设备类型变化
+	watch(selectedType, () => {
+		fetchDeviceList(true);
 	});
 
 	// 初始化加载数据
@@ -195,6 +208,7 @@
 		width: 241px;
 		height: 18px;
 		opacity: 0.4;
+		margin-left: 51px;
 		background: #61778a;
 		border: 0px solid #ffffff;
 	}
@@ -206,6 +220,7 @@
 		width: 241px;
 		height: 18px;
 		padding: 10px;
+		margin-left: 51px;
 		border: none;
 		background: transparent;
 		font-family: SourceHanSansSC-Normal;
@@ -216,6 +231,43 @@
 		text-align: left;
 		outline: none;
 		font-style: normal;
+	}
+
+	.type_select_box {
+		position: absolute;
+		top: 28px;
+		left: 0;
+		width: 45px;
+		height: 18px;
+		opacity: 0.4;
+		background: #61778a;
+		border: 0px solid #ffffff;
+	}
+
+	.type_select {
+		position: absolute;
+		top: 28px;
+		left: 0;
+		width: 45px;
+		height: 18px;
+		padding: 0 10px;
+		border: none;
+		background: transparent;
+		font-family: SourceHanSansSC-Normal;
+		font-weight: 600;
+		font-size: 6px;
+		color: #ffffff;
+		line-height: 9px;
+		text-align: left;
+		outline: none;
+		font-style: normal;
+		appearance: none;
+		cursor: pointer;
+	}
+
+	.type_select option {
+		background: #61778a;
+		color: #ffffff;
 	}
 
 	.device_list_content {
