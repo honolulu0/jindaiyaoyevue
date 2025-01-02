@@ -1,10 +1,10 @@
 <template>
   <div class="distribution-box-info">
-    <TitleComponent titleText="配电箱信息" />
+    <TitleComponent titleText="配电柜信息" />
     <div class="distribution-box-info-content">
       <div class="left-content">
         <div class="left-content-img"></div>
-        <div class="left-content-title-text">配电箱数量</div>
+        <div class="left-content-title-text">配电柜数量</div>
       </div>
       <div class="right-content">
         <div class="list_content">
@@ -79,7 +79,7 @@
   }
 
   .left-content {
-    background-image: url("@/assets/power/配电箱数量及背景.png");
+    background-image: url("@/assets/power/配电柜数量及背景.png");
     background-size: cover;
     background-position: center;
     display: flex;

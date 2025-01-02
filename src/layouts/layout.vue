@@ -20,21 +20,8 @@
 							</div>
 						</div>
 					</div>
-					<!-- 					<button @click="dianziweilanyincang(false,2)">显示</button>
-					<button @click="dianziweilanyincang(true,2)">隐藏</button>
-					<button @click="dianziweilanbaojing('2',1)">异常2</button>
-					<button @click="dianziweilanbaojing('2',0)">正常2</button>
-					<button @click="dianziweilanjujiao('1')">聚焦1</button>
-					<button @click="dianziweilanjujiao('10')">聚焦10</button>
-
-					----------------
-
-					<button @click="dianziweilanyincang(false,1)">显示</button>
-					<button @click="dianziweilanyincang(true,1)">隐藏</button>
-					<button @click="dianziweilanbaojing('RQ_1C_B1',1)">异常2</button>
-					<button @click="dianziweilanbaojing('RQ_1C_B1',0)">正常2</button>
-					<button @click="dianziweilanjujiao('RQ_1C_B1')">聚焦1</button>
-					<button @click="dianziweilanjujiao('RQ_1C_B3')">聚焦10</button> -->
+					<!-- <button @click="yincangxianshisuoyou()">隐藏</button> -->
+				
 				</div>
 				<div class="bg_right"></div>
 				<slot></slot>
@@ -407,21 +394,7 @@
 		);
 	}
 
-	// function dianziweilanyincang(hidden : boolean, alarmType : number) {
-	// 	// 一键布防 显示 ，撤防 隐藏
-	// 	// D:/VueProject/jindaiyaoyevue/src/pages/securitySituation.vue
-	// 	console.log("电子围栏隐藏/显示" + hidden);
-	// 	window.ue.call(
-	// 		"dianziweilanyincang",
-	// 		{
-	// 			"AlarmType": alarmType,
-	// 			"Hidden": hidden
-	// 		},
-	// 		function (rv) {
-	// 			console.log("ue callback:" + rv);
-	// 		}
-	// 	);
-	// }
+
 
 	// function dianziweilanjujiao(alarmName : string) {
 	// 	// 点击列表和异常列表的时候调用这个，如果从异常列表切异常没解决点这个需要同时调用下面的异常

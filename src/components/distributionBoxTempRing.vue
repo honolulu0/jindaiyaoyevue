@@ -7,7 +7,7 @@
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
   >
-    <TitleComponent titleText="配电箱温湿度" />
+    <TitleComponent titleText="配电柜温湿度" />
     <div class="distributionBoxTempRing-content">
       <div
         :class="`distributionBoxTempRing_item ${

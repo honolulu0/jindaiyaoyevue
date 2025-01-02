@@ -33,15 +33,15 @@ const baseUrl = import.meta.url.substring(
 const contentItem = ref([
   {
     key: 1,
-    title: "配电房",
-    img: `${encodeURI(`${baseUrl}/../assets/配电房.png`)}`,
+    title: "配电柜",
+    img: `${encodeURI(`${baseUrl}/../assets/配电柜.png`)}`,
     number: 5,
     unit: "处",
   },
   {
     key: 2,
-    title: "配电箱",
-    img: `${encodeURI(`${baseUrl}/../assets/parkFacilities/配电房状态icon.png`)}`,
+    title: "配电柜",
+    img: `${encodeURI(`${baseUrl}/../assets/parkFacilities/配电柜状态icon.png`)}`,
     number: 47,
     unit: "个",
   },

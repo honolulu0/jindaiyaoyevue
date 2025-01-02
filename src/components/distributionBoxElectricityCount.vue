@@ -7,7 +7,7 @@
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
   >
-    <TitleComponent titleText="配电箱电流" />
+    <TitleComponent titleText="配电柜电流" />
     <div class="distributionBoxElectricityCountChart_container">
       <DistributionBoxElectricityCountChart
         v-for="item in currentPageData"

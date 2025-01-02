@@ -1,6 +1,6 @@
 <template>
   <div class="distribution-box-voltage">
-    <TitleComponent titleText="配电箱电压" />
+    <TitleComponent titleText="配电柜电压" />
     <div class="distribution-box-voltage-content">
       <div
         ref="chartRef"

@@ -49,8 +49,8 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
   powerEnvironment: new BehaviorSubject<DeviceType[]>([
     {
       id: 6,
-      icon: "配电房状态",
-      text: "配电房",
+      icon: "配电柜状态",
+      text: "配电柜",
       isClick: false
     },
   ]),
@@ -58,8 +58,8 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
   energyConsumptionSituation: new BehaviorSubject<DeviceType[]>([
     {
       id: 6,
-      icon: "配电房状态",
-      text: "配电房",
+      icon: "配电柜状态",
+      text: "配电柜",
       isClick: false
     },
     {

@@ -1,6 +1,6 @@
 <template>
   <div class="distribution-box-temp">
-    <TitleComponent titleText="配电箱温度" />
+    <TitleComponent titleText="配电柜温度" />
     <div class="distribution-box-temp-content">
       <div
         ref="chartRef"

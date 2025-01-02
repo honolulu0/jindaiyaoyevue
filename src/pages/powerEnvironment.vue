@@ -21,7 +21,7 @@
       v-show="isShow"
     />
 
-    <!-- 配电房统计 -->
+    <!-- 配电柜统计 -->
     <DistributionBoxCount />
 
     <!-- 湿度饼 -->

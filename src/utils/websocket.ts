@@ -95,4 +95,4 @@ class WebSocketService {
 // 创建单例
 export const wsService = new WebSocketService('ws://47.120.12.122:8002/ws'); 
 
-wsService.connect();
+// wsService.connect();

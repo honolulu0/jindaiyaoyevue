@@ -1,6 +1,6 @@
 <template>
   <div class="distribution-box-warning">
-    <TitleComponent titleText="配电箱月度告警分析" />
+    <TitleComponent titleText="配电柜月度告警分析" />
     <div class="distribution-box-warning-content">
       <div
         ref="chartRef"
