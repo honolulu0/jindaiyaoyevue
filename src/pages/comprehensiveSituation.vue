@@ -6,10 +6,13 @@
     <Park365Info v-show="isShow" />
     <ParkError v-show="isShow" />
     <ParkErrorAlert v-show="isShow" />
-    <RealtimeElectricityConsumption  />
+    <RealtimeElectricityConsumption />
     <ParkingData />
     <DistributionBoxTemp />
-    <StarNew style="bottom: 3px; right: 20px; position: absolute" />
+    <div style="bottom: 5px; right: 20px; position: absolute; width: 206px; height: 80px; overflow: hidden">
+      <TitleComponent titleText="园区俯视图" />
+      <Image :src="imgUrl" width="100%" height="90%" style="margin-top: 3px" />
+    </div>
   </div>
 </template>
 
@@ -22,7 +25,16 @@
   import ParkingData from "@/components/parkingData.vue";
   import DistributionBoxTemp from "@/components/distributionBoxTemp.vue";
   import StarNew from "@/components/starNew.vue";
+  import TitleComponent from "@/components/titleComponent.vue";
+  import { Image } from "ant-design-vue";
   import { ref } from "vue";
+
+  const baseUrl = import.meta.url.substring(
+    0,
+    import.meta.url.lastIndexOf("/")
+  );
+
+  const imgUrl = `${baseUrl}/../assets/WechatIMG3166.jpg`
 
   const isShow = ref(true);
 </script>
