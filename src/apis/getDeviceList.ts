@@ -39,7 +39,7 @@ export interface DeviceListVO {
   page_size: number
 }
 
-const url = "/park_api/device/list/"
+const url = "/park_api/device/list"
 
 // DTO 转 VO 的转换函数
 const convertToVO = (dto: DeviceListDTO): DeviceListVO => {

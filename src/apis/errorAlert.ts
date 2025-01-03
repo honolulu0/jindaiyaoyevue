@@ -16,7 +16,7 @@ export const getErrorAlert = async (params: {
 	page: number;
 	pageSize: number;
 }): Promise<ErrorAlert[]> => {
-  const res = await axiosInstance.get<any>("/park_api/alerts", {
+  const res = await axiosInstance.get<any>("/park_api/alerts/", {
     params: {
       page: params.page ?? 1,
       pageSize: params.pageSize ?? 10000,
