@@ -29,7 +29,7 @@ export interface SecurityDeviceVO {
   url: string
 }
 
-const url = "/park_api/device/count/"; 
+const url = "/park_api/device/count"; 
 
 // 获取设备数量的接口
 export const getDeviceCount = async () => {
