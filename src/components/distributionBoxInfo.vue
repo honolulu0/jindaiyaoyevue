@@ -79,7 +79,7 @@
   }
 
   .left-content {
-    background-image: url("@/assets/power/配电柜数量及背景.png");
+    background-image: url("@/assets/power/配电箱数量及背景.png");
     background-size: cover;
     background-position: center;
     display: flex;
