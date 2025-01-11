@@ -589,10 +589,6 @@
 			if (data_info.status != "正常" && data_info.is_processed == 0) {
 				// 如果还是异常状态就报警,异常且未处理
 				dainziweilan_zhuangtaigaibian(data_info.realtime_data.Channel, 1)
-				if (from_click === 0) {
-					//如果从模型点击过来的就不需要走定位
-					return
-				}
 				dainziweilan_jujiao(data_info.realtime_data.Channel)
 			} else {
 				dainziweilan_zhuangtaigaibian(data_info.realtime_data.Channel, 0)
@@ -603,7 +599,6 @@
 				dainziweilan_jujiao(data_info.realtime_data.Channel)
 			}
 
-
 		} else if (data_info.device_type_name === "入侵报警" && data_info.device_name) {
 			console.log("入侵报警报警" + data_info.device_name, data_info);
 			if (data_info.status != "正常" && data_info.is_processed == 0) {
@@ -613,20 +608,14 @@
 			} else {
 				dainziweilan_zhuangtaigaibian(data_info.device_name, 0)
 				// dainziweilan_jujiao(errorData.device_name)
-				if (from_click === 0) {
-					//如果从模型点击过来的就不需要走定位
-					return
-				}
 				juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
 			}
 
 		} else {
+			//不用管传感器是否正常，会自动处理异常和正常的颜色
 			console.log("其他设备报警");
 			setTimeout(() => {
-				if (from_click === 1) {
-					//如果从异常列表点击过来的就需要走定位
-					juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
-				}
+				juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
 				chuanganqibianseyichang(
 					data_info.lou,
 					data_info.ceng,
