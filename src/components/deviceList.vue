@@ -14,8 +14,8 @@
 		<div class="device_list_content">
 			<div class="device_list_header">
 				<div class="device_list_content_item title_row">
-					<template v-for="(item, key) in listTitleMap" :key="key">
-						<div v-if="!omit?.includes(key)" class="col title_col">
+					<template v-for="(item, key,index) in listTitleMap" :key="key">
+						<div v-if="!omit?.includes(key)" class="col title_col" :style="index === 0 ? { minWidth: '120px',maxWidth: '150px' } : {}">
 							{{ item }}
 						</div>
 					</template>
@@ -28,8 +28,8 @@
 				<div v-for="(item, index) in deviceList" :key="index" :class="{ error: hasError(item) }"
 					class="device_list_content_item data_row">
 
-					<template v-for="(value, key) in item" :key="key">
-						<div v-if="key !== 'raw'" class="col">
+					<template v-for="(value, key, index) in item" :key="index">
+						<div v-if="key !== 'raw'" class="col" :style="index === 0 ? { minWidth: '120px',maxWidth: '150px', textWrap: 'nowrap', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block', overflow: 'hidden' } : {}">
 							{{ value }}
 						</div>
 					</template>
@@ -234,6 +234,7 @@
 
 	.type_select_box {
 		position: absolute;
+		appearance: none;
 		top: 30px;
 		left: 0;
 		width: 45px;
@@ -249,7 +250,6 @@
 		left: 0;
 		width: 45px;
 		height: 18px;
-		padding: 0 10px;
 		border: none;
 		background: transparent;
 		font-family: SourceHanSansSC-Normal;
@@ -257,7 +257,7 @@
 		font-size: 6px;
 		color: #ffffff;
 		line-height: 9px;
-		text-align: left;
+		text-align: center;
 		outline: none;
 		font-style: normal;
 		appearance: none;
@@ -265,6 +265,8 @@
 	}
 
 	.type_select option {
+		all: unset;
+		appearance: none;
 		background: #61778a;
 		color: #ffffff;
 	}
