@@ -21,7 +21,7 @@
 						</div>
 					</div>
 					<!-- <button @click="yincangxianshisuoyou()">隐藏</button> -->
-				
+
 				</div>
 				<div class="bg_right"></div>
 				<slot></slot>
@@ -521,7 +521,7 @@
 			data_info.msg_content = data.msg_content
 			data_info.is_processed = data.is_processed
 			console.log("设备error信息", data_info);
-			chuanganqijujiao_xuanze(data_info)
+			chuanganqijujiao_xuanze(data_info, 1)
 			errorDetail.value = data_info;
 			showDeviceDetail.value = false;
 			showErrorDetail.value = true;
@@ -563,7 +563,7 @@
 					data_info.is_processed = 0
 				}
 
-				chuanganqijujiao_xuanze(data_info)
+				chuanganqijujiao_xuanze(data_info, 0)
 				deviceDetail.value = data_info;
 				showErrorDetail.value = false;
 				showDeviceDetail.value = true;
@@ -581,7 +581,7 @@
 
 	});
 
-	function chuanganqijujiao_xuanze(data_info) {
+	function chuanganqijujiao_xuanze(data_info, from_click) {
 
 		if (data_info.device_type_name === "电子围栏" && data_info.realtime_data.Channel) {
 			console.log("电子围报警" + data_info.realtime_data.Channel);
@@ -589,9 +589,17 @@
 			if (data_info.status != "正常" && data_info.is_processed == 0) {
 				// 如果还是异常状态就报警,异常且未处理
 				dainziweilan_zhuangtaigaibian(data_info.realtime_data.Channel, 1)
+				if (from_click === 0) {
+					//如果从模型点击过来的就不需要走定位
+					return
+				}
 				dainziweilan_jujiao(data_info.realtime_data.Channel)
 			} else {
 				dainziweilan_zhuangtaigaibian(data_info.realtime_data.Channel, 0)
+				if (from_click === 0) {
+					//如果从模型点击过来的就不需要走定位
+					return
+				}
 				dainziweilan_jujiao(data_info.realtime_data.Channel)
 			}
 
@@ -605,13 +613,20 @@
 			} else {
 				dainziweilan_zhuangtaigaibian(data_info.device_name, 0)
 				// dainziweilan_jujiao(errorData.device_name)
+				if (from_click === 0) {
+					//如果从模型点击过来的就不需要走定位
+					return
+				}
 				juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
 			}
 
 		} else {
 			console.log("其他设备报警");
 			setTimeout(() => {
-				juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
+				if (from_click === 1) {
+					//如果从异常列表点击过来的就需要走定位
+					juJiaoChuanGanQi(data_info.lou, data_info.ceng, data_info.device_name);
+				}
 				chuanganqibianseyichang(
 					data_info.lou,
 					data_info.ceng,
