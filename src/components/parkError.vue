@@ -150,7 +150,7 @@
     yAxis: {
       type: "value",
       name: "异常个数",
-      interval: 20,
+      // interval: 20,
       axisLine: {
         lineStyle: {
           color: "#fff",

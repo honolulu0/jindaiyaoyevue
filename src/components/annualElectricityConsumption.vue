@@ -118,7 +118,7 @@
       },
       yAxis: {
         type: "value",
-        interval: 50,
+        // interval: 50,
         axisLabel: {
           fontFamily: "SourceHanSansSC-Normal",
           fontSize: 6,
