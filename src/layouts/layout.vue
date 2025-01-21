@@ -72,6 +72,11 @@
 	import DeviceDetailModel from "@/components/deviceDetailModel.vue";
 	import { getAllSpaceStatus } from "@/apis/getParkingData";
 	import { getDeviceInfo } from "@/apis/getDeviceInfo";
+	import {
+		riqinbaojingChefang,
+		dianziweilanChefang,
+	} from "@/apis/securityOpMenu";
+
 	const isShow = ref(true);
 	const router = useRouter();
 	const parkingShow = ref(true);
@@ -734,6 +739,30 @@
 	onMounted(() => {
 		try {
 			if (window.ue && window.ue.interface) {
+				console.log("电子围栏，入侵报警，初始化隐藏");
+				dianziweilanChefang();
+				window.ue.call(
+					"dianziweilanyincang",
+					{
+						AlarmType: 1,
+						Hidden: true,
+					},
+					function (rv) {
+						console.log("ue callback:" + rv);
+					}
+				);
+				riqinbaojingChefang();
+				window.ue.call(
+					"dianziweilanyincang",
+					{
+						AlarmType: 2,
+						Hidden: true,
+					},
+					function (rv) {
+						console.log("ue callback:" + rv);
+					}
+				);
+
 				window.ue.interface.setlouzuo = (building) => {
 					console.log("模型传入的建筑", building);
 					if (building.name == "P" || building.name.length === 3) {
@@ -821,6 +850,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		cursor: pointer;
 	}
 
 	.close_btn {
@@ -990,6 +1020,7 @@
 		height: 22px;
 		border-left: 18px solid transparent;
 		border-right: 9px solid transparent;
+		cursor: pointer;
 	}
 
 	.parking_content_item_bg {
@@ -1060,5 +1091,6 @@
 		line-height: 9px;
 		text-align: left;
 		font-style: normal;
+		cursor: pointer;
 	}
 </style>

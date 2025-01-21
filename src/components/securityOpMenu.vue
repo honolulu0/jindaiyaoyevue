@@ -135,6 +135,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		cursor: pointer;
 	}
 
 	.item_button {
@@ -153,6 +154,7 @@
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-image: url("@/assets/parkFacilities/一键布防-未开启.png");
+		cursor: pointer;
 	}
 
 	.item_button:hover {
