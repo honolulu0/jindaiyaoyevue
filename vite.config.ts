@@ -30,7 +30,7 @@ export default defineConfig({
 		proxy: {
 			'/api': 'http://47.120.12.122:8001/',
 			'/park_api': {
-				target: 'http://47.120.12.122:8002/',
+				target: 'http://47.120.12.122:13362/',
 				secure: false
 			},
 			'/jindai3admin': {

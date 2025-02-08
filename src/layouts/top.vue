@@ -11,9 +11,15 @@
 		<div class="weather_time_container">
 			<div class="weather"></div>
 			<div class="weather_content">
-				<div class="weather_icon1"></div>
+				<!-- <div class="weather_icon1"></div> -->
 				<div class="weather_icon2"></div>
-				<div class="temperature">{{ temperature }}</div>
+				<div class="temperature" style="width: 30px;left: 10px;">
+					<span>{{ temperatureH }}</span>
+				</div>
+				<div class="temperature" style="left: 40px;">~</div>
+				<div class="temperature" style="width: 30px;left: 48px;">
+					<span>{{ temperatureL }}</span>
+				</div>
 			</div>
 			<div class="time"></div>
 		</div>
@@ -25,10 +31,11 @@
 <script setup lang="ts">
 	import TopTab from "@/components/topTab.vue";
 	import { parkingSubject, topTabsSubject } from "@/event";
-	import { reactive, ref } from "vue";
+	import { reactive, ref, onMounted } from "vue";
 	import { useRouter } from "vue-router";
 	import { errorAlertSubject } from "@/utils/errorAlertSubject";
 	import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
+	import { getTemperature } from "@/apis/getTemperature";
 	const router = useRouter();
 	const tabsName = reactive([
 		{
@@ -159,7 +166,8 @@
 			},
 		},
 	]);
-	const temperature = ref("-4~7°C");
+	const temperatureH = ref("0℃");
+	const temperatureL = ref("-9℃");
 	const time = ref("");
 	const date = ref("");
 
@@ -203,6 +211,14 @@
 		const day = now.getDate().toString().padStart(2, "0");
 		date.value = `${year}.${month}.${day}`;
 	};
+
+	onMounted( async () => {
+		console.log("temperature");
+		const temperature = await getTemperature();
+		console.log(temperature);
+		temperatureH.value=temperature.temperatureH
+		temperatureL.value=temperature.temperatureL
+	})
 
 	// 初始化时间和日期
 	updateDateTime();
@@ -327,16 +343,14 @@
 	.temperature {
 		position: absolute;
 		top: 3px;
-		left: 47px;
 		height: 11px;
-		width: 32px;
 		font-family: YouSheBiaoTiHei;
 		font-size: 9px;
 		color: #ffffff;
 		line-height: 11px;
 		text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
-		text-align: left;
 		font-style: normal;
+		text-align: center;
 	}
 
 	.weather_icon1 {
@@ -353,10 +367,10 @@
 		background-image: url("@/assets/head_sc_tem.png");
 		background-size: contain;
 		background-position: center;
-		width: 13px;
-		height: 13px;
+		width: 15px;
+		height: 15px;
 		position: absolute;
-		left: 32px;
+		left: -2px;
 		top: 1px;
 	}
 

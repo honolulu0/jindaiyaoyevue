@@ -1,38 +1,43 @@
-import instance from "./axios";
+import axiosInstance from "./axios";
 
-// DTO类型定义 (根据后端接口返回类型进行调整)
-interface TemperatureDTO {
-  temperature?: number;
-  unit?: string;
-  timestamp?: string;
-  // 其他可能的字段...
-}
-
-// VO类型定义
-interface TemperatureVO {
-  temperature: string; // 格式化后的温度，如 "20°C"
-}
-
-// DTO到VO的转换函数
-const transformTemperature = (dto: TemperatureDTO): TemperatureVO => {
-  return {
-    temperature: `${dto.temperature || 0}°${dto.unit || 'C'}`
-  };
+export const getTemperature = async () => {
+  const res = await axiosInstance.get("/park_api/device/weather");
+  return res;
 };
 
-const url = ""; // 等待后端提供接口
+// // DTO类型定义 (根据后端接口返回类型进行调整)
+// interface TemperatureDTO {
+//   temperature?: number;
+//   unit?: string;
+//   timestamp?: string;
+//   // 其他可能的字段...
+// }
 
-export const getTemperature = async (): Promise<TemperatureVO> => {
-  try {
-    const res = await instance.get<TemperatureDTO>(url);
-    return transformTemperature(res.data);
-  } catch (error) {
-    // 错误处理，返回默认值
-    return {
-      temperature: "20°C"
-    };
-  }
-};
+// // VO类型定义
+// interface TemperatureVO {
+//   temperature: string; // 格式化后的温度，如 "20°C"
+// }
+
+// // DTO到VO的转换函数
+// const transformTemperature = (dto: TemperatureDTO): TemperatureVO => {
+//   return {
+//     temperature: `${dto.temperature || 0}°${dto.unit || 'C'}`
+//   };
+// };
+
+// const url = ""; // 等待后端提供接口
+
+// export const getTemperature = async (): Promise<TemperatureVO> => {
+//   try {
+//     const res = await instance.get<TemperatureDTO>(url);
+//     return transformTemperature(res.data);
+//   } catch (error) {
+//     // 错误处理，返回默认值
+//     return {
+//       temperature: "20°C"
+//     };
+//   }
+// };
 
 
 // // top.vue中的相关代码

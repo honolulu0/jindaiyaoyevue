@@ -49,6 +49,7 @@
 
 <style scoped>
   .tab {
+	cursor:pointer;
     position: absolute;
     width: 102px;
     height: 22px;
