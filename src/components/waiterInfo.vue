@@ -37,7 +37,7 @@
     {
       title: "保洁",
       value: "5",
-      unit: "处",
+      unit: "人",
       icon: `url(${encodeURI(
         `${baseUrl}/../assets/enterprises/保洁icon.png`
       )})`,
@@ -45,7 +45,7 @@
     {
       title: "保安",
       value: "5",
-      unit: "处",
+      unit: "人",
       icon: `url(${encodeURI(
         `${baseUrl}/../assets/enterprises/保安icon.png`
       )})`,
@@ -53,7 +53,7 @@
     {
       title: "保绿",
       value: "2",
-      unit: "处",
+      unit: "人",
       icon: `url(${encodeURI(
         `${baseUrl}/../assets/enterprises/保绿icon.png`
       )})`,
@@ -61,7 +61,7 @@
     {
       title: "保修",
       value: "2",
-      unit: "处",
+      unit: "人",
       icon: `url(${encodeURI(
         `${baseUrl}/../assets/enterprises/报修icon.png`
       )})`,
@@ -69,7 +69,7 @@
     {
       title: "客服",
       value: "1",
-      unit: "处",
+      unit: "人",
       icon: `url(${encodeURI(
         `${baseUrl}/../assets/enterprises/客服icon.png`
       )})`,
