@@ -125,6 +125,12 @@ import PartyTitle from "./partyTitle.vue";
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .party-building-adv-content:hover .custom-fullscreen-btn {
+    opacity: 1;
   }
 
   .fullscreen-icon {
