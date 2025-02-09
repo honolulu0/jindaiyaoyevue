@@ -14,6 +14,9 @@
           type="video/mp4"
         />
       </video>
+      <div class="custom-fullscreen-btn" @click="toggleFullScreen">
+        <i class="fullscreen-icon"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -41,7 +44,7 @@ import PartyTitle from "./partyTitle.vue";
       controlBar: false,
     });
     player.src(url);
-    
+
     timer = setInterval(updateVideo, 5 * 60 * 1000);
   });
 
@@ -53,6 +56,15 @@ import PartyTitle from "./partyTitle.vue";
       clearInterval(timer);
     }
   });
+
+  const toggleFullScreen = () => {
+    const videoContainer = document.querySelector('.party-building-adv-content');
+    if (!document.fullscreenElement) {
+      videoContainer?.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
 </script>
 
 <style scoped>
@@ -98,5 +110,62 @@ import PartyTitle from "./partyTitle.vue";
 
   :deep(.video-js .vjs-control-bar) {
     background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .custom-fullscreen-btn {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fullscreen-icon {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #fff;
+  }
+
+  .fullscreen-icon::before,
+  .fullscreen-icon::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border: 2px solid #fff;
+  }
+
+  .fullscreen-icon::before {
+    top: -4px;
+    left: -4px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .fullscreen-icon::after {
+    bottom: -4px;
+    right: -4px;
+    border-left: none;
+    border-top: none;
+  }
+
+  /* 全屏时的样式 */
+  .party-building-adv-content:fullscreen {
+    background-color: black;
+    padding: 0;
+  }
+
+  .party-building-adv-content:fullscreen video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
   }
 </style>
