@@ -34,12 +34,12 @@ export default defineConfig({
 				secure: false
 			},
 			'/jindai3admin': {
-				target: 'http://47.120.12.122:3000/',
+				target: 'http://47.120.12.122:13363/',
 				changeOrigin: true,
 				secure: true,
 			},
 			'/uploads': {
-				target: 'http://47.120.12.122:3000/uploads',
+				target: 'http://47.120.12.122:13363/uploads',
 				rewrite: (path) => path.replace(/^\/uploads/, ''),
 				changeOrigin: true,
 				secure: false

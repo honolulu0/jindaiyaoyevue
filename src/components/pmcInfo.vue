@@ -104,7 +104,7 @@
   }
 
   .park_img {
-    background-size: cover;
+     background-size: 100% 100%; /* 拉伸图片以铺满整个元素 */
     width: 205px;
     height: 88px;
     position: absolute;

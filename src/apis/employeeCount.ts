@@ -33,7 +33,7 @@ const departmentMapping: Record<string, { title: string; icon: string }> = {
     icon: '保洁icon.png'
   },
   '维修部': {
-    title: '报修',
+    title: '保修',
     icon: '报修icon.png'
   },
   '运营部': {

@@ -106,7 +106,8 @@
   .employee_img {
     width: 54px;
     height: 45px;
-    background-size: cover;
+    /* background-size: cover; */
+	 background-size: 100% 100%; /* 拉伸图片以铺满整个元素 */
     background-position: center;
     background-repeat: no-repeat;
   }
