@@ -7,6 +7,7 @@
           :key="item.key"
           :class="activeTab === item.key ? 'tab_item_active' : 'tab_item'"
           @click="handleTabClick(item.key)"
+          style="cursor: pointer"
           :style="{ left: `${(item.key - 1) * 64 + 96}px` }"
         >
           {{ item.label }}

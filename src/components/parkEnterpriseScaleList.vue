@@ -10,8 +10,8 @@
         </div>
       </div>
       <div class="list-body">
-        <div 
-          v-for="(item, index) in list" 
+        <div
+          v-for="(item, index) in list"
           :key="index"
           class="list-row"
         >
@@ -25,123 +25,133 @@
 </template>
 
 <script setup lang="ts">
-import TitleComponent from "./titleComponent.vue";
-import { ref, onMounted, onUnmounted } from "vue";
-import { getEnterpriseData, type Enterprise } from "../apis/getEnterpriseData";
+  import TitleComponent from "./titleComponent.vue";
+  import { ref, onMounted, onUnmounted } from "vue";
+  import {
+    getEnterpriseData,
+    type Enterprise,
+  } from "../apis/getEnterpriseData";
 
-const titleMap = ref({
-  row1: "序号",
-  row2: "企业名称", 
-  row3: "企业类型"
-});
+  const titleMap = ref({
+    row1: "序号",
+    row2: "企业名称",
+    row3: "企业类型",
+  });
 
-const list = ref<{ row1: string; row2: string; row3: string; }[]>([]);
+  const list = ref<{ row1: string; row2: string; row3: string }[]>([]);
 
-// 将企业类型映射为中文
-const typeMap = {
-  'FINANCE': '金融类',
-  'TECHNOLOGY': '科技类',
-  'INDUSTRY': '实业类',
-  'SERVICE': '服务类',
-  'OTHER': '其它'
-};
+  // 将企业规模映射为中文
+  const scaleMap = {
+    SMALL: "小微", // 小微
+    NORMAL: "一般纳税", // 一般纳税
+    OTHER: "其他", // 其他
+  };
 
-// 获取并处理数据
-const fetchData = async () => {
-  try {
-    const enterprises = await getEnterpriseData();
-    list.value = enterprises.map((item, index) => ({
-      row1: (index + 1).toString(),
-      row2: item.name,
-      row3: typeMap[item.type]
-    }));
-  } catch (error) {
-    console.error('获取企业数据失败:', error);
-  }
-};
+  const scaleNumMap = {
+    SMALL: 1,    // 小微（1，将显示在中间）
+    NORMAL: 0,   // 一般纳税（0，将显示在最前面）
+    OTHER: 2,     // 其他（2，将显示在最后）
+  };
 
-let timer: number;
+  // 获取并处理数据
+  const fetchData = async () => {
+    try {
+      const enterprises = await getEnterpriseData();
+      list.value = enterprises
+        .map((item, index) => ({
+          row1: (index + 1).toString(),
+          row2: item.name,
+          row3: scaleMap[item.scale],
+          row4: scaleNumMap[item.scale],
+        }))
+        .sort((a, b) => a.row4 - b.row4);
+    } catch (error) {
+      console.error("获取企业数据失败:", error);
+    }
+  };
 
-onMounted(() => {
-  fetchData();
-  // 每5分钟刷新一次数据
-  timer = setInterval(fetchData, 5 * 60 * 1000);
-});
+  let timer: number;
 
-onUnmounted(() => {
-  // 组件销毁时清除定时器
-  clearInterval(timer);
-});
+  onMounted(() => {
+    fetchData();
+    // 每5分钟刷新一次数据
+    timer = setInterval(fetchData, 5 * 60 * 1000);
+  });
+
+  onUnmounted(() => {
+    // 组件销毁时清除定时器
+    clearInterval(timer);
+  });
 </script>
 
 <style scoped>
-.park-enterprise-list {
-  position: absolute;
-  right: 53px;
-  top: 408px;
-  width: 206px;
-  height: 126px;
-}
+  .park-enterprise-list {
+    position: absolute;
+    right: 53px;
+    top: 408px;
+    width: 206px;
+    height: 126px;
+  }
 
-.list-content {
-  width: 100%;
-  height: calc(100% - 20px);
-  margin-top: 20px;
-}
+  .list-content {
+    width: 100%;
+    height: calc(100% - 20px);
+    margin-top: 20px;
+  }
 
-.list-header {
-  width: 100%;
-}
+  .list-header {
+    width: 100%;
+  }
 
-.list-body {
-  width: 100%;
-  height: calc(100% - 14px);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+  .list-body {
+    width: 100%;
+    height: calc(100% - 14px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
-.list-row {
-  width: 100%;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 5px;
-}
+  .list-row {
+    width: 100%;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+  }
 
-.title-row {
-  background: rgba(97, 119, 138, 0.4);
-}
+  .title-row {
+    background: rgba(97, 119, 138, 0.4);
+  }
 
-.row-item {
-  flex: 1;
-  color: #ffffff;
-  font-family: "SourceHanSansSC-Normal";
-  font-weight: 600;
-  font-size: 6px;
-  line-height: 6px;
-  text-align: center;
-}
+  .row-item {
+    flex: 1;
+    color: #ffffff;
+    font-family: "SourceHanSansSC-Normal";
+    font-weight: 600;
+    font-size: 6px;
+    line-height: 6px;
+    text-align: center;
+  }
 
-.list-body::-webkit-scrollbar {
-  width: 1px;
-  background: transparent;
-}
+  .list-body::-webkit-scrollbar {
+    width: 1px;
+    background: transparent;
+  }
 
-.list-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 1px;
-}
+  .list-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
+  }
 
-.list-body::-webkit-scrollbar-track {
-  background: transparent;
-}
+  .list-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-.list-body::-webkit-scrollbar-corner {
-  display: none;
-}
+  .list-body::-webkit-scrollbar-corner {
+    display: none;
+  }
 
-.list-body::-webkit-scrollbar-horizontal {
-  display: none;
-}
+  .list-body::-webkit-scrollbar-horizontal {
+    display: none;
+  }
 </style>
