@@ -12,6 +12,7 @@
           v-for="item in tabList"
           :key="item.key"
           :class="activeTab === item.key ? 'tab_item_active' : 'tab_item'"
+          style="cursor: pointer"
           @click="handleTabClick(item.key)"
           :style="{ left: `${(item.key - 1) * 64 + 178}px` }"
         >
