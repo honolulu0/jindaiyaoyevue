@@ -35,7 +35,7 @@
   const titleMap = ref({
     row1: "序号",
     row2: "企业名称",
-    row3: "企业类型",
+    row3: "企业规模",
   });
 
   const list = ref<{ row1: string; row2: string; row3: string }[]>([]);
