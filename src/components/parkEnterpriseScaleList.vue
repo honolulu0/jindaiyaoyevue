@@ -42,15 +42,15 @@
 
   // 将企业规模映射为中文
   const scaleMap = {
-    SMALL: "小微", // 小微
-    NORMAL: "一般纳税", // 一般纳税
-    OTHER: "其他", // 其他
+    SMALL: "小型",
+    NORMAL: "中型",
+    OTHER: "大型",
   };
 
   const scaleNumMap = {
-    SMALL: 1,    // 小微（1，将显示在中间）
-    NORMAL: 0,   // 一般纳税（0，将显示在最前面）
-    OTHER: 2,     // 其他（2，将显示在最后）
+    SMALL: 2, // 小型，最后面
+    NORMAL: 1, // 中型
+    OTHER: 0, // 大型，最前面
   };
 
   // 获取并处理数据

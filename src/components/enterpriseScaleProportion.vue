@@ -32,9 +32,9 @@
     });
 
     return [
-      { value: (scaleCount.SMALL / total * 100).toFixed(1), name: "小微" },
-      { value: (scaleCount.NORMAL / total * 100).toFixed(1), name: "一般纳税" },
-      { value: (scaleCount.OTHER / total * 100).toFixed(1), name: "其他" }
+      { value: (scaleCount.SMALL / total * 100).toFixed(1), name: "小型" },
+      { value: (scaleCount.NORMAL / total * 100).toFixed(1), name: "中型" },
+      { value: (scaleCount.OTHER / total * 100).toFixed(1), name: "大型" }
     ];
   };
 
@@ -59,7 +59,7 @@
             fontSize: 7,
             fontFamily: "SourceHanSansSC-Normal",
           },
-          data: ["大型", "中型", "小微", "一般纳税", "其他"],
+          data: ["大型", "中型", "小型"],
         },
         title: {
           text: "企业\n规模占比",

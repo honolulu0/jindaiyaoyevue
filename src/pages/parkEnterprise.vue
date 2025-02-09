@@ -116,7 +116,7 @@
       typeCount.OTHER,
     ];
 
-    chartData2.xAxisData = ['小微', '一般纳税', '其他'];
+    chartData2.xAxisData = ['小型', '中型', '大型'];
     chartData2.seriesData = [
       scaleCount.SMALL,
       scaleCount.NORMAL,
