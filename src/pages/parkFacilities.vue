@@ -99,6 +99,7 @@
   }
 
   .model_close_btn {
+	cursor:pointer;
     position: absolute;
     top: 20px;
     right: 21px;

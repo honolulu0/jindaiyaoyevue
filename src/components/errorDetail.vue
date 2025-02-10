@@ -214,6 +214,7 @@
 	}
 
 	.device-error-info-btn-processed {
+		cursor:pointer;
 		width: 50px;
 		height: 20px;
 		background-image: url("@/assets/已处理.png");
@@ -226,6 +227,7 @@
 	}
 
 	.device-error-info-btn-unprocessed {
+		cursor:pointer;
 		width: 50px;
 		height: 20px;
 		background-image: url("@/assets/未处理.png");
