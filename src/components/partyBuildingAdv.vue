@@ -3,19 +3,26 @@
     <PartyTitle titleText="党建宣传" />
     <div class="party-building-adv-content">
       <video
-        id="party-video"
-        class="video-js vjs-default-skin"
+        ref="videoRef"
         preload="auto"
         width="100%"
         height="100%"
-        data-setup="{}"
+        loop
+        autoplay
+        muted
       >
         <source
+          :src="videoUrl"
           type="video/mp4"
         />
       </video>
-      <div class="custom-fullscreen-btn" @click="toggleFullScreen">
-        <i class="fullscreen-icon"></i>
+      <div class="video-controls">
+        <div class="play-btn" @click="togglePlay">
+          <i :class="isPlaying ? 'pause-icon' : 'play-icon'"></i>
+        </div>
+        <div class="custom-fullscreen-btn" @click="toggleFullScreen">
+          <i class="fullscreen-icon"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -23,46 +30,51 @@
 
 <script setup lang="ts">
   import { getPartyAdv } from "@/apis/getPartyAdv";
-import PartyTitle from "./partyTitle.vue";
-  import videojs from "video.js";
-  import "video.js/dist/video-js.css";
-  import { onMounted, onBeforeUnmount } from "vue";
+  import PartyTitle from "./partyTitle.vue";
+  import { onMounted, onBeforeUnmount, ref } from "vue";
 
-  let player: any;
+  const videoRef = ref<HTMLVideoElement | null>(null);
+  const videoUrl = ref("");
   let timer: any;
+  const isPlaying = ref(true);
 
   async function updateVideo() {
-    const url = await getPartyAdv();
-    player.src(url);
+    videoUrl.value = await getPartyAdv();
+    videoRef.value?.load();
+    videoRef.value?.play();
   }
 
   onMounted(async () => {
-    const url = await getPartyAdv();
-    player = videojs("party-video", {
-      controls: true,
-      fluid: false,
-      controlBar: false,
-    });
-    player.src(url);
-
+    await updateVideo();
     timer = setInterval(updateVideo, 5 * 60 * 1000);
   });
 
   onBeforeUnmount(() => {
-    if (player) {
-      player.dispose();
-    }
     if (timer) {
       clearInterval(timer);
     }
   });
 
   const toggleFullScreen = () => {
-    const videoContainer = document.querySelector('.party-building-adv-content');
+    const videoContainer = document.querySelector(
+      ".party-building-adv-content"
+    );
     if (!document.fullscreenElement) {
       videoContainer?.requestFullscreen();
     } else {
       document.exitFullscreen();
+    }
+  };
+
+  const togglePlay = () => {
+    if (videoRef.value) {
+      if (videoRef.value.paused) {
+        videoRef.value.play();
+        isPlaying.value = true;
+      } else {
+        videoRef.value.pause();
+        isPlaying.value = false;
+      }
     }
   };
 </script>
@@ -87,39 +99,34 @@ import PartyTitle from "./partyTitle.vue";
     background-size: 100% 100%;
   }
 
-  /* 自定义video.js样式 */
-  :deep(.video-js) {
+  /* 修改video标签样式 */
+  video {
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
 
-  :deep(.video-js .vjs-big-play-button) {
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    line-height: 2em;
-    border: none;
-    background-image: url("@/assets/party/播放icon.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    font-size: 0;
-    transform: translate(-50%, -50%);
-  }
-
+  /* 移除video.js相关样式 */
+  :deep(.video-js),
+  :deep(.video-js .vjs-big-play-button),
   :deep(.video-js .vjs-control-bar) {
-    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
   }
 
-  .custom-fullscreen-btn {
+  .video-controls {
     position: absolute;
-    right: 15px;
     bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+  }
+
+  .play-btn,
+  .custom-fullscreen-btn {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    z-index: 2;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     display: flex;
@@ -127,6 +134,66 @@ import PartyTitle from "./partyTitle.vue";
     justify-content: center;
   }
 
+  .play-icon,
+  .pause-icon {
+    width: 12px;
+    height: 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pause-icon::before,
+  .pause-icon::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: #fff;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .pause-icon::before {
+    left: 3px;
+  }
+
+  .pause-icon::after {
+    right: 3px;
+  }
+
+  /* 播放按钮样式 */
+  .play-icon::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 8px solid #fff;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+
+  /* 悬停时显示控制按钮 */
+  .party-building-adv-content .video-controls {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .party-building-adv-content:hover .video-controls {
+    opacity: 1;
+  }
+
+  /* 移除全屏按钮的绝对定位 */
+  .custom-fullscreen-btn {
+    position: static;
+    right: auto;
+    bottom: auto;
+  }
+
+  /* 确保两个按钮在hover时都显示 */
+  .party-building-adv-content:hover .video-controls,
   .party-building-adv-content:hover .custom-fullscreen-btn {
     opacity: 1;
   }
@@ -140,7 +207,7 @@ import PartyTitle from "./partyTitle.vue";
 
   .fullscreen-icon::before,
   .fullscreen-icon::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 4px;
     height: 4px;
