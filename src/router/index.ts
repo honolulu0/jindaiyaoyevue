@@ -58,7 +58,12 @@ const router = createRouter({
     {
       path: '/parkEnterprise',
       name: 'parkEnterprise',
-      component: () => import('../pages/parkEnterprise.vue')
+      component: () => import('../pages/parkEnterpriseNew.vue')
+    },
+    {
+      path: '/parkEnterpriseDetail',
+      name: 'parkEnterpriseDetail',
+      component: () => import('../pages/parkEnterpriseDetail.vue')
     },
     {
       path: '/parkServices',
@@ -81,6 +86,7 @@ router.afterEach((to, from) => {
     "/partyBuilding": 7,
     "/parkPolicy": 7,
     "/parkEnterprise": 7,
+    "/parkEnterpriseDetail": 7,
     "/parkServices": 7
   };
 
