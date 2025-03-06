@@ -17,10 +17,16 @@
         />
       </video>
       <div class="video-controls">
-        <div class="play-btn" @click="togglePlay">
+        <div
+          class="play-btn"
+          @click="togglePlay"
+        >
           <i :class="isPlaying ? 'pause-icon' : 'play-icon'"></i>
         </div>
-        <div class="custom-fullscreen-btn" @click="toggleFullScreen">
+        <div
+          class="custom-fullscreen-btn"
+          @click="toggleFullScreen"
+        >
           <i class="fullscreen-icon"></i>
         </div>
       </div>
@@ -47,22 +53,31 @@
   onMounted(async () => {
     await updateVideo();
     timer = setInterval(updateVideo, 5 * 60 * 1000);
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
   });
 
   onBeforeUnmount(() => {
     if (timer) {
       clearInterval(timer);
     }
+    document.removeEventListener("fullscreenchange", handleFullscreenChange);
   });
 
-  const toggleFullScreen = () => {
+  const toggleFullScreen = async () => {
     const videoContainer = document.querySelector(
       ".party-building-adv-content"
     );
-    if (!document.fullscreenElement) {
-      videoContainer?.requestFullscreen();
-    } else {
-      document.exitFullscreen();
+    try {
+      if (!document.fullscreenElement) {
+        await videoContainer?.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.error("全屏切换失败:", err);
     }
   };
 
@@ -74,6 +89,14 @@
       } else {
         videoRef.value.pause();
         isPlaying.value = false;
+      }
+    }
+  };
+
+  const handleFullscreenChange = () => {
+    if (!document.fullscreenElement && videoRef.value) {
+      if (!videoRef.value.paused) {
+        videoRef.value.play();
       }
     }
   };
@@ -146,7 +169,7 @@
 
   .pause-icon::before,
   .pause-icon::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 2px;
     height: 10px;
@@ -165,7 +188,7 @@
 
   /* 播放按钮样式 */
   .play-icon::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 4px;
     top: 50%;

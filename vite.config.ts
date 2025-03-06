@@ -35,12 +35,15 @@ export default defineConfig({
 			},
 			'/jindai3admin': {
 				target: 'http://47.120.12.122:13363/',
+				// target: 'http://localhost:3000/api/',
+				// rewrite: (path) => path.replace(/^\/jindai3admin/, ''),
 				changeOrigin: true,
 				secure: true,
 			},
 			'/uploads': {
 				target: 'http://47.120.12.122:13363/uploads',
-				rewrite: (path) => path.replace(/^\/uploads/, ''),
+				// target: 'http://localhost:3000/uploads',
+				// rewrite: (path) => path.replace(/^\/uploads/, ''),
 				changeOrigin: true,
 				secure: false
 			}

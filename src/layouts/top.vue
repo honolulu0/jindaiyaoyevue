@@ -4,9 +4,12 @@
 		<span class="title">建中·金岱生物医药产业园</span>
 		<span class="sub_title">JINDAI Biomedical Industry Park</span>
 		<div class="tab_container">
-			<TopTab v-for="tab in tabsName" :key="tab.name" :name="tab.name" :icon="tab.icon" :iconTop="tab.iconTop"
+			<TopTab v-for="tab in filteredTabs" :key="tab.name" :name="tab.name" :icon="tab.icon" :iconTop="tab.iconTop"
 				:iconLeft="tab.iconLeft" :iconWidth="tab.iconWidth" :iconHeight="tab.iconHeight" :isClick="tab.isClick"
 				@click="tab.onClick" />
+		</div>
+		<div class="mode-switch" @click="toggleMode">
+			{{ isFullMode ? '简洁模式' : '完整模式' }}
 		</div>
 		<div class="weather_time_container">
 			<div class="weather"></div>
@@ -31,7 +34,7 @@
 <script setup lang="ts">
 	import TopTab from "@/components/topTab.vue";
 	import { parkingSubject, topTabsSubject } from "@/event";
-	import { reactive, ref, onMounted } from "vue";
+	import { reactive, ref, onMounted, computed } from "vue";
 	import { useRouter } from "vue-router";
 	import { errorAlertSubject } from "@/utils/errorAlertSubject";
 	import { deviceSelectSubject } from "@/utils/deviceSelectSubject";
@@ -170,6 +173,7 @@
 	const temperatureL = ref("-9℃");
 	const time = ref("");
 	const date = ref("");
+	const isFullMode = ref(true);
 
 	const setClick = (index : number) => { 
 		yincangxianshisuoyou() 
@@ -225,6 +229,20 @@
 
 	// 每秒更新一次时间和日期
 	setInterval(updateDateTime, 1000);
+
+	// 过滤显示的标签页
+	const filteredTabs = computed(() => {
+		if (isFullMode.value) {
+			return tabsName;
+		} else {
+			return tabsName.filter((tab, index) => [0, 1, 7].includes(index));
+		}
+	});
+
+	// 切换显示模式
+	const toggleMode = () => {
+		isFullMode.value = !isFullMode.value;
+	};
 </script>
 
 <style scoped>
@@ -403,5 +421,22 @@
 		position: absolute;
 		top: 21px;
 		right: 22px;
+	}
+
+	.mode-switch {
+		position: absolute;
+		top: 50px;
+		right: 100px;
+		padding: 4px 8px;
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 4px;
+		color: #fff;
+		font-size: 12px;
+		cursor: pointer;
+		z-index: 100;
+	}
+
+	.mode-switch:hover {
+		background: rgba(255, 255, 255, 0.2);
 	}
 </style>
