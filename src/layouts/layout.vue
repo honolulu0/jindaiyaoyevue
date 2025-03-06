@@ -25,10 +25,12 @@
 				</div>
 				<div class="bg_right"></div>
 				<slot></slot>
-				<div class="close_word_btn" @click="close">
-					<span>关闭</span>
-				</div>
-				<div class="close_btn" @click="close"></div>
+				<template v-if="router.currentRoute.value.path !== '/parkEnterpriseDetail'">
+					<div class="close_word_btn" @click="close">
+						<span>关闭</span>
+					</div>
+					<div class="close_btn" @click="close"></div>
+				</template>
 			</div>
 		</Transition>
 

@@ -1,7 +1,10 @@
 <template>
+  <div class="park-enterprise-detail-header-1">
+    {{ enterpriseDetail?.name }}
+  </div>
   <div class="w-full h-full absolute top-0 left-0 z-0 park-enterprise-detail">
     <div class="park-enterprise-detail-header">
-      {{ enterpriseDetail?.name }}
+      <!-- {{ enterpriseDetail?.name }} -->
     </div>
     <div class="park-enterprise-detail-content">
       <div class="label label-1">
@@ -87,7 +90,10 @@
         />
       </div>
       <div class="company-img">
-        <img :src="enterpriseDetail?.imgUrl" />
+        <img
+          :src="enterpriseDetail?.imgUrl"
+          style="width: 100%; height: 100%"
+        />
       </div>
       <div
         class="shadow-img"
@@ -116,15 +122,20 @@
         </transition>
       </div>
     </div>
+    <div class="detail">
+      {{ enterpriseDetail?.description }}
+    </div>
   </div>
+  <div class="close-btn" @click.prevent="close()"></div>
 </template>
 
 <script setup lang="ts">
   import { Enterprise, getEnterpriseDetail } from "@/apis/getEnterpriseData";
-  import { useRoute } from "vue-router";
+  import { useRoute, useRouter } from "vue-router";
   import { onMounted, ref, onUnmounted } from "vue";
   import dayjs from "dayjs";
   const route = useRoute();
+  const router = useRouter();
   const id = route.query.id as string;
   const enterpriseDetail = ref<Enterprise>();
   const enterpriseHonor = ref<string[]>([]);
@@ -139,6 +150,10 @@
       displayEnterpriseHonor.value = enterpriseHonor.value[0];
       startHonorRotation();
     }
+  };
+
+  const close = () => {
+    router.back();
   };
 
   const startHonorRotation = () => {
@@ -170,7 +185,7 @@
   .park-enterprise-detail {
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("@/assets/bgNew.png");
+    background-image: url("@/assets/1bg.png");
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -188,6 +203,50 @@
     text-shadow: 0px 0px 6px rgba(0, 128, 255, 0.6);
     font-style: normal;
     text-align: center;
+  }
+
+  .park-enterprise-detail-header-1 {
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    top: 100px;
+    height: 41px;
+    font-family: YouSheBiaoTiHei;
+    font-size: 31px;
+    color: #a6e9ff;
+    line-height: 41px;
+    letter-spacing: 0px;
+    text-shadow: 0px 0px 6px rgba(0, 128, 255, 0.6);
+    font-style: normal;
+    text-align: center;
+  }
+
+  .detail {
+    position: absolute;
+    top: 470px;
+    width: 718px;
+    height: 74px;
+    background-image: url("@/assets/des_bg.png");
+    font-family: SourceHanSansSC-Normal;
+    font-weight: 500;
+    font-size: 11px;
+    color: #a6e9ff;
+    line-height: 15px;
+    text-shadow: 0px 0px 6px rgba(0, 128, 255, 0.6);
+    text-align: left;
+    font-style: normal;
+    padding: 15px 20px;
+    overflow-y: auto;
+    /* &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(166, 233, 255, 0.3);
+      border-radius: 2px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    } */
   }
 
   .park-enterprise-detail-content {
@@ -349,5 +408,17 @@
   .slide-fade-leave-to {
     transform: translateY(-100%);
     opacity: 0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    width: 74px;
+    z-index: 7;
+    height: 30px;
+    background-image: url("@/assets/new_close.png");
+    background-size: 100% 100%;
+    cursor: pointer;
   }
 </style>
