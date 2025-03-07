@@ -8,8 +8,8 @@
 				:iconLeft="tab.iconLeft" :iconWidth="tab.iconWidth" :iconHeight="tab.iconHeight" :isClick="tab.isClick"
 				@click="tab.onClick" />
 		</div>
-		<div class="mode-switch" @click="toggleMode">
-			{{ isFullMode ? '简洁模式' : '完整模式' }}
+		<div v-show="currentPage===0" class="mode-switch" @click="toggleMode">
+			{{ isFullMode ? '演示模式' : '完整模式' }}
 		</div>
 		<div class="weather_time_container">
 			<div class="weather"></div>
@@ -174,10 +174,12 @@
 	const time = ref("");
 	const date = ref("");
 	const isFullMode = ref(true);
+	const currentPage = ref(0);
 
-	const setClick = (index : number) => { 
-		yincangxianshisuoyou() 
-		};
+	const setClick = (index : number) => {
+		currentPage.value = index
+		yincangxianshisuoyou()
+	};
 
 	function yincangxianshisuoyou() {
 		// 一键布防 显示 ，撤防 隐藏
@@ -216,12 +218,12 @@
 		date.value = `${year}.${month}.${day}`;
 	};
 
-	onMounted( async () => {
+	onMounted(async () => {
 		console.log("temperature");
 		const temperature = await getTemperature();
 		console.log(temperature);
-		temperatureH.value=temperature.temperatureH
-		temperatureL.value=temperature.temperatureL
+		temperatureH.value = temperature.temperatureH
+		temperatureL.value = temperature.temperatureL
 	})
 
 	// 初始化时间和日期
@@ -426,12 +428,12 @@
 	.mode-switch {
 		position: absolute;
 		top: 50px;
-		right: 100px;
-		padding: 4px 8px;
+		left: 200px;
+		padding: 3px 4px;
 		background: rgba(255, 255, 255, 0.1);
-		border-radius: 4px;
+		border-radius: 3px;
 		color: #fff;
-		font-size: 12px;
+		font-size: 6px;
 		cursor: pointer;
 		z-index: 100;
 	}

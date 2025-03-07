@@ -40,8 +40,8 @@ export default defineConfig({
 				changeOrigin: true,
 				secure: true,
 			},
-			'/uploads': {
-				target: 'http://47.120.12.122:13363/uploads',
+			'/uploads/': {
+				target: 'http://47.120.12.122:13363',
 				// target: 'http://localhost:3000/uploads',
 				// rewrite: (path) => path.replace(/^\/uploads/, ''),
 				changeOrigin: true,
