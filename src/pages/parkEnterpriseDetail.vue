@@ -248,6 +248,21 @@
       background-color: transparent;
     } */
   }
+  
+  ::-webkit-scrollbar {
+      width: 20px;
+      height: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      border: 6px solid rgba(0, 0, 0, 0);
+      box-shadow: 1px 0 0 #94d1e3 inset;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+      box-shadow: 1px 0 0 #94d1e3 inset;
+  }
 
   .park-enterprise-detail-content {
     width: 811px;
