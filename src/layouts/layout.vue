@@ -42,8 +42,7 @@
         onVisibleChange: handleVisibleChange,
       }" width="0px" />
 
-
-
+		<HousePersonInfo buildingName="啊舍得发" />
 
 		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
 			户型图
@@ -89,7 +88,7 @@
 		riqinbaojingChefang,
 		dianziweilanChefang,
 	} from "@/apis/securityOpMenu";
-
+	import HousePersonInfo from "@/components/housePersonInfo.vue";
 	import { getHousePic, HousePic } from "@/apis/getHousePic";
 	import { Image } from "ant-design-vue";
 
