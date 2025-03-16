@@ -264,7 +264,6 @@
     left: 100px;
     width: 150px;
     height: 200px;
-    background-color: rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
   }
