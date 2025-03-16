@@ -453,7 +453,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
-    border: 1px solid #07d9dd;
+    border: 1px solid #127375;
     border-radius: 5px;
   }
 
@@ -508,6 +508,7 @@
     background-color: #127375;
     padding: 1px 2px;
     cursor: pointer;
+    border-radius: 3px;
   }
 
   .rent-item-info-tooltip {
