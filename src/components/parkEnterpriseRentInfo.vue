@@ -4,15 +4,16 @@
       <div style="padding-left: 5px">{{ buildingInfo.buildingName }}</div>
       <div
         style="
-          font-size: 10px;
+          font-size: 8px;
           width: 10px;
           height: 10px;
           padding-right: 5px;
           display: flex;
           justify-content: center;
           align-items: center;
-          color: #127375;
+          color: rgb(7, 217, 221);
           font-weight: 300;
+          padding-bottom: 2px;
         "
       >
         x
@@ -89,22 +90,33 @@
                 alt=""
               />
             </div>
-            <a-tooltip placement="right">
-              <template #title>
-                <div class="rent-item-info-tooltip">
-                  <div>租赁开始时间：{{ dayjs(item.rentStartAt).format("YYYY-MM-DD") }}</div>
-                  <div>租赁结束时间：{{ dayjs(item.rentEndAt).format("YYYY-MM-DD") }}</div>
+            <div class="rent-item-info">
+              <div class="rent-item-info-name" :title="item.parkEnterprise.name">
+                {{ item.parkEnterprise.name }}
+              </div>
+              <div class="rent-item-info-pic-btn-container">
+                <div class="rent-item-info-pic-btn-container-time">
+                  <div>
+                    <span>租赁开始时间：</span>
+                    <span>{{
+                      dayjs(item.rentStartAt).format("YYYY-MM-DD")
+                    }}</span>
+                  </div>
+                  <div>
+                    <span>租赁结束时间：</span>
+                    <span>{{
+                      dayjs(item.rentEndAt).format("YYYY-MM-DD")
+                    }}</span>
+                  </div>
                 </div>
-              </template>
-              <div class="rent-item-info">
-                <div class="rent-item-info-name">
-                  {{ item.parkEnterprise.name }}
-                </div>
-                <div class="rent-item-info-pic-btn-container">
-                  <div class="rent-item-info-pic-btn" @click.stop="showImage(item.imgUrl)">详情</div>
+                <div
+                  class="rent-item-info-pic-btn"
+                  @click.stop="showImage(item.imgUrl)"
+                >
+                  详情
                 </div>
               </div>
-            </a-tooltip>
+            </div>
           </div>
         </div>
       </div>
@@ -161,7 +173,7 @@
   });
 
   const previewVisible = ref(false);
-  const currentImageUrl = ref('');
+  const currentImageUrl = ref("");
 
   onMounted(async () => {
     const res = await getParkEnterpriseRentInfo(props.buildingName);
@@ -243,7 +255,8 @@
       selectRoom(prevRoomName);
     } else if (currentRoomPage.value > 0) {
       currentRoomPage.value--;
-      const prevRoomName = visibleRooms.value[visibleRooms.value.length - 1].roomName;
+      const prevRoomName =
+        visibleRooms.value[visibleRooms.value.length - 1].roomName;
       selectRoom(prevRoomName);
     }
   };
@@ -440,7 +453,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
-    border: 1px solid #127375;
+    border: 1px solid #07d9dd;
     border-radius: 5px;
   }
 
@@ -480,6 +493,11 @@
     align-items: center;
     justify-content: end;
     padding-top: 3px;
+    padding-right: 5px;
+  }
+
+  .rent-item-info-pic-btn-container-time {
+    font-size: 3px;
     padding-right: 5px;
   }
 
