@@ -279,6 +279,7 @@
     height: 200px;
     display: flex;
     flex-direction: column;
+    user-select: none;
   }
   .building-name-container {
     font-size: 6px;
@@ -325,6 +326,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
   .floor-name-active {
     color: #fff;
@@ -334,6 +336,7 @@
     height: 12px;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
   }
   .room-container {
     margin-left: 3px;
@@ -395,6 +398,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
 
   .room-name-active {
@@ -404,6 +408,7 @@
     font-size: 4px;
     min-width: 20px;
     display: flex;
+    cursor: pointer;
     align-items: center;
     justify-content: center;
   }
