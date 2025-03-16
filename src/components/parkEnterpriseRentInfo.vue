@@ -11,7 +11,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          color: red;
+          color: #127375;
           font-weight: 300;
         "
       >
@@ -378,7 +378,7 @@
 
   .room-name {
     color: #fff;
-    font-size: 6px;
+    font-size: 5px;
     min-width: 20px;
     display: flex;
     align-items: center;
@@ -389,7 +389,7 @@
     background: #127375;
     border-radius: 10px;
     color: #fff;
-    font-size: 6px;
+    font-size: 4px;
     min-width: 20px;
     display: flex;
     align-items: center;
