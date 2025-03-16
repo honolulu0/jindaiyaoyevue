@@ -94,16 +94,7 @@
 		height: 135px;
 	}
 
-	.party-building-adv-content {
-		position: absolute;
-		top: 35px;
-		left: 0;
-		width: 100%;
-		height: calc(100% - 35px);
-		padding: 5px 9px;
-		background-image: url("@/assets/party/视频背景模版.png");
-		background-size: 100% 100%;
-	}
+
 
 	/* 修改video标签样式 */
 	video {
@@ -119,14 +110,38 @@
 		display: none;
 	}
 
-	.video-controls {
-		position: absolute;
-		bottom: 15px;
-		right: 15px;
-		display: flex;
-		gap: 10px;
-		z-index: 2;
-	}
+.party-building-adv-content {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: 100px; /* 改成明确高度，而不是max-height */
+    padding: 5px 9px;
+    background-image: url("@/assets/party/视频背景模版.png");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden; /* 防止溢出 */
+}
+
+.party-building-adv-content video {
+    display: block;
+    width: 100%;
+    height: 100%; /* 填满父容器 */
+    object-fit: cover; /* 保持视频比例，防止变形 */
+    border-radius: 6px;
+}
+
+.video-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+}
+
+
+
 
 	.play-btn,
 	.custom-fullscreen-btn {

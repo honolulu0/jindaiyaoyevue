@@ -42,7 +42,7 @@
         onVisibleChange: handleVisibleChange,
       }" width="0px" />
 
-		<HousePersonInfo buildingName="啊舍得发" />
+		<HousePersonInfo buildingName="1号车间A座" />
 
 		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
 			户型图
