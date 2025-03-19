@@ -36,7 +36,7 @@
 			</div>
 			<div class="room-container">
 				<div class="room-select-container">
-<!-- 										<div class="arrow left-arrow" :class="{ 'arrow-disabled': !hasPrevRoom }" style="cursor: pointer;"
+					<!-- 										<div class="arrow left-arrow" :class="{ 'arrow-disabled': !hasPrevRoom }" style="cursor: pointer;"
 						@click="hasPrevRoom && prevRoom()">
 						◀
 					</div>
@@ -153,7 +153,6 @@
 		currentRoomPage.value = 0;
 		if (floorRooms.value.length > 0) {
 			const firstRoom = floorRooms.value[0];
-			console.log(firstRoom);
 			selectedRoomName.value = firstRoom.roomName;
 			rentItems.value = firstRoom.rents || [];
 		}
