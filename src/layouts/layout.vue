@@ -37,12 +37,12 @@
 
 		<DeviceDetailModel :data="deviceDetail" v-if="showDeviceDetail" />
 
-		<Image :src="housePicUrl" :preview="{
+		<Image fit="fill" :src="housePicUrl" :preview="{
         visible: previewVisible,
         onVisibleChange: handleVisibleChange,
       }" width="0px" />
 
-		<ParkEnterpriseRentInfo buildingName="1号车间A座" />
+		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='paringTitle.includes("号车间")'/>
 
 		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
 			户型图
@@ -350,6 +350,7 @@
 
 	// 默认使用的当前楼层 false
 	let buildingName = ref("请点击楼号");
+	buildingName.value = "1A";
 	let paringTitle = ref(
 		cheJianList[buildingName.value as keyof typeof cheJianList]
 	);
