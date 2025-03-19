@@ -42,7 +42,7 @@
         onVisibleChange: handleVisibleChange,
       }" width="0px" />
 
-		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='paringTitle.includes("号车间")'/>
+		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='paringTitle.includes("号车间")' />
 
 		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
 			户型图
@@ -350,7 +350,7 @@
 
 	// 默认使用的当前楼层 false
 	let buildingName = ref("请点击楼号");
-	buildingName.value = "1A";
+	buildingName.value = "1B";
 	let paringTitle = ref(
 		cheJianList[buildingName.value as keyof typeof cheJianList]
 	);
