@@ -11,7 +11,7 @@
           justify-content: center;
           align-items: center;
           padding-bottom: 2px;
-		  cursor: pointer;
+		      cursor: pointer;
         ">
 				x
 			</div>
@@ -100,37 +100,9 @@
 		buildingName : string;
 	}>();
 	const buildingInfo = ref<any>({});
-	const selectedRoomName = ref("1000");
 	const selectedFloor = ref("1F");
 	const floors = ref<any[]>([]);
-	const floorRooms = ref<any[]>([]);
-	const currentRoomPage = ref(0);
-	const roomsPerPage = 3;
 	const rentItems = ref<any[]>([]);
-	const visibleRooms = computed(() => {
-		const startIndex = currentRoomPage.value * roomsPerPage;
-		return floorRooms.value.slice(startIndex, startIndex + roomsPerPage);
-	});
-
-	const hasNextRoom = computed(() => {
-		const currentRoomIndex = visibleRooms.value.findIndex(
-			(room) => room.roomName === selectedRoomName.value
-		);
-		return (
-			currentRoomIndex < visibleRooms.value.length - 1 ||
-			(currentRoomPage.value + 1) * roomsPerPage < floorRooms.value.length
-		);
-	});
-
-	const hasPrevRoom = computed(() => {
-		const currentRoomIndex = visibleRooms.value.findIndex(
-			(room) => room.roomName === selectedRoomName.value
-		);
-		return currentRoomIndex > 0 || currentRoomPage.value > 0;
-	});
-
-	const previewVisible = ref(false);
-	const currentImageUrl = ref("");
 
 	onMounted(async () => {
 		const res = await getParkEnterpriseRentInfo(props.buildingName);
@@ -141,82 +113,21 @@
 		if (floors.value.length > 0) {
 			selectFloor(floors.value[0].floorName);
 		}
-		console.log(buildingInfo.value);
 	});
+
 	const selectFloor = (floorName : string) => {
 		selectedFloor.value = floorName;
-		floorRooms.value = buildingInfo.value.floors
-			.find((floor : any) => floor.floorName === floorName)
-			.rooms.sort((a : any, b : any) =>
-				a.roomName.localeCompare(b.roomName, undefined, { numeric: true })
-			);
-		currentRoomPage.value = 0;
-		if (floorRooms.value.length > 0) {
-			const firstRoom = floorRooms.value[0];
-			selectedRoomName.value = firstRoom.roomName;
-			rentItems.value = firstRoom.rents || [];
-		}
-	};
-	const nextFloor = () => {
-		const currentFloorIndex = floors.value.findIndex(
-			(floor) => floor.floorName === selectedFloor.value
-		);
-		if (currentFloorIndex < floors.value.length - 1) {
-			const nextFloorName = floors.value[currentFloorIndex + 1].floorName;
-			selectFloor(nextFloorName);
-		}
-	};
-	const prevFloor = () => {
-		const currentFloorIndex = floors.value.findIndex(
-			(floor) => floor.floorName === selectedFloor.value
-		);
-		if (currentFloorIndex > 0) {
-			const prevFloorName = floors.value[currentFloorIndex - 1].floorName;
-			selectFloor(prevFloorName);
-		}
-	};
-	const selectRoom = (roomName : string) => {
-		selectedRoomName.value = roomName;
 		const currentFloor = buildingInfo.value.floors.find(
-			(floor : any) => floor.floorName === selectedFloor.value
+			(floor : any) => floor.floorName === floorName
 		);
-		const currentRoom = currentFloor.rooms.find(
-			(room : any) => room.roomName === roomName
-		);
-		rentItems.value = currentRoom.rents || [];
+		rentItems.value = currentFloor.rooms.reduce((acc : any[], room : any) => {
+			return acc.concat(room.rents || []);
+		}, []);
 	};
-	const nextRoom = () => {
-		const currentRoomIndex = visibleRooms.value.findIndex(
-			(room) => room.roomName === selectedRoomName.value
-		);
 
-		if (currentRoomIndex < visibleRooms.value.length - 1) {
-			const nextRoomName = visibleRooms.value[currentRoomIndex + 1].roomName;
-			selectRoom(nextRoomName);
-		} else if (
-			(currentRoomPage.value + 1) * roomsPerPage <
-			floorRooms.value.length
-		) {
-			currentRoomPage.value++;
-			const nextRoomName = visibleRooms.value[0].roomName;
-			selectRoom(nextRoomName);
-		}
-	};
-	const prevRoom = () => {
-		const currentRoomIndex = visibleRooms.value.findIndex(
-			(room) => room.roomName === selectedRoomName.value
-		);
+	const previewVisible = ref(false);
+	const currentImageUrl = ref("");
 
-		if (currentRoomIndex > 0) {
-			const prevRoomName = visibleRooms.value[currentRoomIndex - 1].roomName;
-			selectRoom(prevRoomName);
-		} else if (currentRoomPage.value > 0) {
-			currentRoomPage.value--;
-			const prevRoomName =
-				visibleRooms.value[visibleRooms.value.length - 1].roomName;
-			selectRoom(prevRoomName);
-		}
-	};
 	const showImage = (imgUrl : string) => {
 		currentImageUrl.value = imgUrl;
 		previewVisible.value = true;

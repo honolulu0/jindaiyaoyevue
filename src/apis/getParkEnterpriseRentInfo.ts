@@ -6,3 +6,10 @@ export const getParkEnterpriseRentInfo = async (building: string) => {
   });
   return res as any;
 };
+
+export const getParkEnterpriseRentInfoByFloor = async (building: string, floor: string) => {
+  const res = await jindai3adminInstance.get("parkEnterpriseRentInfo/uiBuildingByFloor", {
+    params: { name: building, floor },
+  });
+  return res as any;
+};
