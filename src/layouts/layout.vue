@@ -37,12 +37,12 @@
 
 		<DeviceDetailModel :data="deviceDetail" v-if="showDeviceDetail" />
 
-		<Image fit="fill" :src="housePicUrl" :preview="{
-        visible: previewVisible,
-        onVisibleChange: handleVisibleChange,
-      }" width="0px" />
+		<Image :src="housePicUrl" :preview="{
+			visible: previewVisible,
+			onVisibleChange: handleVisibleChange,
+			}" width="0px" />
 
-		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='paringTitle.includes("号车间")' />
+		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='isEnterprises&&paringTitle.includes("号车间")' />
 
 		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
 			户型图
@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, onMounted, computed } from "vue";
+	import { ref, onMounted, computed, watch } from "vue";
 	import { useRouter } from "vue-router";
 	import { deviceTypeStates, DeviceType } from "@/event/deviceTypeState";
 	import Top from "./top.vue";
@@ -350,7 +350,6 @@
 
 	// 默认使用的当前楼层 false
 	let buildingName = ref("请点击楼号");
-	buildingName.value = "1B";
 	let paringTitle = ref(
 		cheJianList[buildingName.value as keyof typeof cheJianList]
 	);
@@ -482,6 +481,8 @@
 	function open() {
 		isShow.value = true;
 	}
+
+	const isEnterprises = ref(false);
 
 	const errorDetail = ref<any>({});
 
@@ -767,9 +768,22 @@
 			parkingShow.value = false;
 		}
 	});
+
+	// 监听路由地址变化
+	watch(
+		() => router.currentRoute.value.path,
+		(newPath, oldPath) => {
+			console.log(newPath);
+			if (newPath === '/parkInvestmentPromotion') {
+				// 如果是招商模块就可以显示企业园区入驻的企业了
+				isEnterprises.value = true
+			} else {
+				isEnterprises.value = false
+			}
+		}
+	)
+
 	// 在 `onMounted` 中绑定 `window.ue.interface.getInfoByName`
-
-
 	onMounted(async () => {
 		const hpList = await getHousePic();
 
@@ -1157,5 +1171,52 @@
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
+	}
+</style>
+
+<style>
+	/* 让预览最外层 wrap 占满窗口 */
+	.ant-image-preview-wrap,
+	.ant-image-preview {
+		width: 100vw !important;
+		height: 100vh !important;
+		overflow: hidden !important;
+		/* 防止出现滚动条 */
+	}
+
+	/* 让预览内容区域也撑满 */
+	.ant-image-preview-content {
+		width: 100% !important;
+		height: 100% !important;
+	}
+
+	/* 让预览主体 body 撑满 */
+	.ant-image-preview-body {
+		width: 100% !important;
+		height: 100% !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		/* 上面两行保证内部内容居中，你也可以移除它们 */
+	}
+
+	/* 让图片包裹容器撑满，并隐藏溢出（以便 cover 模式生效） */
+	.ant-image-preview-img-wrapper {
+		width: 100% !important;
+		height: 100% !important;
+		overflow: hidden !important;
+		/* 如果不想被 transform: translate3d(...) 干扰，也可强行重置 */
+		transform: none !important;
+	}
+
+	/* 让图片本身铺满容器 */
+	.ant-image-preview-img {
+		width: 100% !important;
+		height: 100% !important;
+		max-width: none !important;
+		max-height: none !important;
+		object-fit: cover !important;
+		/* cover可能会裁切 */
+		/* 如果想保证整张图完整呈现，可以改为 object-fit: contain; */
 	}
 </style>

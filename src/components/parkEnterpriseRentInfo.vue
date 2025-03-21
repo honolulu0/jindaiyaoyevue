@@ -83,7 +83,7 @@
 				</div>
 			</div>
 		</div>
-		<a-image :width="0" :height="0" :preview="{
+		<a-image :width="0" :height="0" style="width: 100%; height: 100%;" :preview="{
         visible: previewVisible,
         onVisibleChange: handlePreviewVisible,
       }" :src="currentImageUrl" />
@@ -411,4 +411,6 @@
 	:deep(.ant-image) {
 		display: none;
 	}
+
+
 </style>
