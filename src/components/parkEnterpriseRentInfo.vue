@@ -55,27 +55,29 @@
 				</div>
 				<div class="rents-container">
 					<div v-for="item in rentItems" :key="item.id" class="rent-item">
-						<div class="rent-item-img">
-							<img :src="item.parkEnterprise.imgUrl" style="width: 20px; height: 20px" alt="" />
+						<div class="rent-item-img-container">
+              <div :style="{ color: item?.parkEnterprise ? 'red' : 'green' }">{{ item.room }}</div>
+							<img class="rent-item-img" v-if="item?.parkEnterprise" :src="item?.parkEnterprise?.imgUrl" style="width: 20px; height: 20px" alt="" />
+              <HomeOutlined v-else style="font-size: 15px; border-radius: 50%; padding: 2px;" />
 						</div>
 						<div class="rent-item-info">
-							<div class="rent-item-info-name" :title="item.parkEnterprise.name">
-								{{ item.parkEnterprise.name }}
+							<div class="rent-item-info-name" :title="item.parkEnterprise?.name ?? '房间空置中'">
+								{{ item.parkEnterprise?.name ?? '房间空置中' }}
 							</div>
 							<div class="rent-item-info-pic-btn-container">
 								<div class="rent-item-info-pic-btn-container-time">
 									<div>
 										<span>租赁开始时间：</span>
-										<span>{{dayjs(item.rentStartAt).format("YYYY-MM-DD")}}</span>
+										<span>{{ item.rentStartAt ? dayjs(item.rentStartAt).format("YYYY-MM-DD") : '-' }}</span>
 									</div>
 									<div>
 										<span>租赁结束时间：</span>
-										<span>{{dayjs(item.rentEndAt).format("YYYY-MM-DD")}}</span>
+										<span>{{ item.rentEndAt ? dayjs(item.rentEndAt).format("YYYY-MM-DD") : '-' }}</span>
 									</div>
 								</div>
 								<div class="rent-item-info-pic-btn" style="cursor: pointer;"
 									@click.stop="showImage(item.imgUrl)">
-									详情
+									户型图
 								</div>
 							</div>
 						</div>
@@ -95,7 +97,7 @@
 	import dayjs from "dayjs";
 	import { getParkEnterpriseRentInfo } from "@/apis/getParkEnterpriseRentInfo";
 	import { Tooltip as ATooltip, Image as AImage } from "ant-design-vue";
-
+	import { HomeOutlined } from "@ant-design/icons-vue";
 	const props = defineProps<{
 		buildingName : string;
 	}>();
@@ -349,8 +351,17 @@
 		border-radius: 50%;
 		overflow: hidden;
 		display: flex;
-		margin-left: 5px;
 	}
+
+  .rent-item-img-container {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 25px; 
+    width: 20px;
+  }
 
 	.rent-item-info {
 		flex: 1;
@@ -363,7 +374,7 @@
 	.rent-item-info-name {
 		margin-top: 3px;
 		margin-left: 5px;
-		font-size: 6px;
+		font-size: 5px;
 		/* font-weight: bold; */
 		color: #fff;
 		max-width: 50px;
@@ -377,7 +388,7 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
-		justify-content: end;
+    margin-left: 5px;
 		padding-top: 3px;
 		padding-right: 5px;
 	}
@@ -385,9 +396,11 @@
 	.rent-item-info-pic-btn-container-time {
 		font-size: 4px;
 		padding-right: 5px;
+    flex: 1;
 	}
 
 	.rent-item-info-pic-btn {
+    margin-right: 3px;
 		font-size: 5px;
 		/* font-weight: bold; */
 		color: #fff;

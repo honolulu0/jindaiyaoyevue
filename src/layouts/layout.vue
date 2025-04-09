@@ -44,6 +44,8 @@
 
 		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='isEnterprises&&paringTitle.includes("号车间")' />
 
+		<!-- <ParkEnterpriseRentInfo buildingName="1号车间A座" /> -->
+
 		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
 			户型图
 		</div> -->
