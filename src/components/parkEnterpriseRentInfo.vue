@@ -11,16 +11,12 @@
           justify-content: center;
           align-items: center;
           padding-bottom: 2px;
-		      cursor: pointer;
-        ">
+		      cursor: pointer;" @click="sendClose">
 				x
 			</div>
 		</div>
 		<div class="building-info-container">
 			<div class="floor-container">
-				<!-- 			<div class="triangle-container-1" style="cursor: pointer;" @click="prevFloor">
-					<div class="triangle"></div>
-				</div> -->
 				<div class="floor-name"></div>
 				<div class="floor-name"></div>
 				<div v-for="floor in floors" style="cursor: pointer;" @click="selectFloor(floor.floorName)"
@@ -30,28 +26,9 @@
 				</div>
 				<div class="floor-name"></div>
 				<div class="floor-name"></div>
-				<!-- 		<div class="triangle-container-2" style="cursor: pointer;" @click="nextFloor">
-					<div class="triangle"></div>
-				</div> -->
 			</div>
 			<div class="room-container">
 				<div class="room-select-container">
-					<!-- 										<div class="arrow left-arrow" :class="{ 'arrow-disabled': !hasPrevRoom }" style="cursor: pointer;"
-						@click="hasPrevRoom && prevRoom()">
-						◀
-					</div>
-					<div class="room-name-container">
-						<div style="cursor: pointer;" v-for="room in visibleRooms" @click="selectRoom(room.roomName)"
-							:key="room.roomName" :class="{
-                'room-name-active': selectedRoomName === room.roomName,
-              }" class="room-name">
-							{{ room.roomName }}
-						</div>
-					</div>
-					<div class="arrow right-arrow" :class="{ 'arrow-disabled': !hasNextRoom }" style="cursor: pointer;"
-						@click="hasNextRoom && nextRoom()">
-						▶
-					</div> -->
 				</div>
 				<div class="rents-container">
 					<div v-for="item in rentItems" :key="item.id" class="rent-item">
@@ -95,7 +72,7 @@
 	import dayjs from "dayjs";
 	import { getParkEnterpriseRentInfo } from "@/apis/getParkEnterpriseRentInfo";
 	import { Tooltip as ATooltip, Image as AImage } from "ant-design-vue";
-
+	import emitter from '@/utils/eventBus.js';
 	const props = defineProps<{
 		buildingName : string;
 	}>();
@@ -104,6 +81,10 @@
 	const floors = ref<any[]>([]);
 	const rentItems = ref<any[]>([]);
 
+	const sendClose = () => {
+		// console.log("发送关闭");
+		emitter.emit('set_enterprises_show', false);
+	};
 	onMounted(async () => {
 		const res = await getParkEnterpriseRentInfo(props.buildingName);
 		buildingInfo.value = res.data;
@@ -140,7 +121,7 @@
 <style scoped>
 	.park-enterprise-rent-info {
 		position: absolute;
-		z-index: 100;
+		z-index: 1000;
 		top: 115px;
 		right: 285px;
 		width: 150px;
@@ -366,7 +347,7 @@
 		font-size: 6px;
 		/* font-weight: bold; */
 		color: #fff;
-		max-width: 50px;
+		max-width: 80px;
 		text-align: center;
 		white-space: nowrap;
 		overflow: hidden;
@@ -411,6 +392,4 @@
 	:deep(.ant-image) {
 		display: none;
 	}
-
-
 </style>

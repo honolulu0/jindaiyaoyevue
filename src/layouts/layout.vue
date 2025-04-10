@@ -9,11 +9,9 @@
 						<span>{{ paringTitle }}</span>
 					</div>
 					<div class="parking_content">
-						<div class="parking_content_item" v-for="(value, key) in parkingData" :key="key"
+						<div class="parking_content_item" v-for="(value, key) in parkingData" :key="key">
+							<div class="parking_content_item_bg" :class="key === '楼号' && yinchanglouhao === false ? 'active' : ''" 
 							@click="handleJujiaoLouceng(key, value)">
-							<div class="parking_content_item_bg" :class="
-                  key === '楼号' && yinchanglouhao === false ? 'active' : ''
-                ">
 								<div class="parking_content_item_value">
 									<span>{{ key }}</span>
 								</div>
@@ -42,11 +40,8 @@
 			onVisibleChange: handleVisibleChange,
 			}" width="0px" />
 
-		<ParkEnterpriseRentInfo :buildingName="paringTitle" v-if='isEnterprises&&paringTitle.includes("号车间")' />
-
-		<!-- 		<div v-show="isShowHousePic" class="button-house-pic" @click="handleHousePic">
-			户型图
-		</div> -->
+		<ParkEnterpriseRentInfo :buildingName="paringTitle"
+			v-if='isEnterprises&&enterprisesShow&&(paringTitle.includes("号车间")||paringTitle.includes("综合服务楼")||paringTitle.includes("电子车间"))' />
 
 		<Transition name="fade">
 			<div v-if="!isShow">
@@ -70,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, onMounted, computed, watch } from "vue";
+	import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 	import { useRouter } from "vue-router";
 	import { deviceTypeStates, DeviceType } from "@/event/deviceTypeState";
 	import Top from "./top.vue";
@@ -91,6 +86,8 @@
 	import ParkEnterpriseRentInfo from "@/components/parkEnterpriseRentInfo.vue";
 	import { getHousePic, HousePic } from "@/apis/getHousePic";
 	import { Image } from "ant-design-vue";
+	import emitter from '@/utils/eventBus.js';
+
 
 	const isShow = ref(true);
 	const previewVisible = ref(false);
@@ -116,6 +113,8 @@
 		"S1": "1号宿舍楼",
 		"S2": "2号宿舍楼",
 		"S3": "3号宿舍楼",
+		"DZ": "电子车间",
+		"ZH": "综合服务楼",
 		请点击楼号: "请点击楼号",
 	};
 
@@ -311,30 +310,33 @@
 			"1F": 7,
 			P: 1,
 			主视图: 0,
-			//全部: "DX",
 			楼号: "LH",
 		},
 		"1号宿舍楼": {
 			"户型图": 1,
 			主视图: 0,
-			//全部: "DX",
 			楼号: "LH",
 		},
 		"2号宿舍楼": {
 			"户型图": 2,
 			主视图: 0,
-			//全部: "DX",
 			楼号: "LH",
 		},
 		"3号宿舍楼": {
 			"户型图": 3,
 			主视图: 0,
-			//全部: "DX",
+			楼号: "LH",
+		},
+		"电子车间": {
+			主视图: 0,
+			楼号: "LH",
+		},
+		"综合服务楼": {
+			主视图: 0,
 			楼号: "LH",
 		},
 		请点击楼号: {
 			主视图: 0,
-			//全部: "DX",
 			楼号: "LH",
 		},
 	};
@@ -343,6 +345,20 @@
 
 	let housePicUrl = ref("");
 
+	// 控制路由是否是招商用于显示户型图
+	const isEnterprises = ref(false);
+	// 路由是招商的时候控制户型图是否显示
+	const enterprisesShow = ref(false);
+
+	const errorDetail = ref<any>({});
+
+	const showErrorDetail = ref(false);
+
+	const deviceDetail = ref<any>({});
+
+	const showDeviceDetail = ref(false);
+
+	const deviceType = ref<any[]>([]);
 
 	function handleVisibleChange(visible) {
 		previewVisible.value = visible;
@@ -350,6 +366,9 @@
 
 	// 默认使用的当前楼层 false
 	let buildingName = ref("请点击楼号");
+	
+	// buildingName.value = "1B" // 用于测试租赁信息的弹窗
+	// enterprisesShow.value = true // 用于测试租赁信息的弹窗
 	let paringTitle = ref(
 		cheJianList[buildingName.value as keyof typeof cheJianList]
 	);
@@ -359,8 +378,9 @@
 	); // 初始化为楼层列表
 	// 点击楼层的操作
 	async function handleJujiaoLouceng(key : string, floorId : number) {
+		// 切换楼层的时候设置户型图详情关闭
+		set_enterprises_show(false)
 		// 创建一个临时变量，保存 buildingName 的值
-
 		console.log(buildingName.value, key, floorId);
 		let tempName = buildingName.value;
 		if (key == "户型图") {
@@ -482,17 +502,7 @@
 		isShow.value = true;
 	}
 
-	const isEnterprises = ref(false);
 
-	const errorDetail = ref<any>({});
-
-	const showErrorDetail = ref(false);
-
-	const deviceDetail = ref<any>({});
-
-	const showDeviceDetail = ref(false);
-
-	const deviceType = ref<any[]>([]);
 
 	const baseUrl = import.meta.url.substring(
 		0,
@@ -773,18 +783,30 @@
 	watch(
 		() => router.currentRoute.value.path,
 		(newPath, oldPath) => {
-			console.log(newPath);
-			if (newPath === '/parkInvestmentPromotion') {
+			console.log(newPath, oldPath,newPath == '/parkInvestmentPromotion');
+			if (newPath == '/parkInvestmentPromotion') {
 				// 如果是招商模块就可以显示企业园区入驻的企业了
 				isEnterprises.value = true
+				set_enterprises_show(true)
 			} else {
 				isEnterprises.value = false
 			}
 		}
 	)
 
+	function set_enterprises_show(state : boolean) {
+		// 路由正确的时候,设置户型图详情是否显示
+		enterprisesShow.value = state
+	}
+
+	onUnmounted(() => {
+		emitter.off('set_enterprises_show', set_enterprises_show);
+	});
 	// 在 `onMounted` 中绑定 `window.ue.interface.getInfoByName`
 	onMounted(async () => {
+		// 总线接收关闭各楼户型弹窗
+		emitter.on('set_enterprises_show', set_enterprises_show);
+
 		const hpList = await getHousePic();
 
 		hpList.forEach((e) => {
@@ -820,7 +842,6 @@
 				);
 
 				window.ue.interface.setlouzuo = (building) => {
-					console.log("模型传入的建筑", building);
 					if (building.name == "P" || building.name.length === 3) {
 						return;
 					}
@@ -832,6 +853,9 @@
 						cheJianLouCengList[
 						paringTitle.value as keyof typeof cheJianLouCengList
 						];
+					// 切换楼座的时候,设置户型图详情显示
+					set_enterprises_show(true)
+					console.log("模型传入的建筑", building,paringTitle,isEnterprises.value);
 				};
 
 				window.ue.interface.setchuanganqi = (chuanganqi) => {
