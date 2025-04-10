@@ -77,12 +77,12 @@ const router = createRouter({
 router.afterEach((to, from) => {
   const pathToIndex = {
     "/comprehensiveSituation": 0,
-    "/parkInvestmentPromotion": 1,
-    "/securitySituation": 2,
-    "/parkFacilities": 3,
-    "/powerEnvironment": 4,
-    "/energyConsumptionSituation": 5,
-    "/enterprises": 6,
+    "/securitySituation": 1,
+    "/parkFacilities": 2,
+    "/powerEnvironment": 3,
+    "/energyConsumptionSituation": 4,
+    "/enterprises": 5,
+    "/parkInvestmentPromotion": 6,
     "/partyBuilding": 7,
     "/parkPolicy": 7,
     "/parkEnterprise": 7,

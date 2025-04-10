@@ -55,22 +55,6 @@
 			},
 		},
 		{
-			name: "园区招商",
-			icon: "招商icon.png",
-			iconTop: "6px",
-			iconLeft: "27px",
-			iconWidth: "10px",
-			iconHeight: "9px",
-			isClick: false,
-			onClick: () => {
-				setClick(1);
-				router.push("/parkInvestmentPromotion");
-				parkingSubject.next(true);
-				errorAlertSubject.next(null);
-				deviceSelectSubject.next(null);
-			},
-		},
-		{
 			name: "安防态势",
 			icon: "安防态势icon.png",
 			iconTop: "7px",
@@ -146,6 +130,22 @@
 				setClick(6);
 				router.push("/enterprises");
 				parkingSubject.next(false);
+				errorAlertSubject.next(null);
+				deviceSelectSubject.next(null);
+			},
+		},
+		{
+			name: "园区招商",
+			icon: "招商icon.png",
+			iconTop: "6px",
+			iconLeft: "27px",
+			iconWidth: "10px",
+			iconHeight: "9px",
+			isClick: false,
+			onClick: () => {
+				setClick(1);
+				router.push("/parkInvestmentPromotion");
+				parkingSubject.next(true);
 				errorAlertSubject.next(null);
 				deviceSelectSubject.next(null);
 			},

@@ -12,12 +12,7 @@ export interface DeviceType {
 export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
   comprehensiveSituation: new BehaviorSubject<DeviceType[]>([]),
   
-  parkInvestmentPromotion: new BehaviorSubject<DeviceType[]>([{
-    id: 8,
-    text: "摄像头",
-    icon: "安防监控",
-    isClick: false
-  }]),
+  parkInvestmentPromotion: new BehaviorSubject<DeviceType[]>([]),
   
   securitySituation: new BehaviorSubject<DeviceType[]>([
     {
@@ -75,4 +70,4 @@ export const deviceTypeStates: Record<string, BehaviorSubject<DeviceType[]>> = {
   parkPolicy: new BehaviorSubject<DeviceType[]>([]),
   parkEnterprise: new BehaviorSubject<DeviceType[]>([]),
   parkServices: new BehaviorSubject<DeviceType[]>([])
-}; 
+};
