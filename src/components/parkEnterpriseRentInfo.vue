@@ -22,7 +22,7 @@
 				<div v-for="floor in floors" style="cursor: pointer;" @click="selectFloor(floor.floorName)"
 					:key="floor.floorName" :class="{ 'floor-name-active': selectedFloor === floor.floorName }"
 					class="floor-name">
-					{{ floor.floorName }}
+					<div>{{ floor.floorName }}</div>
 				</div>
 				<div class="floor-name"></div>
 				<div class="floor-name"></div>
@@ -92,28 +92,28 @@
 	import { getParkEnterpriseRentInfo } from "@/apis/getParkEnterpriseRentInfo";
 	import { Tooltip as ATooltip, Image } from "ant-design-vue";
 
-	// import emitter from '@/utils/eventBus.js';
+	import emitter from '@/utils/eventBus.js';
 	import { HomeOutlined } from "@ant-design/icons-vue";
 
 	const props = defineProps<{
 		buildingName : string;
 	}>();
 
-	const emit = defineEmits(['close']);
+	// const emit = defineEmits(['close']);
 
-	const sendClose = () => {
-		emit('close');
-	};
+	// const sendClose = () => {
+	// 	emit('close');
+	// };
 
 	const buildingInfo = ref<any>({});
 	const selectedFloor = ref("1F");
 	const floors = ref<any[]>([]);
 	const rentItems = ref<any[]>([]);
 
-	// const sendClose = () => {
-	// 	// console.log("发送关闭");
-	// 	emitter.emit('set_enterprises_show', false);
-	// };
+	const sendClose = () => {
+		// console.log("发送关闭");
+		emitter.emit('set_enterprises_show', false);
+	};
 
 	const floorStats = ref({
 		total: 0,
@@ -250,6 +250,7 @@
 		border-radius: 50%;
 		width: 15px;
 		height: 15px;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;

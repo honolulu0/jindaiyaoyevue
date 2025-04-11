@@ -40,10 +40,10 @@
 			onVisibleChange: handleVisibleChange,
 			}" width="0px" />
 
-		<!-- <ParkEnterpriseRentInfo :buildingName="paringTitle"
+<!-- 		<ParkEnterpriseRentInfo :buildingName="paringTitle"
 			v-if='isEnterprises&&enterprisesShow&&(paringTitle.includes("号车间")||paringTitle.includes("综合服务楼")||paringTitle.includes("电子车间"))' /> -->
 
-		<ParkEnterpriseRentInfo buildingName="1号车间A座" />
+		<ParkEnterpriseRentInfo buildingName="1号车间B座" />
 
 		<Transition name="fade">
 			<div v-if="!isShow">
@@ -88,7 +88,7 @@
 	import ParkEnterpriseRentInfo from "@/components/parkEnterpriseRentInfo.vue";
 	import { getHousePic, HousePic } from "@/apis/getHousePic";
 	import { Image } from "ant-design-vue";
-	// import emitter from '@/utils/eventBus.js';
+	import emitter from '@/utils/eventBus.js';
 
 
 	const isShow = ref(true);
