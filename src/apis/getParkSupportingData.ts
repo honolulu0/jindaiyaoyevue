@@ -8,6 +8,7 @@ export interface ParkSupportingDTO {
   value: string;
   unit: string;
   iconUrl?: string;
+  urls?: string;
 }
 
 // 定义前端使用的数据类型（VO）
@@ -69,6 +70,12 @@ export const getParkSupportingData = async (): Promise<ParkSupportingVO[]> => {
   return convertToVO(res.data);
 };
 
+export const getParkSupportingUrls = async (): Promise<string[]> => {
+  const res = await jindai3adminInstance.get<ParkSupportingDTO[]>(url);
+  const urls = res.data.map((v)=> v.urls).join(',');
+  console.log(urls);
+  return urls.split(',').filter((v)=>v !== '');
+}
 
 // <script setup lang="ts">
 // import { ref, onMounted } from 'vue';

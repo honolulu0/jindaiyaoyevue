@@ -40,8 +40,20 @@
 			onVisibleChange: handleVisibleChange,
 			}" width="0px" />
 
+		<!-- 园区配套图片预览 -->
+		<el-image-viewer
+			v-if="parkSupportingPicList.length > 0 && parkSupportingPreviewVisible"
+			:url-list="parkSupportingPicList"
+			:initial-index="0"
+			:infinite="true"
+			show-progress
+			:hide-on-click-modal="false"
+			:z-index="9999"
+			@close="parkSupportingPreviewVisible = false"
+		/>
+
 		<ParkEnterpriseRentInfo :buildingName="paringTitle"
-			v-if='isEnterprises&&enterprisesShow&&(paringTitle.includes("号车间")||paringTitle.includes("综合服务楼")||paringTitle.includes("电子车间"))' />
+			v-if='isEnterprises&&enterprisesShow&&(paringTitle.includes("号车间")||paringTitle.includes("综合服务楼")||paringTitle.includes("综合办公楼"))' />
 
 		<!-- <ParkEnterpriseRentInfo buildingName="1号车间B座" /> -->
 
@@ -67,9 +79,11 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+	import { ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
 	import { useRouter } from "vue-router";
 	import { deviceTypeStates, DeviceType } from "@/event/deviceTypeState";
+	import { ParkSupportingSubject } from "@/utils/ParkSupportingSubject";
+	import { ElImage } from "element-plus";
 	import Top from "./top.vue";
 	import AspectRatioContainer from "@/components/aspectRatioContainer.vue";
 	import ErrorDetail from "@/components/errorDetail.vue";
@@ -89,12 +103,15 @@
 	import { getHousePic, HousePic } from "@/apis/getHousePic";
 	import { Image } from "ant-design-vue";
 	import emitter from '@/utils/eventBus.js';
+	import { ElImageViewer } from "element-plus";
 
 
 	const isShow = ref(true);
 	const previewVisible = ref(false);
 	const router = useRouter();
 	const parkingShow = ref(true);
+	const parkSupportingImageRef = ref();
+	const parkSupportingPreviewVisible = ref(false);
 	const cheJianList = {
 		"1A": "1号车间A座",
 		"1B": "1号车间B座",
@@ -115,7 +132,7 @@
 		"S1": "1号宿舍楼",
 		"S2": "2号宿舍楼",
 		"S3": "3号宿舍楼",
-		"DZ": "电子车间",
+		"DZ": "综合办公楼",
 		"ZH": "综合服务楼",
 		请点击楼号: "请点击楼号",
 	};
@@ -329,7 +346,7 @@
 			主视图: 0,
 			楼号: "LH",
 		},
-		"电子车间": {
+		"综合办公楼": {
 			主视图: 0,
 			楼号: "LH",
 		},
@@ -355,6 +372,8 @@
 	const errorDetail = ref<any>({});
 
 	const showErrorDetail = ref(false);
+
+	const parkSupportingPicList = ref<string[]>([]);
 
 	const deviceDetail = ref<any>({});
 
@@ -803,6 +822,7 @@
 
 	onUnmounted(() => {
 		emitter.off('set_enterprises_show', set_enterprises_show);
+		ParkSupportingSubject.unsubscribe();
 	});
 	// 在 `onMounted` 中绑定 `window.ue.interface.getInfoByName`
 	onMounted(async () => {
@@ -810,6 +830,19 @@
 		emitter.on('set_enterprises_show', set_enterprises_show);
 
 		const hpList = await getHousePic();
+
+		ParkSupportingSubject.subscribe((data) => {
+			console.log('园区配套图片列表', data);
+			parkSupportingPicList.value = data;
+			// 如果有图片，显示预览
+			if (data && data.length > 0) {
+				// 显示预览组件
+				parkSupportingPreviewVisible.value = true;
+			} else {
+				// 隐藏预览组件
+				parkSupportingPreviewVisible.value = false;
+			}
+		})
 
 		hpList.forEach((e) => {
 			housePicObj.value[e.name] = e.imgUrl

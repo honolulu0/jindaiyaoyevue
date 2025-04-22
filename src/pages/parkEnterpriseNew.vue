@@ -358,16 +358,22 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr; /* 两列 */
-    grid-template-rows: 1fr 1fr 1fr; /* 三行 */
     gap: 10px;
     padding: 0px 10px 10px 10px; /* 上 右 下 左 */
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  .star_enterprise_content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
   }
 
   .star_enterprise_content_item {
-    width: 100%;
-    height: 100%;
+    height: 75px;
     border-radius: 10px;
     background-color: rgba(97, 119, 138, 0.5);
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;

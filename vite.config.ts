@@ -10,6 +10,11 @@ export default defineConfig({
 			'@': path.resolve(__dirname, 'src')
 		}
 	},
+	css: {
+		preprocessorOptions: {
+			scss: { api: 'modern-compiler' },
+		}
+	},
 	build: {
 		assetsDir: 'assets',
 		rollupOptions: {
@@ -34,15 +39,15 @@ export default defineConfig({
 				secure: false
 			},
 			'/jindai3admin': {
-				target: 'http://47.120.12.122:13363/api/',
-				// target: 'http://localhost:3000/api/',
+				// target: 'http://47.120.12.122:13363/api/',
+				target: 'http://localhost:3000/api/',
 				rewrite: (path) => path.replace(/^\/jindai3admin/, ''),
 				changeOrigin: true,
 				secure: true,
 			},
 			'/uploads/': {
-				target: 'http://47.120.12.122:13363/uploads',
-				// target: 'http://localhost:3000/uploads',
+				// target: 'http://47.120.12.122:13363/uploads',
+				target: 'http://localhost:3000/uploads',
 				rewrite: (path) => path.replace(/^\/uploads/, ''),
 				changeOrigin: true,
 				secure: false
