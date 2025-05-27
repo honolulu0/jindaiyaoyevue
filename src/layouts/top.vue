@@ -237,7 +237,7 @@
 		if (isFullMode.value) {
 			return tabsName;
 		} else {
-			return tabsName.filter((tab, index) => [0, 1, 7].includes(index));
+			return tabsName.filter((tab, index) => [0, 6, 7].includes(index));
 		}
 	});
 
